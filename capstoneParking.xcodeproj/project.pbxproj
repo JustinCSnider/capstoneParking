@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */; };
-		CC3C5A0F2243D31F00671D4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0E2243D31F00671D4E /* ViewController.swift */; };
+		CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */; };
 		CC3C5A122243D31F00671D4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A102243D31F00671D4E /* Main.storyboard */; };
 		CC3C5A142243D32000671D4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A132243D32000671D4E /* Assets.xcassets */; };
 		CC3C5A172243D32000671D4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */; };
@@ -17,7 +17,7 @@
 /* Begin PBXFileReference section */
 		CC3C5A092243D31F00671D4E /* capstoneParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = capstoneParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CC3C5A0E2243D31F00671D4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		CC3C5A112243D31F00671D4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CC3C5A132243D32000671D4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC3C5A162243D32000671D4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,14 +54,38 @@
 		CC3C5A0B2243D31F00671D4E /* capstoneParking */ = {
 			isa = PBXGroup;
 			children = (
+				CC3C5A202243D32B00671D4E /* Controllers */,
+				CC3C5A1F2243D32A00671D4E /* Views */,
+				CC3C5A1E2243D32600671D4E /* Models */,
 				CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */,
-				CC3C5A0E2243D31F00671D4E /* ViewController.swift */,
-				CC3C5A102243D31F00671D4E /* Main.storyboard */,
-				CC3C5A132243D32000671D4E /* Assets.xcassets */,
-				CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */,
 				CC3C5A182243D32000671D4E /* Info.plist */,
 			);
 			path = capstoneParking;
+			sourceTree = "<group>";
+		};
+		CC3C5A1E2243D32600671D4E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CC3C5A1F2243D32A00671D4E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CC3C5A102243D31F00671D4E /* Main.storyboard */,
+				CC3C5A132243D32000671D4E /* Assets.xcassets */,
+				CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CC3C5A202243D32B00671D4E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,7 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC3C5A0F2243D31F00671D4E /* ViewController.swift in Sources */,
+				CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
