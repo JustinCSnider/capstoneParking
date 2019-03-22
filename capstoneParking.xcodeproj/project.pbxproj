@@ -7,14 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */; };
 		CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */; };
 		CC3C5A122243D31F00671D4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A102243D31F00671D4E /* Main.storyboard */; };
 		CC3C5A142243D32000671D4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A132243D32000671D4E /* Assets.xcassets */; };
 		CC3C5A172243D32000671D4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */; };
+		CC3C5A2322452C3C00671D4E /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */; };
+		CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2422452C5F00671D4E /* MapViewController.swift */; };
+		CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */; };
+		CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2A22452CB800671D4E /* DetailViewController.swift */; };
+		CC3C5A2D22452CD100671D4E /* AccountHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2C22452CD100671D4E /* AccountHolder.swift */; };
+		CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */; };
+		CC3C5A3122452F8100671D4E /* ReservedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */; };
+		CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */; };
+		CC3C5A352245325E00671D4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A342245325E00671D4E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
+		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3C5A092243D31F00671D4E /* capstoneParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = capstoneParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +34,16 @@
 		CC3C5A132243D32000671D4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC3C5A162243D32000671D4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC3C5A182243D32000671D4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2422452C5F00671D4E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTabTableViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2A22452CB800671D4E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2C22452CD100671D4E /* AccountHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHolder.swift; sourceTree = "<group>"; };
+		CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredSpot.swift; sourceTree = "<group>"; };
+		CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedTableViewCell.swift; sourceTree = "<group>"; };
+		CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredTableViewCell.swift; sourceTree = "<group>"; };
+		CC3C5A342245325E00671D4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D6E20017E84A3AE40B7913AF /* Pods-capstoneParking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.release.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +51,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		51AB77A8F3C1D31533676548 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */,
+				D6E20017E84A3AE40B7913AF /* Pods-capstoneParking.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		CC3C5A002243D31F00671D4E = {
 			isa = PBXGroup;
 			children = (
 				CC3C5A0B2243D31F00671D4E /* capstoneParking */,
 				CC3C5A0A2243D31F00671D4E /* Products */,
+				51AB77A8F3C1D31533676548 /* Pods */,
+				F9F1C8882D4573FAF307333A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,6 +93,7 @@
 				CC3C5A1E2243D32600671D4E /* Models */,
 				CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */,
 				CC3C5A182243D32000671D4E /* Info.plist */,
+				CC3C5A342245325E00671D4E /* GoogleService-Info.plist */,
 			);
 			path = capstoneParking;
 			sourceTree = "<group>";
@@ -66,6 +101,10 @@
 		CC3C5A1E2243D32600671D4E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CC3C5A2C22452CD100671D4E /* AccountHolder.swift */,
+				CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */,
+				CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */,
+				CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -84,8 +123,20 @@
 			isa = PBXGroup;
 			children = (
 				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
+				CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */,
+				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
+				CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */,
+				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		F9F1C8882D4573FAF307333A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,9 +146,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CC3C5A1B2243D32000671D4E /* Build configuration list for PBXNativeTarget "capstoneParking" */;
 			buildPhases = (
+				3A7FBE94A7F8FDA2DCD73B0D /* [CP] Check Pods Manifest.lock */,
 				CC3C5A052243D31F00671D4E /* Sources */,
 				CC3C5A062243D31F00671D4E /* Frameworks */,
 				CC3C5A072243D31F00671D4E /* Resources */,
+				312A15ED10B6E177DB848E71 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,19 +201,77 @@
 			files = (
 				CC3C5A172243D32000671D4E /* LaunchScreen.storyboard in Resources */,
 				CC3C5A142243D32000671D4E /* Assets.xcassets in Resources */,
+				CC3C5A352245325E00671D4E /* GoogleService-Info.plist in Resources */,
 				CC3C5A122243D31F00671D4E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		312A15ED10B6E177DB848E71 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-capstoneParking/Pods-capstoneParking-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-capstoneParking/Pods-capstoneParking-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3A7FBE94A7F8FDA2DCD73B0D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-capstoneParking-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CC3C5A052243D31F00671D4E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC3C5A2D22452CD100671D4E /* AccountHolder.swift in Sources */,
+				CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */,
 				CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */,
+				CC3C5A3122452F8100671D4E /* ReservedTableViewCell.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
+				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
+				CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */,
+				CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */,
+				CC3C5A2322452C3C00671D4E /* NewAccountViewController.swift in Sources */,
+				CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +415,7 @@
 		};
 		CC3C5A1C2243D32000671D4E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -321,6 +433,7 @@
 		};
 		CC3C5A1D2243D32000671D4E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6E20017E84A3AE40B7913AF /* Pods-capstoneParking.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
