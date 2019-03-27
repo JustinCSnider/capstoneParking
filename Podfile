@@ -8,5 +8,7 @@ target 'capstoneParking' do
   # Pods for capstoneParking
 
 	pod 'Firebase/Core'
-
+	pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  
 end
