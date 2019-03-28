@@ -8,16 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
+		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
+		CC0C3E052247BA8D00067330 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0C3E042247BA8D00067330 /* CustomButton.swift */; };
 		CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */; };
 		CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */; };
 		CC3C5A122243D31F00671D4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A102243D31F00671D4E /* Main.storyboard */; };
 		CC3C5A142243D32000671D4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A132243D32000671D4E /* Assets.xcassets */; };
 		CC3C5A172243D32000671D4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */; };
-		CC3C5A2322452C3C00671D4E /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */; };
+		CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */; };
 		CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2422452C5F00671D4E /* MapViewController.swift */; };
 		CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */; };
 		CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2A22452CB800671D4E /* DetailViewController.swift */; };
-		CC3C5A2D22452CD100671D4E /* AccountHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2C22452CD100671D4E /* AccountHolder.swift */; };
+		CC3C5A2D22452CD100671D4E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2C22452CD100671D4E /* User.swift */; };
 		CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */; };
 		CC3C5A3122452F8100671D4E /* ReservedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */; };
 		CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */; };
@@ -27,6 +29,8 @@
 /* Begin PBXFileReference section */
 		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC09ED692247E7B9008EDA0D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		CC0C3E042247BA8D00067330 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		CC3C5A092243D31F00671D4E /* capstoneParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = capstoneParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
@@ -34,11 +38,11 @@
 		CC3C5A132243D32000671D4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC3C5A162243D32000671D4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC3C5A182243D32000671D4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAccountViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2422452C5F00671D4E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTabTableViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2A22452CB800671D4E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		CC3C5A2C22452CD100671D4E /* AccountHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHolder.swift; sourceTree = "<group>"; };
+		CC3C5A2C22452CD100671D4E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredSpot.swift; sourceTree = "<group>"; };
 		CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedTableViewCell.swift; sourceTree = "<group>"; };
 		CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredTableViewCell.swift; sourceTree = "<group>"; };
@@ -67,6 +71,22 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CC09ED682247E262008EDA0D /* ModelControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CC09ED692247E7B9008EDA0D /* FirebaseController.swift */,
+			);
+			path = ModelControllers;
+			sourceTree = "<group>";
+		};
+		CC0C3E032247BA3200067330 /* UIDesign */ = {
+			isa = PBXGroup;
+			children = (
+				CC0C3E042247BA8D00067330 /* CustomButton.swift */,
+			);
+			path = UIDesign;
+			sourceTree = "<group>";
+		};
 		CC3C5A002243D31F00671D4E = {
 			isa = PBXGroup;
 			children = (
@@ -89,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				CC3C5A202243D32B00671D4E /* Controllers */,
-				CC3C5A1F2243D32A00671D4E /* Views */,
+				CC3C5A1F2243D32A00671D4E /* Views and Assets */,
 				CC3C5A1E2243D32600671D4E /* Models */,
 				CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */,
 				CC3C5A182243D32000671D4E /* Info.plist */,
@@ -101,7 +121,7 @@
 		CC3C5A1E2243D32600671D4E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CC3C5A2C22452CD100671D4E /* AccountHolder.swift */,
+				CC3C5A2C22452CD100671D4E /* User.swift */,
 				CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */,
 				CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */,
 				CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */,
@@ -109,21 +129,23 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		CC3C5A1F2243D32A00671D4E /* Views */ = {
+		CC3C5A1F2243D32A00671D4E /* Views and Assets */ = {
 			isa = PBXGroup;
 			children = (
 				CC3C5A102243D31F00671D4E /* Main.storyboard */,
-				CC3C5A132243D32000671D4E /* Assets.xcassets */,
 				CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */,
+				CC3C5A132243D32000671D4E /* Assets.xcassets */,
+				CC0C3E032247BA3200067330 /* UIDesign */,
 			);
-			path = Views;
+			path = "Views and Assets";
 			sourceTree = "<group>";
 		};
 		CC3C5A202243D32B00671D4E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CC09ED682247E262008EDA0D /* ModelControllers */,
 				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
-				CC3C5A2222452C3C00671D4E /* NewAccountViewController.swift */,
+				CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */,
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
 				CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */,
 				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
@@ -218,14 +240,26 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-capstoneParking/Pods-capstoneParking-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,15 +296,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC3C5A2D22452CD100671D4E /* AccountHolder.swift in Sources */,
+				CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */,
+				CC3C5A2D22452CD100671D4E /* User.swift in Sources */,
 				CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */,
 				CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */,
 				CC3C5A3122452F8100671D4E /* ReservedTableViewCell.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
 				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
 				CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */,
+				CC0C3E052247BA8D00067330 /* CustomButton.swift in Sources */,
 				CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */,
-				CC3C5A2322452C3C00671D4E /* NewAccountViewController.swift in Sources */,
+				CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */,
 				CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
