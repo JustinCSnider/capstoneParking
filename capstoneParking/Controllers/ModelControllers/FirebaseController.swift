@@ -47,7 +47,7 @@ class FirebaseController {
     func checkIfEmailHasBeenUsed(email: String, completion: @escaping (Bool) -> Void) {
         //Used to check if a specific email has been used to create an account
         Firestore.firestore().collection("Users").whereField("email", isEqualTo: email).getDocuments { (snapshot, error) in
-            if snapshot != nil {
+            if let snapshot = snapshot, snapshot.documents.count > 0 {
                 completion(true)
             } else {
                 completion(false)

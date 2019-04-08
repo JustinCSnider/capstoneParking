@@ -1,26 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="D96-kT-huc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="D96-kT-huc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item 1-->
+        <!--MapViewController-->
         <scene sceneID="mds-Y0-teL">
             <objects>
-                <viewController id="D96-kT-huc" customClass="MapViewController" customModule="capstoneParking" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="D96-kT-huc" userLabel="MapViewController" customClass="MapViewController" customModule="capstoneParking" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9xQ-g2-jg9">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HLZ-i0-pk3">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="JqO-AY-Mx8" appends="YES" id="Qim-Jn-BMJ"/>
+                                </connections>
+                            </mapView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xsa-vV-DT7" userLabel="AlertController Stackview">
+                                <rect key="frame" x="8" y="471" width="359" height="188"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="fi4-qt-hKz">
+                                        <rect key="frame" x="0.0" y="0.0" width="359" height="120"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gfq-45-BOv">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="59.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Register this spot?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5C9-c6-zWK">
+                                                        <rect key="frame" x="103" y="19.5" width="153" height="20.5"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="5C9-c6-zWK" firstAttribute="centerY" secondItem="Gfq-45-BOv" secondAttribute="centerY" id="Uzc-6b-lI2"/>
+                                                    <constraint firstItem="5C9-c6-zWK" firstAttribute="centerX" secondItem="Gfq-45-BOv" secondAttribute="centerX" id="ahU-SU-vAj"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J9I-19-mGK">
+                                                <rect key="frame" x="0.0" y="60.5" width="359" height="59.5"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8RT-wp-vNU">
+                                                        <rect key="frame" x="0.0" y="0.0" width="359" height="59.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                        <state key="normal" title="Register">
+                                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="8RT-wp-vNU" firstAttribute="leading" secondItem="J9I-19-mGK" secondAttribute="leading" id="7gt-yf-8ga"/>
+                                                    <constraint firstAttribute="bottom" secondItem="8RT-wp-vNU" secondAttribute="bottom" id="7px-Pa-gCH"/>
+                                                    <constraint firstAttribute="trailing" secondItem="8RT-wp-vNU" secondAttribute="trailing" id="Jcd-IW-wKh"/>
+                                                    <constraint firstItem="8RT-wp-vNU" firstAttribute="top" secondItem="J9I-19-mGK" secondAttribute="top" id="NQR-5d-Gkb"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="0.1901117084" blue="0.22487790660000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="J9I-19-mGK" secondAttribute="bottom" id="6j7-cA-Ygw"/>
+                                            <constraint firstAttribute="trailing" secondItem="Gfq-45-BOv" secondAttribute="trailing" id="GGw-UG-xcu"/>
+                                            <constraint firstAttribute="height" constant="120" id="Hz1-Pj-Ke0"/>
+                                            <constraint firstItem="J9I-19-mGK" firstAttribute="leading" secondItem="fi4-qt-hKz" secondAttribute="leading" id="KOU-3u-yXv"/>
+                                            <constraint firstAttribute="trailing" secondItem="J9I-19-mGK" secondAttribute="trailing" id="RFZ-tJ-VGb"/>
+                                            <constraint firstItem="Gfq-45-BOv" firstAttribute="height" secondItem="8RT-wp-vNU" secondAttribute="height" id="TN1-VR-fUJ"/>
+                                            <constraint firstItem="Gfq-45-BOv" firstAttribute="top" secondItem="fi4-qt-hKz" secondAttribute="top" id="lrW-mG-o5r"/>
+                                            <constraint firstItem="Gfq-45-BOv" firstAttribute="leading" secondItem="fi4-qt-hKz" secondAttribute="leading" id="voG-iG-qLn"/>
+                                        </constraints>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfn-4P-zAd">
+                                        <rect key="frame" x="0.0" y="128" width="359" height="60"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQO-Nd-jzZ" customClass="CustomButton" customModule="capstoneParking" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="60"/>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="erw-Xg-u46"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" red="1" green="0.1901117084" blue="0.22487790660000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="cancelButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="3N1-LM-15i"/>
+                                                    <action selector="registerButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="dDB-gu-LSI"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="sQO-Nd-jzZ" firstAttribute="leading" secondItem="mfn-4P-zAd" secondAttribute="leading" id="5TC-aQ-v6p"/>
+                                            <constraint firstAttribute="trailing" secondItem="sQO-Nd-jzZ" secondAttribute="trailing" id="eld-Jj-gJS"/>
+                                            <constraint firstAttribute="bottom" secondItem="sQO-Nd-jzZ" secondAttribute="bottom" id="wM3-O2-1D7"/>
+                                            <constraint firstItem="sQO-Nd-jzZ" firstAttribute="top" secondItem="mfn-4P-zAd" secondAttribute="top" id="zNv-1U-XGp"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="fi4-qt-hKz" firstAttribute="leading" secondItem="xsa-vV-DT7" secondAttribute="leading" id="ij5-CT-KvO"/>
+                                    <constraint firstItem="mfn-4P-zAd" firstAttribute="top" secondItem="fi4-qt-hKz" secondAttribute="bottom" constant="8" id="jrw-Z9-PB9"/>
+                                    <constraint firstAttribute="trailing" secondItem="fi4-qt-hKz" secondAttribute="trailing" id="nIk-dz-a7o"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="xsa-vV-DT7" secondAttribute="bottom" constant="8" id="NF2-pP-1p9"/>
+                            <constraint firstItem="HLZ-i0-pk3" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="NyT-Ti-SCk"/>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="xsa-vV-DT7" secondAttribute="trailing" constant="8" id="O0G-gy-Db1"/>
+                            <constraint firstItem="xsa-vV-DT7" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" constant="8" id="auB-SI-LDC"/>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="HLZ-i0-pk3" secondAttribute="trailing" id="gmk-Sq-0OD"/>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="HLZ-i0-pk3" secondAttribute="bottom" id="lio-Gs-DUo"/>
+                            <constraint firstItem="HLZ-i0-pk3" firstAttribute="top" secondItem="9xR-YQ-gKb" secondAttribute="top" id="sKu-rI-Prw"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="9xR-YQ-gKb"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="U1f-N2-qSL"/>
+                    <connections>
+                        <outlet property="RegisterUIView" destination="J9I-19-mGK" id="wbG-Nl-PFW"/>
+                        <outlet property="backgroundUIView" destination="9xQ-g2-jg9" id="itn-Lb-Yo6"/>
+                        <outlet property="cancelButton" destination="sQO-Nd-jzZ" id="ZOx-4K-D1f"/>
+                        <outlet property="cancelUIView" destination="mfn-4P-zAd" id="odv-l1-vpw"/>
+                        <outlet property="customAlertControllerStackview" destination="xsa-vV-DT7" id="qcf-J7-PZ9"/>
+                        <outlet property="mapView" destination="HLZ-i0-pk3" id="ZGk-bN-wiU"/>
+                        <outlet property="registerButton" destination="8RT-wp-vNU" id="m1G-cb-ACG"/>
+                        <outlet property="registerSpotUIView" destination="Gfq-45-BOv" id="sJq-g4-olO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RdP-UT-1AD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="JqO-AY-Mx8">
+                    <connections>
+                        <action selector="userDidLongPress:" destination="D96-kT-huc" id="WnL-Xu-Bgt"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2399" y="174"/>
+            <point key="canvasLocation" x="2397.5999999999999" y="173.16341829085459"/>
         </scene>
     </scenes>
 </document>
