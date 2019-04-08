@@ -22,7 +22,7 @@ class FirebaseController {
             "password" : password,
             "reservedSpots" : [[
                 "address" : "blah",
-                "image" : nil,
+                "imageURL" : "",
                 "numberOfSpaces" : 0,
                 "rate" : 1.9,
                 "parkingInstructions" : "",
@@ -53,24 +53,26 @@ class FirebaseController {
                 var registeredSpots: [RegisteredSpot] = []
                 
                 for currentSpot in reservedSpotsData {
-                    if let address = currentSpot["address"] as? String,
+                    if let imageURL = currentSpot["imageURL"] as? String,
+                       let address = currentSpot["address"] as? String,
                        let availableHours = currentSpot["availableHours"] as? [String],
                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentSpot["parkingInstructions"] as? String,
                        let rate = currentSpot["rate"] as? Double {
-                        let reservedSpot = RegisteredSpot(image: nil, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                        let reservedSpot = RegisteredSpot(imageURL: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
                         
                         reservedSpots.append(reservedSpot)
                     }
                 }
                 
                 for currentSpot in registeredSpotsData {
-                    if let address = currentSpot["address"] as? String,
-                        let availableHours = currentSpot["availableHours"] as? [String],
-                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
-                        let parkingInstructions = currentSpot["parkingInstructions"] as? String,
-                        let rate = currentSpot["rate"] as? Double {
-                        let registeredSpot = RegisteredSpot(image: nil, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                    if let imageURL = currentSpot["imageURL"] as? String,
+                       let address = currentSpot["address"] as? String,
+                       let availableHours = currentSpot["availableHours"] as? [String],
+                       let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                       let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                       let rate = currentSpot["rate"] as? Double {
+                       let registeredSpot = RegisteredSpot(imageURL: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
                         
                         registeredSpots.append(registeredSpot)
                     }
