@@ -19,7 +19,16 @@ class FirebaseController {
             "firstName" : firstName,
             "lastName" : lastName,
             "email" : email,
-            "password" : password
+            "password" : password,
+            "reservedSpots" : [[
+                "address" : "blah",
+                "image" : nil,
+                "numberOfSpaces" : 0,
+                "rate" : 1.9,
+                "parkingInstructions" : "",
+                "availableHours" : [""]
+                ]],
+            "registeredSpots" : []
         ]) { (error) in
             if let error = error {
                 print(error)
@@ -29,12 +38,47 @@ class FirebaseController {
         }
     }
     
-    func fetchPassword(for email: String, completion: ((String?) -> Void)? = nil) {
+    func fetchUser(for email: String, completion: ((User?) -> Void)? = nil) {
         //Graps password that comes along with the user email
         Firestore.firestore().collection("Users").whereField("email", isEqualTo: email).getDocuments { (snapshot, error) in
-            if let unwrappedPassword = snapshot?.documents.first?.data()["password"] as? String {
+            if let data = snapshot?.documents.first?.data(),
+               let firstName = data["firstName"] as? String,
+               let lastName = data["lastName"] as? String,
+               let email = data["email"] as? String,
+               let password = data["password"] as? String,
+               let reservedSpotsData = data["reservedSpots"] as? [[String : Any]],
+               let registeredSpotsData = data["registeredSpots"] as? [[String : Any]] {
+                
+                var reservedSpots: [RegisteredSpot] = []
+                var registeredSpots: [RegisteredSpot] = []
+                
+                for currentSpot in reservedSpotsData {
+                    if let address = currentSpot["address"] as? String,
+                       let availableHours = currentSpot["availableHours"] as? [String],
+                       let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                       let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                       let rate = currentSpot["rate"] as? Double {
+                        let reservedSpot = RegisteredSpot(image: nil, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                        
+                        reservedSpots.append(reservedSpot)
+                    }
+                }
+                
+                for currentSpot in registeredSpotsData {
+                    if let address = currentSpot["address"] as? String,
+                        let availableHours = currentSpot["availableHours"] as? [String],
+                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                        let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                        let rate = currentSpot["rate"] as? Double {
+                        let registeredSpot = RegisteredSpot(image: nil, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                        
+                        registeredSpots.append(registeredSpot)
+                    }
+                }
+
                 if let completion = completion {
-                    completion(unwrappedPassword)
+                    let currentUser = User(firstName: firstName, lastName: lastName, email: email, password: password, registeredSpots: registeredSpots, reservedSpots: reservedSpots)
+                    completion(currentUser)
                 }
             } else {
                 if let completion = completion {
@@ -47,12 +91,11 @@ class FirebaseController {
     func checkIfEmailHasBeenUsed(email: String, completion: @escaping (Bool) -> Void) {
         //Used to check if a specific email has been used to create an account
         Firestore.firestore().collection("Users").whereField("email", isEqualTo: email).getDocuments { (snapshot, error) in
-            if snapshot != nil {
+            if let snapshot = snapshot, snapshot.documents.count > 0 {
                 completion(true)
             } else {
                 completion(false)
             }
         }
-        
     }
 }

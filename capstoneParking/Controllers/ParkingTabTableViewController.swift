@@ -41,9 +41,11 @@ class ParkingTabTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 2
+            guard let reservedSpots = UserController.shared.getCurrentUser()?.reservedSpots else { return 0 }
+            return reservedSpots.count
         case 1:
-            return 2
+            guard let registeredSpots = UserController.shared.getCurrentUser()?.registeredSpots else { return 0 }
+            return registeredSpots.count
         default:
             return 0
         }
