@@ -118,6 +118,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
             self.mapView.alpha = 1.0
             self.backgroundUIView.backgroundColor = nil
+            self.mapView.isUserInteractionEnabled = true
         }
     }
     
@@ -129,6 +130,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
 //        guard let newestAnnotation = mapView.annotations.last else { return }
         self.mapView.removeAnnotations(mapView.annotations)
+        self.mapView.isUserInteractionEnabled = true
     }
     
     @IBAction func userDidLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -146,6 +148,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
 //        self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.addAnnotation(annotation)
+        self.mapView.isUserInteractionEnabled = false
     }
     
     
