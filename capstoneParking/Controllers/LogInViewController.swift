@@ -42,6 +42,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             }
             //If the password that was typed in the text field is equal to the fetched password log them in and if not show the error label
             if self.passwordTextField.text == currentUser.password {
+                ParkingController.shared.setCurrentUser(user: currentUser)
                 self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
             } else {
                 self.errorLabel.isHidden = false

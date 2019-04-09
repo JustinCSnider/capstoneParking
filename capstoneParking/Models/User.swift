@@ -14,5 +14,5 @@ struct User {
     var email: String
     var password: String
     var registeredSpots: [RegisteredSpot]
-    var reservedSpots: [RegisteredSpot]
+    var reservations: [Reservation]
 }

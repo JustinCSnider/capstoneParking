@@ -9,7 +9,7 @@
 import UIKit
 
 struct RegisteredSpot {
-    var imageURL: String
+    var imageURLString: String
     var address: String
     var numberOfSpaces: Int
     var rate: Double
