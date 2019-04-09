@@ -60,6 +60,9 @@
                                                                 <real key="value" value="0.0"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="registerButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="4pF-0S-SCk"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -103,7 +106,6 @@
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="cancelButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="3N1-LM-15i"/>
-                                                    <action selector="registerButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="dDB-gu-LSI"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -137,7 +139,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="U1f-N2-qSL"/>
                     <connections>
-                        <outlet property="RegisterUIView" destination="J9I-19-mGK" id="wbG-Nl-PFW"/>
                         <outlet property="backgroundUIView" destination="9xQ-g2-jg9" id="itn-Lb-Yo6"/>
                         <outlet property="cancelButton" destination="sQO-Nd-jzZ" id="ZOx-4K-D1f"/>
                         <outlet property="cancelUIView" destination="mfn-4P-zAd" id="odv-l1-vpw"/>
@@ -145,6 +146,7 @@
                         <outlet property="mapView" destination="HLZ-i0-pk3" id="ZGk-bN-wiU"/>
                         <outlet property="registerButton" destination="8RT-wp-vNU" id="m1G-cb-ACG"/>
                         <outlet property="registerSpotUIView" destination="Gfq-45-BOv" id="sJq-g4-olO"/>
+                        <outlet property="registerUIView" destination="J9I-19-mGK" id="UYk-ad-kth"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RdP-UT-1AD" userLabel="First Responder" sceneMemberID="firstResponder"/>

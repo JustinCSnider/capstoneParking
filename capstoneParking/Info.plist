@@ -45,5 +45,7 @@
 	<string>This app requires location services to work.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app requires location services to work.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>This app requires location services to work.</string>
 </dict>
 </plist>

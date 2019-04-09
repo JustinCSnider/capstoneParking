@@ -36,7 +36,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -45,6 +45,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         mapView.delegate = self
+        mapView.showsScale = true
         mapView.mapType = .standard
         mapView.isZoomEnabled = true
         mapView.isScrollEnabled = true
@@ -54,8 +55,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         mapView.showsUserLocation = true
-        
         customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -67,6 +68,32 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     // MARK: - Functions
     //==================================================
+    
+    func beginNavigation() {
+        guard let sourceCoordinates = locationManager.location,
+        let destination = mapView.annotations.last else { return }
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
+        request.requestsAlternateRoutes = true
+        request.transportType = .automobile
+        
+        let directions = MKDirections(request: request)
+        
+        directions.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+            
+            for route in unwrappedResponse.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+        return renderer
+    }
     
     func setInitialMapProperties() {
         if CLLocationManager.locationServicesEnabled() {
@@ -118,6 +145,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
             self.mapView.alpha = 1.0
             self.backgroundUIView.backgroundColor = nil
+            self.mapView.isUserInteractionEnabled = true
+            self.beginNavigation()
+            self.mapView(mapView, rendererFor: m)
         }
     }
     
@@ -129,6 +159,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
 //        guard let newestAnnotation = mapView.annotations.last else { return }
         self.mapView.removeAnnotations(mapView.annotations)
+        self.mapView.isUserInteractionEnabled = true
     }
     
     @IBAction func userDidLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -146,6 +177,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
 //        self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.addAnnotation(annotation)
+        self.mapView.isUserInteractionEnabled = false
     }
     
     
