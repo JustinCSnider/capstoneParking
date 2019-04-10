@@ -69,31 +69,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     // MARK: - Functions
     //==================================================
     
-    func beginNavigation() {
-        guard let sourceCoordinates = locationManager.location,
-        let destination = mapView.annotations.last else { return }
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates.coordinate))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
-        request.requestsAlternateRoutes = true
-        request.transportType = .automobile
-        
-        let directions = MKDirections(request: request)
-        
-        directions.calculate { [unowned self] response, error in
-            guard let unwrappedResponse = response else { return }
-            
-            for route in unwrappedResponse.routes {
-                self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
-            }
-        }
-    }
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        return renderer
-    }
     
     func setInitialMapProperties() {
         if CLLocationManager.locationServicesEnabled() {
@@ -122,6 +97,69 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let region = MKCoordinateRegion(center: locValue, span: span)
         mapView.setRegion(region, animated: true)
     }
+    
+    func beginNavigation() {
+        guard let sourceCoordinate = locationManager.location?.coordinate,
+            let destination = mapView.annotations.first else { return }
+        let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
+        let destinationPlacemark = MKPlacemark(coordinate: destination.coordinate)
+        
+        let sourceItem = MKMapItem(placemark: sourcePlacemark)
+        let destinationItem = MKMapItem(placemark: destinationPlacemark)
+        
+        let directionRequest = MKDirections.Request()
+        directionRequest.source = sourceItem
+        directionRequest.destination = destinationItem
+        directionRequest.transportType = .automobile
+        
+        let directions = MKDirections(request: directionRequest)
+        directions.calculate(completionHandler: { response, error in
+            guard let response = response else {
+                if let error = error {
+                    print("Error occured while calculating directions")
+                }
+                return
+            }
+            
+            let route = response.routes[0]
+            self.mapView.addOverlay(route.polyline, level: .aboveRoads)
+            
+            let rect = route.polyline.boundingMapRect
+            self.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
+        })
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        renderer.strokeColor = UIColor.blue
+        renderer.lineWidth = 5.0
+        
+        return renderer
+    }
+    
+//        let request = MKDirections.Request()
+//        request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates))
+//        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
+//        request.requestsAlternateRoutes = true
+//        request.transportType = .automobile
+//
+//        let directions = MKDirections(request: request)
+//
+//        directions.calculate { [unowned self] response, error in
+//            guard let unwrappedResponse = response else { return }
+//
+//            for route in unwrappedResponse.routes {
+//                self.mapView.addOverlay(route.polyline)
+//                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+//            }
+//        }
+//    }
+//
+//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+//        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+//        return renderer
+//    }
+    
 /*
      CUSTOM PIN
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -147,7 +185,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.backgroundUIView.backgroundColor = nil
             self.mapView.isUserInteractionEnabled = true
             self.beginNavigation()
-            self.mapView(mapView, rendererFor: m)
+//            self.mapView(mapView, rendererFor: mgit )
         }
     }
     
