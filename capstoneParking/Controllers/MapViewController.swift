@@ -85,7 +85,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if let coordinate = mapView.userLocation.location?.coordinate {
             mapView.setCenter(coordinate, animated: true)
         }
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -124,44 +123,27 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             let route = response.routes[0]
             self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             
+            let edgePadding = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
             let rect = route.polyline.boundingMapRect
-            self.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
+            self.mapView.setVisibleMapRect(rect, edgePadding: edgePadding, animated: true)
         })
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 5.0
+        renderer.lineWidth = 10.0
         
         return renderer
     }
     
-//        let request = MKDirections.Request()
-//        request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates))
-//        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
-//        request.requestsAlternateRoutes = true
-//        request.transportType = .automobile
-//
-//        let directions = MKDirections(request: request)
-//
-//        directions.calculate { [unowned self] response, error in
-//            guard let unwrappedResponse = response else { return }
-//
-//            for route in unwrappedResponse.routes {
-//                self.mapView.addOverlay(route.polyline)
-//                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
-//            }
-//        }
-//    }
-//
-//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-//        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-//        return renderer
-//    }
+    func removeMapViewOverlays() {
+        let overlays = mapView.overlays
+        mapView.removeOverlays(overlays)
+    }
     
 /*
-     CUSTOM PIN
+//     CUSTOM PIN
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             return nil
@@ -185,7 +167,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.backgroundUIView.backgroundColor = nil
             self.mapView.isUserInteractionEnabled = true
             self.beginNavigation()
-//            self.mapView(mapView, rendererFor: mgit )
         }
     }
     
@@ -198,6 +179,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 //        guard let newestAnnotation = mapView.annotations.last else { return }
         self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.isUserInteractionEnabled = true
+        
+        removeMapViewOverlays()
     }
     
     @IBAction func userDidLongPress(_ sender: UILongPressGestureRecognizer) {
