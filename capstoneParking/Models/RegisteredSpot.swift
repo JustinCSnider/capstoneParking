@@ -6,4 +6,13 @@
 //  Copyright © 2019 Justin Snider. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+struct RegisteredSpot {
+    var imageURLString: String
+    var address: String
+    var numberOfSpaces: Int
+    var rate: Double
+    var parkingInstructions: String?
+    var availableHours: [String]
+}
