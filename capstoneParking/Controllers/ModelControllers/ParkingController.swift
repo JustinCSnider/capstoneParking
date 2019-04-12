@@ -18,6 +18,8 @@ class ParkingController {
     
     private var currentUser: User?
     
+    private var defaultRegisteredCellHeight: CGFloat?
+    
     //========================================
     //MARK: - Network Methods
     //========================================
@@ -44,5 +46,13 @@ class ParkingController {
     
     func setCurrentUser(user: User) {
         currentUser = user
+    }
+    
+    func getDefaultRegisteredCellHeight() -> CGFloat? {
+        return defaultRegisteredCellHeight
+    }
+    
+    func setDefaultRegisteredCellHeight(_ height: CGFloat) {
+        defaultRegisteredCellHeight = height
     }
 }

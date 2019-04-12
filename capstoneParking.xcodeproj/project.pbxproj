@@ -21,7 +21,7 @@
 		CC3C5A172243D32000671D4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A152243D32000671D4E /* LaunchScreen.storyboard */; };
 		CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */; };
 		CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2422452C5F00671D4E /* MapViewController.swift */; };
-		CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */; };
+		CC3C5A2922452C9F00671D4E /* ParkingTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2822452C9F00671D4E /* ParkingTabViewController.swift */; };
 		CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2A22452CB800671D4E /* DetailViewController.swift */; };
 		CC3C5A2D22452CD100671D4E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2C22452CD100671D4E /* User.swift */; };
 		CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */; };
@@ -46,7 +46,7 @@
 		CC3C5A182243D32000671D4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewAccountViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2422452C5F00671D4E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTabTableViewController.swift; sourceTree = "<group>"; };
+		CC3C5A2822452C9F00671D4E /* ParkingTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingTabViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2A22452CB800671D4E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		CC3C5A2C22452CD100671D4E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredSpot.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
 				CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */,
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
-				CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */,
+				CC3C5A2822452C9F00671D4E /* ParkingTabViewController.swift */,
 				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
 			);
 			path = Controllers;
@@ -311,7 +311,7 @@
 				CC0C1D9B22539FDA00A65D3E /* ParkingController.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
 				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
-				CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */,
+				CC3C5A2922452C9F00671D4E /* ParkingTabViewController.swift in Sources */,
 				CC0C3E052247BA8D00067330 /* CustomButton.swift in Sources */,
 				CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */,
 				CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */,
