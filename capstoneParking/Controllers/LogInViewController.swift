@@ -32,8 +32,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
         
-        FirebaseController.shared.fetchPassword(for: emailTextField.text ?? "") { (password) in
-            guard let password = password else {
+        FirebaseController.shared.fetchUser(for: emailTextField.text ?? "") { (currentUser) in
+            guard let currentUser = currentUser else {
                 //If password is nil stop loading process and show error label
                 self.errorLabel.isHidden = false
                 self.loadingActivityIndicator.stopAnimating()
@@ -41,7 +41,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 return
             }
             //If the password that was typed in the text field is equal to the fetched password log them in and if not show the error label
-            if self.passwordTextField.text == password {
+            if self.passwordTextField.text == currentUser.password {
+                ParkingController.shared.setCurrentUser(user: currentUser)
                 self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
             } else {
                 self.errorLabel.isHidden = false

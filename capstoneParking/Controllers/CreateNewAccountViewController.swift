@@ -43,7 +43,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
         loadingView.isHidden = false
         loadingActivityIndicator.startAnimating()
         
-        if firstName != "" && lastName != "" && password != "" && email.isValidEmail() && confirmPasswordTextField.text == password {
+        if firstName != "" && !firstName.containsNumbers() && lastName != "" && !lastName.containsNumbers() && password != "" && email.isValidEmail() && confirmPasswordTextField.text == password {
             //Resets error labels before checking if it's able to create the account
             resetErrorLabels()
             
