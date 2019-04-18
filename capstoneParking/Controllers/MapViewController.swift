@@ -147,7 +147,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.backgroundUIView.backgroundColor = nil
             self.mapView.isUserInteractionEnabled = true
             self.beginNavigation()
-            self.mapView(mapView, rendererFor: m)
         }
     }
     
