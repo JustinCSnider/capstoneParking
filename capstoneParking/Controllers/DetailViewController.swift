@@ -8,13 +8,18 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+protocol NavigationButtonDelegate {
+    func navigationButtonTapped(sender: UIBarButtonItem)
+}
+
+class DetailViewController: UIViewController, NavigationButtonDelegate {
     
     //========================================
     //MARK: - Properties
     //========================================
     
     var currentTimeButton: UIButton?
+    
     //========================================
     //MARK: - IBOutlets
     //========================================
@@ -22,12 +27,17 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var fromTimeButton: UIButton!
     @IBOutlet weak var toTimeButton: UIButton!
     
+    @IBOutlet weak var availableHoursPromptLabel: UILabel!
     @IBOutlet weak var fromTimeLabel: UILabel!
     @IBOutlet weak var toTimeLabel: UILabel!
+    @IBOutlet weak var fromLabel: UILabel!
+    @IBOutlet weak var toLabel: UILabel!
     
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timePickerView: UIView!
     @IBOutlet weak var timePickerViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var availableDaysSegmentedControl: UISegmentedControl!
     
     
     //========================================
@@ -72,7 +82,52 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func timePickerChanged(_ sender: UIDatePicker) {
-        updateCurrentTimeLabel(date: sender.date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        
+        if currentTimeButton == fromTimeButton {
+            fromTimeLabel.text = dateFormatter.string(from: sender.date)
+        } else if currentTimeButton == toTimeButton {
+            toTimeLabel.text = dateFormatter.string(from: sender.date)
+        }
+    }
+    
+    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 3 {
+            performSegue(withIdentifier: "availableHoursSegue", sender: sender)
+        } else {
+            availableHoursPromptLabel.textColor = UIColor.black
+            fromLabel.textColor = UIColor.black
+            toLabel.textColor = UIColor.black
+            fromTimeLabel.textColor = UIColor.black
+            toTimeLabel.textColor = UIColor.black
+            fromTimeButton.tintColor = UIColor.black
+            toTimeButton.tintColor = UIColor.black
+            
+            fromTimeButton.isEnabled = true
+            toTimeButton.isEnabled = true
+        }
+    }
+    
+    //========================================
+    //MARK: - Navigation Delegate Methods
+    //========================================
+    
+    func navigationButtonTapped(sender: UIBarButtonItem) {
+        if sender.title == "Cancel" {
+            availableDaysSegmentedControl.selectedSegmentIndex = 0
+        } else if sender.title == "Save" {
+            availableHoursPromptLabel.textColor = UIColor.lightGray
+            fromLabel.textColor = UIColor.lightGray
+            toLabel.textColor = UIColor.lightGray
+            fromTimeLabel.textColor = UIColor.lightGray
+            toTimeLabel.textColor = UIColor.lightGray
+            fromTimeButton.tintColor = UIColor.lightGray
+            toTimeButton.tintColor = UIColor.lightGray
+            
+            fromTimeButton.isEnabled = false
+            toTimeButton.isEnabled = false
+        }
     }
     
     //========================================
@@ -87,18 +142,16 @@ class DetailViewController: UIViewController {
     }
     
     //========================================
-    //MARK: - Helper Methods
+    //MARK: - Navigation
     //========================================
     
-    func updateCurrentTimeLabel(date: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
-        if currentTimeButton == fromTimeButton {
-            fromTimeLabel.text = dateFormatter.string(from: date)
-        } else if currentTimeButton == toTimeButton {
-            toTimeLabel.text = dateFormatter.string(from: date)
+        if let destination = segue.destination as? AvailableHoursViewController {
+            destination.delegate = self
         }
     }
-
+    
 }

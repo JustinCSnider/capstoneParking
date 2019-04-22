@@ -10,6 +10,7 @@
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
 		CC0B7C34225C41EB0084FC71 /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0B7C33225C41EB0084FC71 /* Reservation.swift */; };
+		CC0BA261226E11E30018670C /* AvailableHoursViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0BA260226E11E30018670C /* AvailableHoursViewController.swift */; };
 		CC0C0E2F224F639A003426B6 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC0C0E2E224F639A003426B6 /* Map.storyboard */; };
 		CC0C0E31224F63C2003426B6 /* ParkingTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC0C0E30224F63C2003426B6 /* ParkingTab.storyboard */; };
 		CC0C1D9B22539FDA00A65D3E /* ParkingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0C1D9A22539FDA00A65D3E /* ParkingController.swift */; };
@@ -33,6 +34,7 @@
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC09ED692247E7B9008EDA0D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		CC0B7C33225C41EB0084FC71 /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		CC0BA260226E11E30018670C /* AvailableHoursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableHoursViewController.swift; sourceTree = "<group>"; };
 		CC0C0E2E224F639A003426B6 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		CC0C0E30224F63C2003426B6 /* ParkingTab.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ParkingTab.storyboard; sourceTree = "<group>"; };
 		CC0C1D9A22539FDA00A65D3E /* ParkingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkingController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
 				CC3C5A2822452C9F00671D4E /* ParkingTabViewController.swift */,
 				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
+				CC0BA260226E11E30018670C /* AvailableHoursViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
 				CC3C5A2922452C9F00671D4E /* ParkingTabViewController.swift in Sources */,
 				CC0C3E052247BA8D00067330 /* CustomButton.swift in Sources */,
+				CC0BA261226E11E30018670C /* AvailableHoursViewController.swift in Sources */,
 				CC3C5A2B22452CB800671D4E /* DetailViewController.swift in Sources */,
 				CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */,
 				CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */,
