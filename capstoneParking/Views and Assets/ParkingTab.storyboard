@@ -301,8 +301,11 @@
                                     <constraint firstAttribute="height" constant="20" id="bDE-HM-vxo"/>
                                 </constraints>
                             </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="v5n-0S-GBT">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="v5n-0S-GBT">
                                 <rect key="frame" x="16" y="79" width="343" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="8OS-3r-4F2"/>
+                                </constraints>
                                 <segments>
                                     <segment title="Monday"/>
                                     <segment title="Tuesday"/>
@@ -310,8 +313,11 @@
                                     <segment title="Thursday"/>
                                 </segments>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="Iwc-qw-uhL">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="Iwc-qw-uhL">
                                 <rect key="frame" x="66" y="115" width="243" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="OHX-se-utI"/>
+                                </constraints>
                                 <segments>
                                     <segment title="Friday"/>
                                     <segment title="Saturday"/>
@@ -320,12 +326,18 @@
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMN-Kb-XeG">
                                 <rect key="frame" x="66" y="166" width="39.5" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="nIA-C5-q4g"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wR6-ut-lAf">
                                 <rect key="frame" x="66" y="206" width="21" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="pbv-yW-eI8"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -342,7 +354,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7h-3W-tHo">
+                            <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7h-3W-tHo">
                                 <rect key="frame" x="279" y="160" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Iy7-R7-goB"/>
@@ -352,6 +364,7 @@
                                 <state key="selected" image="Edit Filled"/>
                                 <connections>
                                     <action selector="timeButtonTapped:" destination="oqe-Ow-xXf" eventType="touchUpInside" id="dXQ-gQ-QVz"/>
+                                    <action selector="timeButtonTapped:" destination="R6T-cB-DOA" eventType="touchUpInside" id="uK1-PP-f2B"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lem-D4-00Z">
@@ -364,9 +377,10 @@
                                 <state key="selected" image="Edit Filled"/>
                                 <connections>
                                     <action selector="timeButtonTapped:" destination="oqe-Ow-xXf" eventType="touchUpInside" id="0Fa-9u-V8p"/>
+                                    <action selector="timeButtonTapped:" destination="R6T-cB-DOA" eventType="touchUpInside" id="Ur3-cd-quk"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EJ9-mP-rmm">
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EJ9-mP-rmm">
                                 <rect key="frame" x="60" y="456" width="255" height="174"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="5G0-yn-b9x">
@@ -582,15 +596,16 @@
                                     <constraint firstItem="khf-jN-zRv" firstAttribute="width" secondItem="IGr-0S-Rke" secondAttribute="width" id="x5L-Xk-7yS"/>
                                 </constraints>
                             </stackView>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="WRt-mp-TVI">
+                            <datePicker contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="WRt-mp-TVI">
                                 <rect key="frame" x="0.0" y="232" width="375" height="216"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="216" id="fQP-fk-Bbr"/>
+                                    <constraint firstAttribute="height" constant="216" id="Wh2-5j-jFt"/>
                                 </constraints>
                                 <date key="date" timeIntervalSinceReferenceDate="577207414.57719004">
                                     <!--2019-04-17 15:23:34 +0000-->
                                 </date>
                                 <connections>
+                                    <action selector="timePickerChanged:" destination="R6T-cB-DOA" eventType="valueChanged" id="E14-zw-93g"/>
                                     <action selector="timePickerChanged:" destination="oqe-Ow-xXf" eventType="valueChanged" id="K0s-Rq-JvS"/>
                                 </connections>
                             </datePicker>
@@ -631,6 +646,29 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="x4x-lV-iaE"/>
                     </view>
+                    <connections>
+                        <outlet property="firstFourDaySegmentedControl" destination="v5n-0S-GBT" id="r0G-69-b4p"/>
+                        <outlet property="fridayFromTimeLabel" destination="g3k-Gn-bQV" id="KUD-qg-nsy"/>
+                        <outlet property="fridayToTimeLabel" destination="AGd-8Q-UGG" id="vz3-pt-ggr"/>
+                        <outlet property="fromTimeButton" destination="I7h-3W-tHo" id="2wf-Nb-KV7"/>
+                        <outlet property="fromTimeLabel" destination="tfH-xq-w9O" id="nU2-44-56d"/>
+                        <outlet property="lastThreeDaySegmentedControl" destination="Iwc-qw-uhL" id="B9V-Gi-YNY"/>
+                        <outlet property="mondayFromTimeLabel" destination="Cwq-Gm-MeE" id="ncX-Ec-itj"/>
+                        <outlet property="mondayToTimeLabel" destination="MQe-hV-nh4" id="uPu-MY-fus"/>
+                        <outlet property="saturdayFromTimeLabel" destination="hbY-2G-ALC" id="Jg5-Jd-4Pq"/>
+                        <outlet property="saturdayToTimeLabel" destination="W4V-eA-utg" id="rZb-Ja-gFm"/>
+                        <outlet property="sundayFromTimeLabel" destination="GjJ-Ix-RWc" id="hg2-iQ-lqx"/>
+                        <outlet property="sundayToTimeLabel" destination="pKj-ei-2h0" id="xq9-kM-jAX"/>
+                        <outlet property="thursdayFromTimeLabel" destination="3PS-ch-BhB" id="2ox-bH-3sh"/>
+                        <outlet property="thursdayToTimeLabel" destination="pL4-Ac-9vu" id="EuB-zJ-wzn"/>
+                        <outlet property="timePicker" destination="WRt-mp-TVI" id="0Oq-hq-RvM"/>
+                        <outlet property="toTimeButton" destination="lem-D4-00Z" id="uX9-84-Oer"/>
+                        <outlet property="toTimeLabel" destination="3qN-ZJ-Qzf" id="ibe-yy-BKP"/>
+                        <outlet property="tuesdayFromTimeLabel" destination="O8m-3v-FlZ" id="rkU-yd-05p"/>
+                        <outlet property="tuesdayToTimeLabel" destination="Nce-CX-W1M" id="9Xb-lH-l5r"/>
+                        <outlet property="wednesdayFromTimeLabel" destination="X4h-l9-pix" id="EAh-6u-jDw"/>
+                        <outlet property="wednesdayToTimeLabel" destination="L6d-iD-Ixr" id="GK4-Tb-WN2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ICb-oX-yB1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
