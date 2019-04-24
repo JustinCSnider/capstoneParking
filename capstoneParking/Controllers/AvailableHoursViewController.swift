@@ -16,6 +16,7 @@ class AvailableHoursViewController: UIViewController {
     
     var delegate: NavigationButtonDelegate?
     var currentTimeButton: UIButton?
+    var currentSegmentedControl: UISegmentedControl?
     
     //========================================
     //MARK: - IBOutlets
@@ -31,7 +32,6 @@ class AvailableHoursViewController: UIViewController {
     
     @IBOutlet weak var firstFourDaySegmentedControl: UISegmentedControl!
     @IBOutlet weak var lastThreeDaySegmentedControl: UISegmentedControl!
-    
     
     //Day label outlets
     @IBOutlet weak var mondayFromTimeLabel: UILabel!
@@ -82,7 +82,22 @@ class AvailableHoursViewController: UIViewController {
         } else if currentTimeButton == toTimeButton {
             toTimeLabel.text = dateFormatter.string(from: sender.date)
         }
+        
+        updateTime()
     }
+    
+    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
+        if sender != currentSegmentedControl, let selectedSegmentIndex = currentSegmentedControl?.selectedSegmentIndex {
+            //Unselects the currently selected segment if you select another segemented control
+            currentSegmentedControl?.setEnabled(false, forSegmentAt: selectedSegmentIndex)
+            currentSegmentedControl?.setEnabled(true, forSegmentAt: selectedSegmentIndex)
+            
+            currentSegmentedControl = sender
+        }
+        
+        setTimeUp(sender)
+    }
+    
     
     
     //========================================
@@ -100,6 +115,8 @@ class AvailableHoursViewController: UIViewController {
         }
         
         currentTimeButton = fromTimeButton
+        
+        currentSegmentedControl = firstFourDaySegmentedControl
     }
     
     //========================================
@@ -107,14 +124,128 @@ class AvailableHoursViewController: UIViewController {
     //========================================
     
     @IBAction func barButtonTapped(_ sender: UIBarButtonItem) {
-        delegate?.navigationButtonTapped(sender: sender)
+        delegate?.cancelButtonTapped(sender: sender)
         dismiss(animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let destination = segue.destination as? DetailViewController {
+            let availableHours = [
+                "Monday" : ["\(mondayFromTimeLabel.text ?? "")", "\(mondayToTimeLabel.text ?? "")"],
+                "Tuesday" : ["\(tuesdayFromTimeLabel.text ?? "")", "\(tuesdayToTimeLabel.text ?? "")"],
+                "Wednesday" : ["\(wednesdayFromTimeLabel.text ?? "")", "\(wednesdayFromTimeLabel.text ?? "")"],
+                "Thursday" : ["\(thursdayFromTimeLabel.text ?? "")", "\(thursdayToTimeLabel.text ?? "")"],
+                "Friday" : ["\(fridayFromTimeLabel.text ?? "")", "\(fridayToTimeLabel.text ?? "")"],
+                "Saturday" : ["\(saturdayFromTimeLabel.text ?? "")", "\(saturdayToTimeLabel.text ?? "")"],
+                "Sunday" : ["\(sundayFromTimeLabel.text ?? "")", "\(sundayToTimeLabel.text ?? "")"]
+            ]
+            
+            destination.updateAvailableHours(customAvailableHours: availableHours)
+        }
     }
     
     //========================================
     //MARK: - Helper Methods
     //========================================
     
+    private func setTimeUp(_ sender: UISegmentedControl) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        
+        if sender == firstFourDaySegmentedControl {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                fromTimeLabel.text = mondayFromTimeLabel.text
+                toTimeLabel.text = mondayToTimeLabel.text
+            case 1:
+                fromTimeLabel.text = tuesdayFromTimeLabel.text
+                toTimeLabel.text = tuesdayToTimeLabel.text
+            case 2:
+                fromTimeLabel.text = wednesdayFromTimeLabel.text
+                toTimeLabel.text = wednesdayToTimeLabel.text
+            case 3:
+                fromTimeLabel.text = thursdayFromTimeLabel.text
+                toTimeLabel.text = thursdayToTimeLabel.text
+            default:
+                break
+            }
+        } else {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                fromTimeLabel.text = fridayFromTimeLabel.text
+                toTimeLabel.text = fridayToTimeLabel.text
+            case 1:
+                fromTimeLabel.text = saturdayFromTimeLabel.text
+                toTimeLabel.text = saturdayToTimeLabel.text
+            case 2:
+                fromTimeLabel.text = sundayFromTimeLabel.text
+                toTimeLabel.text = sundayToTimeLabel.text
+            default:
+                break
+            }
+        }
+        
+        if currentTimeButton == fromTimeButton, let time = dateFormatter.date(from: fromTimeLabel.text ?? "") {
+            timePicker.date = time
+        } else if let time = dateFormatter.date(from: toTimeLabel.text ?? "") {
+            timePicker.date = time
+        }
+    }
     
+    private func updateTime() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        
+        if currentTimeButton == fromTimeButton && currentSegmentedControl == firstFourDaySegmentedControl {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                mondayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 1:
+                tuesdayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 2:
+                wednesdayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 3:
+                thursdayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            default:
+                break
+            }
+        } else if currentTimeButton == toTimeButton && currentSegmentedControl == firstFourDaySegmentedControl {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                mondayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 1:
+                tuesdayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 2:
+                wednesdayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 3:
+                thursdayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            default:
+                break
+            }
+        } else if currentTimeButton == fromTimeButton && currentSegmentedControl == lastThreeDaySegmentedControl {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                fridayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 1:
+                saturdayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 2:
+                sundayFromTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            default:
+                break
+            }
+        } else if currentTimeButton == toTimeButton && currentSegmentedControl == lastThreeDaySegmentedControl {
+            switch currentSegmentedControl?.selectedSegmentIndex {
+            case 0:
+                fridayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 1:
+                saturdayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            case 2:
+                sundayToTimeLabel.text = dateFormatter.string(from: timePicker.date)
+            default:
+                break
+            }
+        }
+    }
     
 }

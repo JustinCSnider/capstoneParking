@@ -9,7 +9,7 @@
 import UIKit
 
 protocol NavigationButtonDelegate {
-    func navigationButtonTapped(sender: UIBarButtonItem)
+    func cancelButtonTapped(sender: UIBarButtonItem)
 }
 
 class DetailViewController: UIViewController, NavigationButtonDelegate {
@@ -19,10 +19,13 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
     //========================================
     
     var currentTimeButton: UIButton?
+    private var availableHours: [String : [String]] = [:]
     
     //========================================
     //MARK: - IBOutlets
     //========================================
+    
+    @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var fromTimeButton: UIButton!
     @IBOutlet weak var toTimeButton: UIButton!
@@ -32,6 +35,7 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
     @IBOutlet weak var toTimeLabel: UILabel!
     @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var toLabel: UILabel!
+    @IBOutlet weak var parkingInstructionsTextView: CustomTextView!
     
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timePickerView: UIView!
@@ -65,6 +69,7 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
             
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 216
+                self.viewHeightConstraint.constant = 1200
                 
                 self.view.layoutIfNeeded()
             }
@@ -75,6 +80,7 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
             
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 0
+                self.viewHeightConstraint.constant = 1000
                 
                 self.view.layoutIfNeeded()
             }
@@ -113,21 +119,8 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
     //MARK: - Navigation Delegate Methods
     //========================================
     
-    func navigationButtonTapped(sender: UIBarButtonItem) {
-        if sender.title == "Cancel" {
-            availableDaysSegmentedControl.selectedSegmentIndex = 0
-        } else if sender.title == "Save" {
-            availableHoursPromptLabel.textColor = UIColor.lightGray
-            fromLabel.textColor = UIColor.lightGray
-            toLabel.textColor = UIColor.lightGray
-            fromTimeLabel.textColor = UIColor.lightGray
-            toTimeLabel.textColor = UIColor.lightGray
-            fromTimeButton.tintColor = UIColor.lightGray
-            toTimeButton.tintColor = UIColor.lightGray
-            
-            fromTimeButton.isEnabled = false
-            toTimeButton.isEnabled = false
-        }
+    func cancelButtonTapped(sender: UIBarButtonItem) {
+        availableDaysSegmentedControl.selectedSegmentIndex = 0
     }
     
     //========================================
@@ -139,6 +132,11 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
         timePickerViewHeightConstraint.constant = 0
         
         timePickerView.clipsToBounds = true
+        
+        parkingInstructionsTextView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        viewHeightConstraint.constant = 1000
+        
     }
     
     //========================================
@@ -151,6 +149,63 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
         
         if let destination = segue.destination as? AvailableHoursViewController {
             destination.delegate = self
+        }
+    }
+    
+    @IBAction func unwindToDetailViewController(segue: UIStoryboardSegue) {
+        availableHoursPromptLabel.textColor = UIColor.lightGray
+        fromLabel.textColor = UIColor.lightGray
+        toLabel.textColor = UIColor.lightGray
+        fromTimeLabel.textColor = UIColor.lightGray
+        toTimeLabel.textColor = UIColor.lightGray
+        fromTimeButton.tintColor = UIColor.lightGray
+        toTimeButton.tintColor = UIColor.lightGray
+        
+        fromTimeButton.isEnabled = false
+        toTimeButton.isEnabled = false
+    }
+    
+    //========================================
+    //MARK: - Helper methods
+    //========================================
+    
+    func updateAvailableHours(customAvailableHours: [String : [String]]?) {
+        switch availableDaysSegmentedControl.selectedSegmentIndex {
+        case 0:
+            availableHours = [
+                "Monday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Tuesday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Wednesday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Thursday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Friday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Saturday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Sunday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""]
+            ]
+        case 1:
+            availableHours = [
+                "Monday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Tuesday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Wednesday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Thursday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Friday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Saturday" : ["Unavailable"],
+                "Sunday" : ["Unavailable"]
+            ]
+        case 2:
+            availableHours = [
+                "Monday" : ["Unavailable"],
+                "Tuesday" : ["Unavailable"],
+                "Wednesday" : ["Unavailable"],
+                "Thursday" : ["Unavailable"],
+                "Friday" : ["Unavailable"],
+                "Saturday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""],
+                "Sunday" : [fromTimeLabel.text ?? "", toTimeLabel.text ?? ""]
+            ]
+        case 3:
+            guard let customAvailableHours = customAvailableHours else { return }
+            availableHours = customAvailableHours
+        default:
+            break
         }
     }
     
