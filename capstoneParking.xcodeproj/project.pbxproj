@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F3D1C1822720A80006D21E3 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */; };
 		2FDE2BAE2260DC830069B3E2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FDE2BAD2260DC830069B3E2 /* MapKit.framework */; };
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		2FDE2BAD2260DC830069B3E2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +158,7 @@
 				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
 				CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */,
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
+				2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */,
 				CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */,
 				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
 			);
@@ -316,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F3D1C1822720A80006D21E3 /* LocationSearchTable.swift in Sources */,
 				CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */,
 				CC3C5A2D22452CD100671D4E /* User.swift in Sources */,
 				CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */,

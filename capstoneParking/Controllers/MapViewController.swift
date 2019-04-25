@@ -11,7 +11,11 @@ import MapKit
 import CoreLocation
 import AVFoundation
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark: MKPlacemark)
+}
+
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate {
     
     //==================================================
     // MARK: - Properties
@@ -22,13 +26,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     let steps = [MKRoute.Step]()
     let speechSynthesizer = AVSpeechSynthesizer()
     var stepCounter = 0
+    var resultSearchController: UISearchController? = nil
+    var selectedPin:MKPlacemark? = nil
+
+
     
     
     //Outlets
     @IBOutlet weak var searchStackView: UIStackView!
     @IBOutlet var backgroundUIView: UIView!
     @IBOutlet weak var directionsLabel: UILabel!
-    @IBOutlet weak var searchBar: UISearchBar!
+//    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var customAlertControllerStackview: UIStackView!
     @IBOutlet weak var registerSpotUIView: UIView!
@@ -59,10 +67,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
         directionsLabel.transform = CGAffineTransform(translationX: 0, y: -60)
-        searchBar.transform = CGAffineTransform(translationX: 0, y: -60)
+//        searchBar.transform = CGAffineTransform(translationX: 0, y: -60)
         stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
         
-        
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController?.searchResultsUpdater = locationSearchTable
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search desired area"
+        navigationItem.titleView = resultSearchController?.searchBar
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        resultSearchController?.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
+        locationSearchTable.mapView = mapView
+        locationSearchTable.handleMapSearchDelegate = self
+
         
         
     }
@@ -77,24 +97,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     // MARK: - Functions - View and Layout
     //==================================================
     
-    func setInitialMapProperties() {
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
-        
-        mapView.delegate = self
-        mapView.showsScale = true
-        mapView.mapType = .standard
-        mapView.isZoomEnabled = true
-        mapView.isScrollEnabled = true
-        mapView.showsUserLocation = true
-        
-        if let coordinate = mapView.userLocation.location?.coordinate {
-            mapView.setCenter(coordinate, animated: true)
-        }
-    }
     
     func showDirectionsLabel() {
         UIView.animate(withDuration: 0.3) {
@@ -149,7 +151,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     // MARK: - Functions - MapKit
     //==================================================
-    
+
     func requestAuthorizations() {
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -157,6 +159,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func setInitialMapProperties() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+        }
+        
+        mapView.delegate = self
+        mapView.showsScale = true
+        mapView.mapType = .standard
+        mapView.isZoomEnabled = true
+        mapView.isScrollEnabled = true
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .followWithHeading
+        
+        if let coordinate = mapView.userLocation.location?.coordinate {
+            mapView.setCenter(coordinate, animated: true)
         }
     }
     
@@ -170,7 +192,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.setRegion(region, animated: true)
     }
     
-    func getDirections() {
+    func showPolylineOverlay() {
         guard let sourceCoordinate = locationManager.location?.coordinate,
             //Is the pin the FIRST or LAST item in the array?!!!!!!!
             let destination = mapView.annotations.last else { return }
@@ -214,19 +236,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.removeOverlays(overlays)
     }
     
-/*
-//     CUSTOM PIN
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation {
-            return nil
-        }
-        
-        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "customAnnotation")
-        annotationView.image = UIImage(named: "pin")
-        annotationView.canShowCallout = true
-        return annotationView
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        searchBar.endEditing(true)
+//        let localSearchRequest = MKLocalSearch.Request()
+//        localSearchRequest.naturalLanguageQuery = searchBar.text
+//        let region = MKCoordinateRegion(center: currentLocation, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+//        localSearchRequest.region = region
+//        
+//        let localSearch = MKLocalSearch(request: localSearchRequest)
+//        localSearch.start { (response, error) in
+//            guard let response = response else { return }
+//            print(response.mapItems)
+//            guard let firstMapItem = response.mapitems[0] else { return }
+//            let rect = response
+//        }
     }
- */
     
     //==================================================
     // MARK: - Actions
@@ -261,7 +285,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        self.getDirections()
+        self.showPolylineOverlay()
         showStopAndGoStackView()
     }
     
@@ -286,6 +310,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
 }
 
+extension MapViewController: HandleMapSearch {
+    func dropPinZoomIn(placemark: MKPlacemark) {
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "(city) (state)"
+        }
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+    }
+    
+}
+    
+
 extension UIView {
     func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
@@ -294,3 +340,5 @@ extension UIView {
         layer.mask = mask
     }
 }
+
+
