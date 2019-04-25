@@ -17,13 +17,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="HLZ-i0-pk3">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLZ-i0-pk3">
+                                <rect key="frame" x="0.0" y="80" width="375" height="587"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="JqO-AY-Mx8" appends="YES" id="Qim-Jn-BMJ"/>
                                 </connections>
                             </mapView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5Iy-tT-pho" userLabel="Search Stack View">
+                                <rect key="frame" x="0.0" y="24" width="375" height="116"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Directions Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R9O-oz-nb9">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="adN-a2-Bkj"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="1g4-xz-YNn">
+                                        <rect key="frame" x="0.0" y="60" width="375" height="56"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="UN8-jt-gMd"/>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xsa-vV-DT7" userLabel="AlertController Stackview">
                                 <rect key="frame" x="8" y="471" width="359" height="188"/>
                                 <subviews>
@@ -124,16 +143,54 @@
                                     <constraint firstAttribute="trailing" secondItem="fi4-qt-hKz" secondAttribute="trailing" id="nIk-dz-a7o"/>
                                 </constraints>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YlB-xU-HDY" userLabel="Stop and Go Stack View">
+                                <rect key="frame" x="219" y="551" width="136" height="96"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-j0-VFB">
+                                        <rect key="frame" x="0.0" y="28" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="dd7-o6-bSc"/>
+                                            <constraint firstAttribute="height" constant="40" id="pnA-JK-dCZ"/>
+                                        </constraints>
+                                        <state key="normal" image="arrow"/>
+                                        <connections>
+                                            <action selector="stopButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="ePR-Lk-5nR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f27-pf-23o" userLabel="Go Button">
+                                        <rect key="frame" x="40" y="0.0" width="96" height="96"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="96" id="AmT-CY-kIT"/>
+                                            <constraint firstAttribute="height" constant="96" id="pYu-8K-ULI"/>
+                                        </constraints>
+                                        <state key="normal" image="go"/>
+                                        <connections>
+                                            <action selector="goButtonPressed:" destination="D96-kT-huc" eventType="touchUpInside" id="s9V-3V-pHR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="hZU-j0-VFB" firstAttribute="leading" secondItem="YlB-xU-HDY" secondAttribute="leading" id="1MA-Bw-0gM"/>
+                                    <constraint firstItem="f27-pf-23o" firstAttribute="leading" secondItem="hZU-j0-VFB" secondAttribute="trailing" id="Fp7-Cg-M2m"/>
+                                    <constraint firstItem="hZU-j0-VFB" firstAttribute="centerY" secondItem="YlB-xU-HDY" secondAttribute="centerY" id="MOf-G7-6vc"/>
+                                    <constraint firstItem="f27-pf-23o" firstAttribute="centerY" secondItem="YlB-xU-HDY" secondAttribute="centerY" id="PiI-4g-vDy"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="YlB-xU-HDY" secondAttribute="trailing" constant="20" id="0Na-7N-FFu"/>
+                            <constraint firstItem="HLZ-i0-pk3" firstAttribute="top" secondItem="5Iy-tT-pho" secondAttribute="bottom" constant="-60" id="3mT-eE-Q1f"/>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="5Iy-tT-pho" secondAttribute="trailing" id="7Xd-M5-X9r"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="xsa-vV-DT7" secondAttribute="bottom" constant="8" id="NF2-pP-1p9"/>
                             <constraint firstItem="HLZ-i0-pk3" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="NyT-Ti-SCk"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="xsa-vV-DT7" secondAttribute="trailing" constant="8" id="O0G-gy-Db1"/>
+                            <constraint firstItem="5Iy-tT-pho" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="TQs-1m-Ez0"/>
+                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="YlB-xU-HDY" secondAttribute="bottom" constant="20" id="Ugu-MB-Snq"/>
                             <constraint firstItem="xsa-vV-DT7" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" constant="8" id="auB-SI-LDC"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="HLZ-i0-pk3" secondAttribute="trailing" id="gmk-Sq-0OD"/>
+                            <constraint firstItem="HLZ-i0-pk3" firstAttribute="top" secondItem="9xR-YQ-gKb" secondAttribute="top" constant="60" id="hly-6z-hPr"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="HLZ-i0-pk3" secondAttribute="bottom" id="lio-Gs-DUo"/>
-                            <constraint firstItem="HLZ-i0-pk3" firstAttribute="top" secondItem="9xR-YQ-gKb" secondAttribute="top" id="sKu-rI-Prw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9xR-YQ-gKb"/>
                     </view>
@@ -143,10 +200,16 @@
                         <outlet property="cancelButton" destination="sQO-Nd-jzZ" id="ZOx-4K-D1f"/>
                         <outlet property="cancelUIView" destination="mfn-4P-zAd" id="odv-l1-vpw"/>
                         <outlet property="customAlertControllerStackview" destination="xsa-vV-DT7" id="qcf-J7-PZ9"/>
+                        <outlet property="directionsLabel" destination="R9O-oz-nb9" id="psF-Jn-XTo"/>
+                        <outlet property="goButton" destination="f27-pf-23o" id="jgF-mz-mTn"/>
                         <outlet property="mapView" destination="HLZ-i0-pk3" id="ZGk-bN-wiU"/>
                         <outlet property="registerButton" destination="8RT-wp-vNU" id="m1G-cb-ACG"/>
                         <outlet property="registerSpotUIView" destination="Gfq-45-BOv" id="sJq-g4-olO"/>
                         <outlet property="registerUIView" destination="J9I-19-mGK" id="UYk-ad-kth"/>
+                        <outlet property="searchBar" destination="1g4-xz-YNn" id="GHL-T1-sYf"/>
+                        <outlet property="searchStackView" destination="5Iy-tT-pho" id="0n6-9Z-OT9"/>
+                        <outlet property="stopAndGoStackView" destination="YlB-xU-HDY" id="osF-Be-bZ3"/>
+                        <outlet property="stopDirectionsButton" destination="hZU-j0-VFB" id="GY6-Ly-193"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RdP-UT-1AD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -159,4 +222,8 @@
             <point key="canvasLocation" x="2397.5999999999999" y="173.16341829085459"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow" width="50" height="50"/>
+        <image name="go" width="153.60000610351562" height="153.60000610351562"/>
+    </resources>
 </document>

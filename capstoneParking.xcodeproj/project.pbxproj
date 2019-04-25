@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FDE2BAE2260DC830069B3E2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FDE2BAD2260DC830069B3E2 /* MapKit.framework */; };
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
 		CC0C0E2F224F639A003426B6 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC0C0E2E224F639A003426B6 /* Map.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FDE2BAD2260DC830069B3E2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC09ED692247E7B9008EDA0D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FDE2BAE2260DC830069B3E2 /* MapKit.framework in Frameworks */,
 				4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +165,7 @@
 		F9F1C8882D4573FAF307333A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2FDE2BAD2260DC830069B3E2 /* MapKit.framework */,
 				C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */,
 			);
 			name = Frameworks;
@@ -201,6 +205,14 @@
 				TargetAttributes = {
 					CC3C5A082243D31F00671D4E = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

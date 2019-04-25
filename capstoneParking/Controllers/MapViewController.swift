@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import AVFoundation
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
@@ -18,9 +19,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
+    let steps = [MKRoute.Step]()
+    let speechSynthesizer = AVSpeechSynthesizer()
+    var stepCounter = 0
+    
     
     //Outlets
+    @IBOutlet weak var searchStackView: UIStackView!
     @IBOutlet var backgroundUIView: UIView!
+    @IBOutlet weak var directionsLabel: UILabel!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var customAlertControllerStackview: UIStackView!
     @IBOutlet weak var registerSpotUIView: UIView!
@@ -29,6 +37,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     
+    @IBOutlet weak var stopAndGoStackView: UIStackView!
+    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var stopDirectionsButton: UIButton!
+    
     
     //==================================================
     // MARK: - View LifeCycle
@@ -36,8 +48,36 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
+        
+        requestAuthorizations()
+        setInitialMapProperties()
+        
+        
+        if let coor = mapView.userLocation.location?.coordinate{
+            mapView.setCenter(coor, animated: true)
+        }
+        
+        customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
+        directionsLabel.transform = CGAffineTransform(translationX: 0, y: -60)
+        searchBar.transform = CGAffineTransform(translationX: 0, y: -60)
+        stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
+        
+        
+        
+        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        registerSpotUIView.roundCorners(corners: [.topLeft, .topRight], radius: 10.0)
+        registerUIView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 10.0)
+    }
+    
+    //==================================================
+    // MARK: - Functions - View and Layout
+    //==================================================
+    
+    func setInitialMapProperties() {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -49,41 +89,74 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.mapType = .standard
         mapView.isZoomEnabled = true
         mapView.isScrollEnabled = true
-        
-        if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenter(coor, animated: true)
-        }
-        
         mapView.showsUserLocation = true
-        customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-        
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        registerSpotUIView.roundCorners(corners: [.topLeft, .topRight], radius: 10.0)
-        registerUIView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 10.0)
-    }
-    
-    //==================================================
-    // MARK: - Functions
-    //==================================================
-    
-    
-    func setInitialMapProperties() {
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
-        
-        mapView.delegate = self
-        mapView.mapType = .standard
-        mapView.isZoomEnabled = true
-        mapView.isScrollEnabled = true
         
         if let coordinate = mapView.userLocation.location?.coordinate {
             mapView.setCenter(coordinate, animated: true)
+        }
+    }
+    
+    func showDirectionsLabel() {
+        UIView.animate(withDuration: 0.3) {
+            self.searchStackView.transform = CGAffineTransform(translationX: 0, y: 60)
+            self.directionsLabel.backgroundColor = UIColor.white
+            self.directionsLabel.alpha = 1.0
+        }
+    }
+    
+    func hideDirectionsLabel() {
+        UIView.animate(withDuration: 0.3) {
+            self.searchStackView.transform = CGAffineTransform(translationX: 0, y: -60)
+            self.directionsLabel.alpha = 0.0
+        }
+    }
+    
+    func showCustomAlertController() {
+        UIView.animate(withDuration: 0.3) {
+            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.mapView.alpha = 0.6
+            self.backgroundUIView.backgroundColor = #colorLiteral(red: 0.6059342617, green: 0.6059342617, blue: 0.6059342617, alpha: 1)
+        }
+        self.mapView.isUserInteractionEnabled = false
+
+    }
+    
+    func hideCustomAlertController() {
+        UIView.animate(withDuration: 0.3) {
+            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
+            self.mapView.alpha = 1.0
+            self.backgroundUIView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        }
+        self.mapView.isUserInteractionEnabled = true
+    }
+    
+    func showStopAndGoStackView() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.stopAndGoStackView.transform = CGAffineTransform(translationX: -20, y: 0)
+        }) { (true) in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.stopAndGoStackView.transform = CGAffineTransform(translationX: 10, y: 0)
+            })
+        }
+    }
+    
+    func hideStopAndGoStackView() {
+        UIView.animate(withDuration: 0.1) {
+            self.stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
+        }
+    }
+    
+    //==================================================
+    // MARK: - Functions - MapKit
+    //==================================================
+    
+    func requestAuthorizations() {
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.startUpdatingLocation()
         }
     }
     
@@ -97,9 +170,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.setRegion(region, animated: true)
     }
     
-    func beginNavigation() {
+    func getDirections() {
         guard let sourceCoordinate = locationManager.location?.coordinate,
-            let destination = mapView.annotations.first else { return }
+            //Is the pin the FIRST or LAST item in the array?!!!!!!!
+            let destination = mapView.annotations.last else { return }
         let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
         let destinationPlacemark = MKPlacemark(coordinate: destination.coordinate)
         
@@ -114,17 +188,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let directions = MKDirections(request: directionRequest)
         directions.calculate(completionHandler: { response, error in
             guard let response = response else {
-                if let error = error {
                     print("Error occured while calculating directions")
-                }
                 return
             }
             
             let route = response.routes[0]
             self.mapView.addOverlay(route.polyline, level: .aboveRoads)
             
-            let edgePadding = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
             let rect = route.polyline.boundingMapRect
+            let edgePadding = UIEdgeInsets(top: 100, left: 20, bottom: 40, right: 20)
             self.mapView.setVisibleMapRect(rect, edgePadding: edgePadding, animated: true)
         })
     }
@@ -161,34 +233,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     
     @IBAction func registerButtonTapped(_ sender: Any) {
-        UIView.animate(withDuration: 0.3) {
-            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-            self.mapView.alpha = 1.0
-            self.backgroundUIView.backgroundColor = nil
-            self.mapView.isUserInteractionEnabled = true
-            self.beginNavigation()
-        }
+//        showDirectionsLabel()
+        hideCustomAlertController()
+//        self.getDirections()
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        UIView.animate(withDuration: 0.3) {
-            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-            self.mapView.alpha = 1.0
-            self.backgroundUIView.backgroundColor = nil
-        }
+        hideCustomAlertController()
+        
 //        guard let newestAnnotation = mapView.annotations.last else { return }
         self.mapView.removeAnnotations(mapView.annotations)
-        self.mapView.isUserInteractionEnabled = true
         
         removeMapViewOverlays()
     }
     
     @IBAction func userDidLongPress(_ sender: UILongPressGestureRecognizer) {
-        UIView.animate(withDuration: 0.3) {
-            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 0)
-            self.mapView.alpha = 0.6
-            self.backgroundUIView.backgroundColor = #colorLiteral(red: 0.6059342617, green: 0.6059342617, blue: 0.6059342617, alpha: 1)
-        }
+        showCustomAlertController()
         
         let location = sender.location(in: self.mapView)
         let locationCoordinate = self.mapView.convert(location, toCoordinateFrom: self.mapView)
@@ -198,9 +258,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
 //        self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.addAnnotation(annotation)
-        self.mapView.isUserInteractionEnabled = false
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        self.getDirections()
+        showStopAndGoStackView()
+    }
+    
+    @IBAction func goButtonTapped(_ sender: Any) {
+        
+    }
+    @IBAction func stopButtonTapped(_ sender: Any) {
+        removeMapViewOverlays()
+        hideStopAndGoStackView()
+    }
     
 
     /*
