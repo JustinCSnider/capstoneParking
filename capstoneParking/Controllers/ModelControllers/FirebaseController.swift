@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestore
 
 class FirebaseController {
@@ -48,7 +49,7 @@ class FirebaseController {
                 for currentReservation in reservationsData {
                     if let imageURL = currentReservation["imageURL"] as? String,
                        let address = currentReservation["address"] as? String,
-                       let availableHours = currentReservation["availableHours"] as? [String],
+                    let availableHours = currentReservation["availableHours"] as? [String : [String]],
                        let numberOfSpaces = currentReservation["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentReservation["parkingInstructions"] as? String,
                        let rate = currentReservation["rate"] as? Double {
@@ -61,7 +62,7 @@ class FirebaseController {
                 for currentSpot in registeredSpotsData {
                     if let imageURL = currentSpot["imageURL"] as? String,
                        let address = currentSpot["address"] as? String,
-                       let availableHours = currentSpot["availableHours"] as? [String],
+                    let availableHours = currentSpot["availableHours"] as? [String : [String]],
                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentSpot["parkingInstructions"] as? String,
                        let rate = currentSpot["rate"] as? Double {
@@ -81,7 +82,7 @@ class FirebaseController {
                 }
             }
         }
-    }
+    }å
     
     func checkIfEmailHasBeenUsed(email: String, completion: @escaping (Bool) -> Void) {
         //Used to check if a specific email has been used to create an account
@@ -91,6 +92,27 @@ class FirebaseController {
             } else {
                 completion(false)
             }
+        }
+    }
+    
+    func addImageToStorage(image: UIImage) {
+        let storageRef = Storage.storage().reference().child("myImage.png")
+        
+        guard let uploadData = image.pngData() else { return }
+        
+        storageRef.putData(uploadData, metadata: nil) { (metadata, error) in
+            
+            if error != nil {
+                return
+            }
+            
+            storageRef.downloadURL(completion: { (url, error) in
+                if error != nil {
+                    return
+                } else if let url = url {
+                    ParkingController.shared.setCurrentRegisteredSpotImageURL(url)
+                }
+            })
         }
     }
 }

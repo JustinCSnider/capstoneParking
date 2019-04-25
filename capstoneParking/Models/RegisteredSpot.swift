@@ -14,5 +14,5 @@ struct RegisteredSpot {
     var numberOfSpaces: Int
     var rate: Double
     var parkingInstructions: String?
-    var availableHours: [String]
+    var availableHours: [String : [String]]
 }

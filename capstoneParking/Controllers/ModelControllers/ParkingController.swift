@@ -17,6 +17,7 @@ class ParkingController {
     static var shared = ParkingController()
     
     private var currentUser: User?
+    private var currentRegisteredSpotImageURL: URL?
     
     private var defaultRegisteredCellHeight: CGFloat?
     
@@ -39,6 +40,7 @@ class ParkingController {
     //MARK: - Getters and Setters
     //========================================
     
+    //Current User
     func getCurrentUser() -> User? {
         guard let currentUser = currentUser else { return nil }
         return currentUser
@@ -48,6 +50,20 @@ class ParkingController {
         currentUser = user
     }
     
+    //Registered Spots
+    func addRegisteredSpot(_ spot: RegisteredSpot) {
+        currentUser?.registeredSpots.append(spot)
+    }
+    
+    func getCurrentRegisteredSpotImageURL() -> URL? {
+        return currentRegisteredSpotImageURL
+    }
+    
+    func setCurrentRegisteredSpotImageURL(_ url: URL) {
+        currentRegisteredSpotImageURL = url
+    }
+    
+    //Default Registered Cell Height
     func getDefaultRegisteredCellHeight() -> CGFloat? {
         return defaultRegisteredCellHeight
     }

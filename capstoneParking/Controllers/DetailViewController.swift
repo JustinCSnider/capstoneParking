@@ -12,7 +12,7 @@ protocol NavigationButtonDelegate {
     func cancelButtonTapped(sender: UIBarButtonItem)
 }
 
-class DetailViewController: UIViewController, NavigationButtonDelegate {
+class DetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
     
     //========================================
     //MARK: - Properties
@@ -25,10 +25,21 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
     //MARK: - IBOutlets
     //========================================
     
+    @IBOutlet weak var streetAddressTextField: UITextField!
+    @IBOutlet weak var stateTextField: UITextField!
+    @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var zipCodeTextField: UITextField!
+    
+    @IBOutlet weak var spacesTextField: UITextField!
+    
+    @IBOutlet weak var rateTextField: UITextField!
+    
     @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var fromTimeButton: UIButton!
     @IBOutlet weak var toTimeButton: UIButton!
+    
+    @IBOutlet weak var spotImageView: UIImageView!
     
     @IBOutlet weak var availableHoursPromptLabel: UILabel!
     @IBOutlet weak var fromTimeLabel: UILabel!
@@ -115,6 +126,56 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
         }
     }
     
+    @IBAction func selectSpotImageView(_ sender: UITapGestureRecognizer) {
+        let picker = UIImagePickerController()
+        
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func registerButtonTapped(_ sender: UIButton) {
+        if let imageURLString = ParkingController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
+           let numberOfSpaces = Int(spacesTextField.text ?? ""),
+           let rate = Double(rateTextField.text ?? "") {
+            let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
+            
+            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: nil, availableHours: availableHours)
+            
+            ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
+        }
+    }
+    
+    //========================================
+    //MARK: - Image Picker Delegate Methods
+    //========================================
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var selectedImageFromPicker: UIImage?
+        
+        if let editedImage = info[.editedImage] as? UIImage {
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            spotImageView.image = selectedImage
+            
+            FirebaseController.shared.addImageToStorage(image: selectedImage)
+        }
+        
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     //========================================
     //MARK: - Navigation Delegate Methods
     //========================================
@@ -137,6 +198,7 @@ class DetailViewController: UIViewController, NavigationButtonDelegate {
         
         viewHeightConstraint.constant = 1000
         
+        updateAvailableHours(customAvailableHours: nil)
     }
     
     //========================================

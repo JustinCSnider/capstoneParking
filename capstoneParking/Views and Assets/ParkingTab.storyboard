@@ -23,11 +23,15 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3HN-uw-xHG">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No photo selected" translatesAutoresizingMaskIntoConstraints="NO" id="MeG-cy-sJ4">
+                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No photo selected" translatesAutoresizingMaskIntoConstraints="NO" id="MeG-cy-sJ4">
                                                 <rect key="frame" x="68" y="8" width="240" height="157"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="157" id="N9g-S1-cyg"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="cml-ip-iAk" appends="YES" id="tNk-FZ-r3H"/>
+                                                </connections>
                                             </imageView>
                                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Street Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jWg-E9-LIl">
                                                 <rect key="frame" x="68" y="173" width="240" height="30"/>
@@ -37,18 +41,27 @@
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="City" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="83m-re-NPV">
                                                 <rect key="frame" x="130" y="211" width="47" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="47" id="HN4-wd-En3"/>
+                                                </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="State" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mbD-HQ-Fw7">
                                                 <rect key="frame" x="67" y="211" width="55" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="55" id="Syn-KJ-K4W"/>
+                                                </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Zip code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="auY-CW-f7z">
                                                 <rect key="frame" x="185" y="211" width="122" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="122" id="Xbl-n2-VZN"/>
+                                                </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -211,6 +224,9 @@
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="registerButtonTapped:" destination="oqe-Ow-xXf" eventType="touchUpInside" id="H02-NL-zDf"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -301,10 +317,16 @@
                     <connections>
                         <outlet property="availableDaysSegmentedControl" destination="fNo-Fx-SXP" id="aze-6J-Lpj"/>
                         <outlet property="availableHoursPromptLabel" destination="QS1-RV-sk7" id="Rsi-Z5-nGb"/>
+                        <outlet property="cityTextField" destination="83m-re-NPV" id="Pd9-mx-daK"/>
                         <outlet property="fromLabel" destination="7mj-CG-1ab" id="yto-pe-qK4"/>
                         <outlet property="fromTimeButton" destination="MNf-ci-N0B" id="6Oi-gO-Sc8"/>
                         <outlet property="fromTimeLabel" destination="Jzl-yV-rBl" id="2xg-u1-O0S"/>
                         <outlet property="parkingInstructionsTextView" destination="KWb-t9-D7D" id="PqD-cA-GEW"/>
+                        <outlet property="rateTextField" destination="zKH-6C-JBH" id="FK5-Gn-Rcv"/>
+                        <outlet property="spacesTextField" destination="1WF-Vw-bVp" id="AKa-EC-gYC"/>
+                        <outlet property="spotImageView" destination="MeG-cy-sJ4" id="chN-9v-NTE"/>
+                        <outlet property="stateTextField" destination="mbD-HQ-Fw7" id="JkK-CC-Bti"/>
+                        <outlet property="streetAddressTextField" destination="jWg-E9-LIl" id="hcg-Xl-gk6"/>
                         <outlet property="timePicker" destination="Ehb-No-23P" id="B0n-gt-eqR"/>
                         <outlet property="timePickerView" destination="E94-fi-M71" id="Cq3-n2-DY0"/>
                         <outlet property="timePickerViewHeightConstraint" destination="EEe-FL-ihD" id="BjH-dr-aXM"/>
@@ -312,10 +334,16 @@
                         <outlet property="toTimeButton" destination="YGo-fj-S11" id="qR3-5D-Ocw"/>
                         <outlet property="toTimeLabel" destination="mYe-Xl-wL1" id="XMF-TH-pJR"/>
                         <outlet property="viewHeightConstraint" destination="KAs-E0-Rtd" id="bQq-aV-hJh"/>
+                        <outlet property="zipCodeTextField" destination="auY-CW-f7z" id="MKZ-4g-eUk"/>
                         <segue destination="R6T-cB-DOA" kind="presentation" identifier="availableHoursSegue" id="DaR-GG-Xpw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNG-fg-RpC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="cml-ip-iAk">
+                    <connections>
+                        <action selector="selectSpotImageView:" destination="oqe-Ow-xXf" id="tUq-Ya-j3A"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4485.6000000000004" y="969.71514242878573"/>
         </scene>
