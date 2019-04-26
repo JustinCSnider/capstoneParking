@@ -24,21 +24,6 @@
                                     <outletCollection property="gestureRecognizers" destination="JqO-AY-Mx8" appends="YES" id="Qim-Jn-BMJ"/>
                                 </connections>
                             </mapView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5Iy-tT-pho" userLabel="Search Stack View">
-                                <rect key="frame" x="0.0" y="124" width="375" height="60"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Directions Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R9O-oz-nb9">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="adN-a2-Bkj"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <viewLayoutGuide key="safeArea" id="UN8-jt-gMd"/>
-                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xsa-vV-DT7" userLabel="AlertController Stackview">
                                 <rect key="frame" x="8" y="471" width="359" height="188"/>
                                 <subviews>
@@ -176,11 +161,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="YlB-xU-HDY" secondAttribute="trailing" constant="20" id="0Na-7N-FFu"/>
-                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="5Iy-tT-pho" secondAttribute="trailing" id="7Xd-M5-X9r"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="xsa-vV-DT7" secondAttribute="bottom" constant="8" id="NF2-pP-1p9"/>
                             <constraint firstItem="HLZ-i0-pk3" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="NyT-Ti-SCk"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="xsa-vV-DT7" secondAttribute="trailing" constant="8" id="O0G-gy-Db1"/>
-                            <constraint firstItem="5Iy-tT-pho" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="TQs-1m-Ez0"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="YlB-xU-HDY" secondAttribute="bottom" constant="20" id="Ugu-MB-Snq"/>
                             <constraint firstItem="xsa-vV-DT7" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" constant="8" id="auB-SI-LDC"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="HLZ-i0-pk3" secondAttribute="trailing" id="gmk-Sq-0OD"/>
@@ -188,11 +171,6 @@
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="HLZ-i0-pk3" secondAttribute="bottom" id="lio-Gs-DUo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9xR-YQ-gKb"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="5Iy-tT-pho"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="f52-cH-sTT"/>
                     <connections>
@@ -200,13 +178,11 @@
                         <outlet property="cancelButton" destination="sQO-Nd-jzZ" id="ZOx-4K-D1f"/>
                         <outlet property="cancelUIView" destination="mfn-4P-zAd" id="odv-l1-vpw"/>
                         <outlet property="customAlertControllerStackview" destination="xsa-vV-DT7" id="qcf-J7-PZ9"/>
-                        <outlet property="directionsLabel" destination="R9O-oz-nb9" id="psF-Jn-XTo"/>
                         <outlet property="goButton" destination="f27-pf-23o" id="jgF-mz-mTn"/>
                         <outlet property="mapView" destination="HLZ-i0-pk3" id="ZGk-bN-wiU"/>
                         <outlet property="registerButton" destination="8RT-wp-vNU" id="m1G-cb-ACG"/>
                         <outlet property="registerSpotUIView" destination="Gfq-45-BOv" id="sJq-g4-olO"/>
                         <outlet property="registerUIView" destination="J9I-19-mGK" id="UYk-ad-kth"/>
-                        <outlet property="searchStackView" destination="5Iy-tT-pho" id="0n6-9Z-OT9"/>
                         <outlet property="stopAndGoStackView" destination="YlB-xU-HDY" id="osF-Be-bZ3"/>
                         <outlet property="stopDirectionsButton" destination="hZU-j0-VFB" id="GY6-Ly-193"/>
                     </connections>

@@ -25,18 +25,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     private var currentLocation: CLLocation?
     let steps = [MKRoute.Step]()
     let speechSynthesizer = AVSpeechSynthesizer()
-    var stepCounter = 0
     var resultSearchController: UISearchController? = nil
     var selectedPin:MKPlacemark? = nil
 
-
-    
-    
     //Outlets
-    @IBOutlet weak var searchStackView: UIStackView!
     @IBOutlet var backgroundUIView: UIView!
-    @IBOutlet weak var directionsLabel: UILabel!
-//    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var customAlertControllerStackview: UIStackView!
     @IBOutlet weak var registerSpotUIView: UIView!
@@ -44,7 +37,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var cancelUIView: UIView!
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
-    
     @IBOutlet weak var stopAndGoStackView: UIStackView!
     @IBOutlet weak var goButton: UIButton!
     @IBOutlet weak var stopDirectionsButton: UIButton!
@@ -66,8 +58,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-        directionsLabel.transform = CGAffineTransform(translationX: 0, y: -60)
-//        searchBar.transform = CGAffineTransform(translationX: 0, y: -60)
         stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
@@ -98,20 +88,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     
     
-    func showDirectionsLabel() {
-        UIView.animate(withDuration: 0.3) {
-            self.searchStackView.transform = CGAffineTransform(translationX: 0, y: 60)
-            self.directionsLabel.backgroundColor = UIColor.white
-            self.directionsLabel.alpha = 1.0
-        }
-    }
-    
-    func hideDirectionsLabel() {
-        UIView.animate(withDuration: 0.3) {
-            self.searchStackView.transform = CGAffineTransform(translationX: 0, y: -60)
-            self.directionsLabel.alpha = 0.0
-        }
-    }
     
     func showCustomAlertController() {
         UIView.animate(withDuration: 0.3) {
@@ -237,19 +213,33 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        searchBar.endEditing(true)
-//        let localSearchRequest = MKLocalSearch.Request()
-//        localSearchRequest.naturalLanguageQuery = searchBar.text
-//        let region = MKCoordinateRegion(center: currentLocation, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-//        localSearchRequest.region = region
-//        
-//        let localSearch = MKLocalSearch(request: localSearchRequest)
-//        localSearch.start { (response, error) in
-//            guard let response = response else { return }
-//            print(response.mapItems)
-//            guard let firstMapItem = response.mapitems[0] else { return }
-//            let rect = response
-//        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
+        if annotation is MKUserLocation {
+            //return nil so map view draws "blue dot" for standard user location
+            return nil
+        }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.pinTintColor = UIColor.orange
+        pinView?.canShowCallout = true
+        let smallSquare = CGSize(width: 30, height: 30)
+        let point = CGPoint(x: 0, y: 0)
+        let button = UIButton(frame: CGRect(origin: point, size: smallSquare))
+        button.setBackgroundImage(UIImage(named: "car"), for: .normal)
+        button.addTarget(self, action: #selector(MapViewController.getDirections), for: .touchUpInside)
+        pinView?.leftCalloutAccessoryView = button
+        return pinView
+    }
+    
+    @objc func getDirections(){
+        if let selectedPin = selectedPin {
+            let mapItem = MKMapItem(placemark: selectedPin)
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+            mapItem.openInMaps(launchOptions: launchOptions)
+        }
     }
     
     //==================================================
@@ -284,10 +274,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.mapView.addAnnotation(annotation)
     }
     
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        self.showPolylineOverlay()
-        showStopAndGoStackView()
-    }
+//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+//        self.showPolylineOverlay()
+//        showStopAndGoStackView()
+//    }
     
     @IBAction func goButtonTapped(_ sender: Any) {
         
