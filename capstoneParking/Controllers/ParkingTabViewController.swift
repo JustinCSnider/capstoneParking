@@ -15,7 +15,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
     //========================================
     
     var defaultReservedSectionHeight: CGFloat = 180
-    
+    var registeredSpotsImages: [UIImage] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -29,6 +29,23 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        guard let registeredSpots = ParkingController.shared.getCurrentUser()?.registeredSpots else { return }
+        
+        let group = DispatchGroup()
+        
+        for i in registeredSpots {
+            group.enter()
+            if let imageURL = URL(string: i.imageURLString) {
+                ParkingController.shared.fetchImage(url: imageURL) { (image) in
+                    guard let image = image else { return }
+                    self.registeredSpotsImages.append(image)
+                    group.leave()
+                }
+                group.wait()
+            }
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -151,12 +168,15 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.isUserInteractionEnabled = false
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "reservedIdentifier", for: indexPath)
-                guard let imageURL = URL(string: currentUser.reservations[indexPath.row].reservedSpot.imageURLString) else { return UITableViewCell() }
+                
+                guard let imageURL = URL(string: currentUser.registeredSpots[indexPath.row].imageURLString) else { return UITableViewCell() }
                 
                 ParkingController.shared.fetchImage(url: imageURL) { (image) in
                     guard let image = image else { return }
                     DispatchQueue.main.async {
                         cell.imageView?.image = image
+                        
+                        tableView.reloadRows(at: [indexPath], with: .none)
                     }
                 }
                 
@@ -177,14 +197,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "registeredIdentifier", for: indexPath)
                 
-                guard let imageURL = URL(string: currentUser.registeredSpots[indexPath.row].imageURLString) else { return UITableViewCell() }
-                
-                ParkingController.shared.fetchImage(url: imageURL) { (image) in
-                    guard let image = image else { return }
-                    DispatchQueue.main.async {
-                        cell.imageView?.image = image
-                    }
-                }
+                cell.imageView?.image = registeredSpotsImages[indexPath.row]
                 
                 cell.textLabel?.text = currentUser.registeredSpots[indexPath.row].address
                 cell.detailTextLabel?.text = "Number of spaces: \(currentUser.registeredSpots[indexPath.row].numberOfSpaces)"
