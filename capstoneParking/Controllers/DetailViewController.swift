@@ -141,10 +141,12 @@ class DetailViewController: UIViewController, UIImagePickerControllerDelegate, U
            let numberOfSpaces = Int(spacesTextField.text ?? ""),
            let rate = Double(rateTextField.text ?? "") {
             let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
+            let parkingInstructions = parkingInstructionsTextView.text ?? ""
             
-            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: nil, availableHours: availableHours)
+            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
             
             ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
+            FirebaseController.shared.updateCurrentUser()
         }
     }
     

@@ -16,20 +16,14 @@ class FirebaseController {
     
     func createAccount(firstName: String, lastName: String, email: String, password: String) {
         //Adds account to the database
-        Firestore.firestore().collection("Users").addDocument(data: [
+        Firestore.firestore().collection("Users").document(email).setData([
             "firstName" : firstName,
             "lastName" : lastName,
             "email" : email,
             "password" : password,
             "reservations" : [],
             "registeredSpots" : []
-        ]) { (error) in
-            if let error = error {
-                print(error)
-            } else {
-                print("Yay we did it")
-            }
-        }
+            ])
     }
     
     func fetchUser(for email: String, completion: ((User?) -> Void)? = nil) {
@@ -40,16 +34,18 @@ class FirebaseController {
                let lastName = data["lastName"] as? String,
                let email = data["email"] as? String,
                let password = data["password"] as? String,
-               let reservationsData = data["reservations"] as? [[String : Any]],
-               let registeredSpotsData = data["registeredSpots"] as? [[String : Any]] {
+               let reservationsData = data["reservations"] as? [String : [String : Any]],
+               let registeredSpotsData = data["registeredSpots"] as? [String : [String : Any]] {
                 
                 var reservations: [RegisteredSpot] = []
                 var registeredSpots: [RegisteredSpot] = []
                 
-                for currentReservation in reservationsData {
-                    if let imageURL = currentReservation["imageURL"] as? String,
+                for i in reservationsData {
+                    let currentReservation = i.value
+                    
+                    if let imageURL = currentReservation["imageURLString"] as? String,
                        let address = currentReservation["address"] as? String,
-                    let availableHours = currentReservation["availableHours"] as? [String : [String]],
+                       let availableHours = currentReservation["availableHours"] as? [String : [String]],
                        let numberOfSpaces = currentReservation["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentReservation["parkingInstructions"] as? String,
                        let rate = currentReservation["rate"] as? Double {
@@ -59,8 +55,10 @@ class FirebaseController {
                     }
                 }
                 
-                for currentSpot in registeredSpotsData {
-                    if let imageURL = currentSpot["imageURL"] as? String,
+                for i in registeredSpotsData {
+                    let currentSpot = i.value
+                    
+                    if let imageURL = currentSpot["imageURLString"] as? String,
                        let address = currentSpot["address"] as? String,
                     let availableHours = currentSpot["availableHours"] as? [String : [String]],
                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
@@ -82,7 +80,49 @@ class FirebaseController {
                 }
             }
         }
-    }å
+    }
+    
+    func updateCurrentUser() {
+        guard let currentUser = ParkingController.shared.getCurrentUser() else { return }
+        
+        var registeredSpots: [String : [String : Any]] = [:]
+        var reservations: [String : Any] = [:]
+        
+        for i in currentUser.registeredSpots {
+            registeredSpots[i.address] = [
+                "address" : i.address,
+                "imageURLString" : i.imageURLString,
+                "numberOfSpaces" : i.numberOfSpaces,
+                "rate" : i.rate,
+                "parkingInstructions" : i.parkingInstructions,
+                "availableHours" : i.availableHours
+            ]
+        }
+        
+        for i in currentUser.reservations {
+            reservations[i.reservationID] = [
+                "time" : i.time,
+                "reservationID" : i.reservationID,
+                "reservedSpot" : [
+                    "address" : i.reservedSpot.address,
+                    "imageURLString" : i.reservedSpot.imageURLString,
+                    "numberOfSpaces" : i.reservedSpot.numberOfSpaces,
+                    "rate" : i.reservedSpot.rate,
+                    "parkingInstructions" : i.reservedSpot.parkingInstructions,
+                    "availableHours" : i.reservedSpot.availableHours
+                ]
+            ]
+        }
+        
+        Firestore.firestore().collection("Users").document(currentUser.email).setData([
+            "firstName" : currentUser.firstName,
+            "lastName" : currentUser.lastName,
+            "email" : currentUser.email,
+            "password" : currentUser.password,
+            "reservations" : reservations,
+            "registeredSpots" : registeredSpots
+            ])
+    }
     
     func checkIfEmailHasBeenUsed(email: String, completion: @escaping (Bool) -> Void) {
         //Used to check if a specific email has been used to create an account

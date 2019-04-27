@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oqe-Ow-xXf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="krZ-Jl-QCZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -823,9 +823,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="oqe-Ow-xXf" kind="show" identifier="reservedSegue" id="2sH-4E-Fi5"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="registeredIdentifier" textLabel="GnW-NI-UD4" detailTextLabel="CoZ-jl-y3N" rowHeight="70" style="IBUITableViewCellStyleSubtitle" id="5Vr-0i-npI">
                                         <rect key="frame" x="0.0" y="98" width="375" height="70"/>
@@ -885,7 +882,4 @@
         <image name="Edit Filled" width="37.5" height="37.5"/>
         <image name="No photo selected" width="640" height="640"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="skf-BO-owK"/>
-    </inferredMetricsTieBreakers>
 </document>
