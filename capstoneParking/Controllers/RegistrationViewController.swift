@@ -12,7 +12,7 @@ protocol NavigationButtonDelegate {
     func cancelButtonTapped(sender: UIBarButtonItem)
 }
 
-class DetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
+class RegistrationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
     
     //========================================
     //MARK: - Properties

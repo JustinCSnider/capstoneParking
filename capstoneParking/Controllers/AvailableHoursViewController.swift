@@ -130,7 +130,7 @@ class AvailableHoursViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let destination = segue.destination as? DetailViewController {
+        if let destination = segue.destination as? RegistrationViewController {
             let availableHours = [
                 "Monday" : ["\(mondayFromTimeLabel.text ?? "")", "\(mondayToTimeLabel.text ?? "")"],
                 "Tuesday" : ["\(tuesdayFromTimeLabel.text ?? "")", "\(tuesdayToTimeLabel.text ?? "")"],
