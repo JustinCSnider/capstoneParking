@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -117,7 +116,7 @@
                         <constraints>
                             <constraint firstItem="0KK-tY-5qV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="BEF-SE-aTY"/>
                             <constraint firstItem="Oba-zX-TEy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Dx3-bI-Dx1"/>
-                            <constraint firstItem="RP3-ye-8fZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Jbd-Es-nsP"/>
+                            <constraint firstItem="RP3-ye-8fZ" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="Jbd-Es-nsP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RP3-ye-8fZ" secondAttribute="trailing" id="OEd-xX-9ox"/>
                             <constraint firstItem="Oba-zX-TEy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="87.5" id="OuT-UI-pFf"/>
                             <constraint firstItem="RP3-ye-8fZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ViM-5X-xhw"/>
@@ -410,6 +409,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bM3-V5-e5Y"/>
+        <segue reference="8TR-kc-Ekb"/>
     </inferredMetricsTieBreakers>
 </document>

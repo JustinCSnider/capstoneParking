@@ -64,6 +64,11 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                     self.emailErrorLabel.isHidden = true
                     
                     FirebaseController.shared.createAccount(firstName: firstName, lastName: lastName, email: email, password: password)
+                    
+                    let currentUser = User(firstName: firstName, lastName: lastName, email: email, password: password, registeredSpots: [], reservations: [])
+                    
+                    ParkingController.shared.setCurrentUser(user: currentUser)
+                    
                     self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
                 }
             }
