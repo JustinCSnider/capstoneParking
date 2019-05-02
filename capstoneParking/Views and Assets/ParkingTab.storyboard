@@ -345,7 +345,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4485.6000000000004" y="969.71514242878573"/>
+            <point key="canvasLocation" x="4503" y="447"/>
         </scene>
         <!--Available Hours View Controller-->
         <scene sceneID="DpT-4r-CEo">
@@ -769,7 +769,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ICb-oX-yB1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="fMA-4L-zoL" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5584.8000000000002" y="969.26536731634189"/>
+            <point key="canvasLocation" x="5521" y="448"/>
         </scene>
         <!--Reservation View Controller-->
         <scene sceneID="Ibi-cw-LW2">
@@ -978,17 +978,41 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Meo-O6-zKE">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Meo-O6-zKE" customClass="CustomTextView" customModule="capstoneParking" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="720" width="335" height="166"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="166" id="uPP-Ih-nbb"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="noE-A9-uJt">
-                                                <rect key="frame" x="164" y="942" width="46" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QyY-sa-sfH" customClass="CustomButton" customModule="capstoneParking" customModuleProvider="target">
+                                                <rect key="frame" x="40" y="909" width="295" height="55"/>
+                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="55" id="lG8-Rk-GQN"/>
+                                                </constraints>
+                                                <state key="normal" title="Reserve">
+                                                    <color key="titleColor" red="0.97638517619999998" green="0.97652524709999999" blue="0.97635477780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="registerButtonTapped:" destination="oqe-Ow-xXf" eventType="touchUpInside" id="qon-oz-ZfI"/>
+                                                    <action selector="reserveButtonTapped:" destination="1QM-O9-aFS" eventType="touchUpInside" id="LOo-P8-vaZ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1007,6 +1031,7 @@
                                             <constraint firstItem="K8u-Np-hHo" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="60" id="Ou5-Xf-afS"/>
                                             <constraint firstItem="a0f-ww-fIe" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="60" id="U3F-Mx-aqv"/>
                                             <constraint firstAttribute="trailing" secondItem="KNw-9S-0La" secondAttribute="trailing" constant="20" id="WI3-aM-NKj"/>
+                                            <constraint firstItem="QyY-sa-sfH" firstAttribute="top" secondItem="Meo-O6-zKE" secondAttribute="bottom" constant="23" id="XC4-O5-MRG"/>
                                             <constraint firstAttribute="height" constant="980" id="XZN-iz-OSQ"/>
                                             <constraint firstItem="KNw-9S-0La" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="20" id="ba4-MU-KN3"/>
                                             <constraint firstAttribute="trailing" secondItem="DuB-x0-17d" secondAttribute="trailing" constant="60" id="fGl-aZ-jwB"/>
@@ -1017,12 +1042,15 @@
                                             <constraint firstItem="Meo-O6-zKE" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="20" id="kDu-Un-ngd"/>
                                             <constraint firstItem="K8u-Np-hHo" firstAttribute="top" secondItem="3uh-Au-uhV" secondAttribute="bottom" constant="8" id="khN-pH-BsY"/>
                                             <constraint firstItem="KNw-9S-0La" firstAttribute="top" secondItem="OaL-AJ-SQx" secondAttribute="bottom" constant="32.5" id="liP-QK-kxK"/>
+                                            <constraint firstAttribute="trailing" secondItem="QyY-sa-sfH" secondAttribute="trailing" constant="40" id="luF-E2-Sp8"/>
                                             <constraint firstAttribute="trailing" secondItem="a0f-ww-fIe" secondAttribute="trailing" constant="60" id="mfs-Yb-DoL"/>
+                                            <constraint firstItem="QyY-sa-sfH" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="40" id="p2z-9m-X8W"/>
                                             <constraint firstAttribute="trailing" secondItem="gjl-s5-8oT" secondAttribute="trailing" constant="60" id="p8Z-X0-UWp"/>
                                             <constraint firstItem="OaL-AJ-SQx" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="60" id="qLA-K3-YBd"/>
                                             <constraint firstItem="iVr-Zr-2Te" firstAttribute="leading" secondItem="K8u-Np-hHo" secondAttribute="trailing" constant="8" id="rg5-oz-1Av"/>
                                             <constraint firstItem="gjl-s5-8oT" firstAttribute="top" secondItem="DuB-x0-17d" secondAttribute="bottom" constant="24" id="x9W-me-fyz"/>
                                             <constraint firstAttribute="trailing" secondItem="iVr-Zr-2Te" secondAttribute="trailing" constant="60" id="xfN-uF-lBO"/>
+                                            <constraint firstAttribute="bottom" secondItem="QyY-sa-sfH" secondAttribute="bottom" constant="16" id="zOI-M4-mDr"/>
                                             <constraint firstItem="gjl-s5-8oT" firstAttribute="leading" secondItem="tEe-Li-vmb" secondAttribute="leading" constant="60" id="zl5-Hf-zdT"/>
                                         </constraints>
                                     </view>
@@ -1050,11 +1078,15 @@
                         <outlet property="backButton" destination="H6L-pY-6Bn" id="Xek-0d-08x"/>
                         <outlet property="calendarView" destination="3uh-Au-uhV" id="xMR-Js-ucY"/>
                         <outlet property="monthLabel" destination="PQd-EX-wLd" id="YRP-By-Tox"/>
+                        <outlet property="parkingTextView" destination="Meo-O6-zKE" id="ZKj-8S-ggJ"/>
+                        <outlet property="textViewHeightConstraint" destination="uPP-Ih-nbb" id="gZf-ga-bdw"/>
+                        <outlet property="timeLabel" destination="iVr-Zr-2Te" id="jJU-xA-RPw"/>
+                        <outlet property="viewHeightConstraint" destination="XZN-iz-OSQ" id="X5B-nc-VpY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4e-ye-24g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5356" y="-81.859070464767626"/>
+            <point key="canvasLocation" x="4502" y="1528"/>
         </scene>
         <!--Item-->
         <scene sceneID="zub-h9-DVg">

@@ -63,6 +63,11 @@ class ParkingController {
         currentRegisteredSpotImageURL = url
     }
     
+    //Reserved Spots
+    func addReseravtion(_ reservation: Reservation) {
+        currentUser?.reservations.append(reservation)
+    }
+    
     //Default Registered Cell Height
     func getDefaultRegisteredCellHeight() -> CGFloat? {
         return defaultRegisteredCellHeight

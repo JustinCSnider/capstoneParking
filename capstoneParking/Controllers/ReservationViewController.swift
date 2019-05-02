@@ -40,13 +40,20 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     
     var dayCounter = 0
     
+    var currentRegisteredSpot: RegisteredSpot?
+    
     //========================================
     //MARK: - IBOutlets
     //========================================
     
     @IBOutlet weak var calendarView: UICollectionView!
     @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var parkingTextView: CustomTextView!
     @IBOutlet weak var backButton: UIButton!
+    
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
     //========================================
     //MARK: - IBActions
@@ -125,6 +132,19 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
             calendarView.reloadData()
         }
     }
+    
+    @IBAction func reserveButtonTapped(_ sender: UIButton) {
+        guard let reservedSpot = currentRegisteredSpot else { return }
+        let time = timeLabel.text ?? ""
+        let reservationID = UUID().uuidString
+        
+        let newReservation = Reservation(time: time, reservedSpot: reservedSpot, reservationID: reservationID)
+        
+        ParkingController.shared.addReseravtion(newReservation)
+        
+        FirebaseController.shared.updateCurrentUser()
+    }
+    
     
     //========================================
     //MARK: - Collection View Data Source and Delegate Methods
@@ -221,6 +241,17 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
             weekday = 7
         }
         getStartDateDayPosition()
+        
+        if currentRegisteredSpot?.parkingInstructions == "" {
+            textViewHeightConstraint.constant = 0
+            viewHeightConstraint.constant = 830
+        } else {
+            parkingTextView.layer.borderColor = UIColor.black.cgColor
+            textViewHeightConstraint.constant = 166
+            viewHeightConstraint.constant = 980
+        }
+        
+        
     }
     
     
