@@ -21,10 +21,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     // MARK: - Properties
     //==================================================
     
+    
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
-    let steps = [MKRoute.Step]()
-    let speechSynthesizer = AVSpeechSynthesizer()
     var resultSearchController: UISearchController? = nil
     var selectedPin:MKPlacemark? = nil
 
@@ -37,9 +36,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var cancelUIView: UIView!
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var stopAndGoStackView: UIStackView!
-    @IBOutlet weak var goButton: UIButton!
-    @IBOutlet weak var stopDirectionsButton: UIButton!
     
     
     //==================================================
@@ -58,7 +54,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-        stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -72,9 +67,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         definesPresentationContext = true
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
-
-        
-        
     }
     
     override func viewWillLayoutSubviews() {
@@ -106,22 +98,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.backgroundUIView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
         self.mapView.isUserInteractionEnabled = true
-    }
-    
-    func showStopAndGoStackView() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.stopAndGoStackView.transform = CGAffineTransform(translationX: -20, y: 0)
-        }) { (true) in
-            UIView.animate(withDuration: 0.1, animations: {
-                self.stopAndGoStackView.transform = CGAffineTransform(translationX: 10, y: 0)
-            })
-        }
-    }
-    
-    func hideStopAndGoStackView() {
-        UIView.animate(withDuration: 0.1) {
-            self.stopAndGoStackView.transform = CGAffineTransform(translationX: 160, y: 0)
-        }
     }
     
     //==================================================
@@ -168,71 +144,64 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.setRegion(region, animated: true)
     }
     
-    func showPolylineOverlay() {
-        guard let sourceCoordinate = locationManager.location?.coordinate,
-            //Is the pin the FIRST or LAST item in the array?!!!!!!!
-            let destination = mapView.annotations.last else { return }
-        let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
-        let destinationPlacemark = MKPlacemark(coordinate: destination.coordinate)
-        
-        let sourceItem = MKMapItem(placemark: sourcePlacemark)
-        let destinationItem = MKMapItem(placemark: destinationPlacemark)
-        
-        let directionRequest = MKDirections.Request()
-        directionRequest.source = sourceItem
-        directionRequest.destination = destinationItem
-        directionRequest.transportType = .automobile
-        
-        let directions = MKDirections(request: directionRequest)
-        directions.calculate(completionHandler: { response, error in
-            guard let response = response else {
-                    print("Error occured while calculating directions")
-                return
-            }
-            
-            let route = response.routes[0]
-            self.mapView.addOverlay(route.polyline, level: .aboveRoads)
-            
-            let rect = route.polyline.boundingMapRect
-            let edgePadding = UIEdgeInsets(top: 100, left: 20, bottom: 40, right: 20)
-            self.mapView.setVisibleMapRect(rect, edgePadding: edgePadding, animated: true)
-        })
-    }
     
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 10.0
-        
-        return renderer
-    }
     
-    func removeMapViewOverlays() {
-        let overlays = mapView.overlays
-        mapView.removeOverlays(overlays)
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if annotation is MKUserLocation {
             //return nil so map view draws "blue dot" for standard user location
             return nil
         }
+        // need to get search result and do if statement. if it comes from the search result then return the setSearchResultPin() func, else return another function that will have the registered spot pinView.
+        
+        guard let annotation = annotation as? SearchResultAnnotation else { return nil }
+        
+        if annotation.isSearchResult == true {
+            print("boolean found as true")
+            return setSearchResultPin(annotation: annotation)
+        } else {
+            print("bool detected as false")
+            return setSpotPin(annotation: annotation)
+        }
+    }
+    
+    func setSpotPin(annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseId = "spotPin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.image = UIImage(named: "car")
+        pinView?.canShowCallout = true
+        let square60 = CGSize(width: 60, height: 60)
+        let point = CGPoint(x: 0, y: 0)
+        let leftButton = UIButton(frame: CGRect(origin: point, size: square60))
+        let defaultPhoto = UIImage(named: "noPhotoSelected")
+        leftButton.setImage(defaultPhoto, for: .normal)
+        pinView?.tag = 2
+        
+        return pinView
+    }
+    
+    func setSearchResultPin(annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.pinTintColor = UIColor.orange
+        pinView?.pinTintColor = UIColor.red
         pinView?.canShowCallout = true
         let smallSquare = CGSize(width: 30, height: 30)
         let point = CGPoint(x: 0, y: 0)
-        let button = UIButton(frame: CGRect(origin: point, size: smallSquare))
-        button.setBackgroundImage(UIImage(named: "car"), for: .normal)
-        button.addTarget(self, action: #selector(MapViewController.getDirections), for: .touchUpInside)
-        pinView?.leftCalloutAccessoryView = button
+        let leftButton = UIButton(frame: CGRect(origin: point, size: smallSquare))
+        leftButton.setBackgroundImage(UIImage(named: "go"), for: .normal)
+        leftButton.addTarget(self, action: #selector(MapViewController.getDirections), for: .touchUpInside)
+        pinView?.leftCalloutAccessoryView = leftButton
+        let rightButton = UIButton(frame: CGRect(origin: point, size: smallSquare))
+        rightButton.setBackgroundImage(UIImage(named: "x"), for: .normal)
+        rightButton.addTarget(self, action: #selector(MapViewController.removeSearchPin), for: .touchUpInside)
+        pinView?.rightCalloutAccessoryView = rightButton
+        pinView?.tag = 1
+        
         return pinView
     }
+    
     
     @objc func getDirections(){
         if let selectedPin = selectedPin {
@@ -242,23 +211,40 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
     
+    @objc func removeSearchPin() {
+        for annotation in mapView.annotations {
+            let view = mapView.view(for: annotation)
+            if view?.tag == 1 {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+    }
+    
+    
+    
     //==================================================
     // MARK: - Actions
     //==================================================
     
     @IBAction func registerButtonTapped(_ sender: Any) {
-//        showDirectionsLabel()
         hideCustomAlertController()
-//        self.getDirections()
+        
+        for annotation in mapView.annotations {
+            if annotation.title == "New Parking Spot" {
+                let newAnnotation = MKPointAnnotation()
+                
+            }
+        }
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         hideCustomAlertController()
         
-//        guard let newestAnnotation = mapView.annotations.last else { return }
-        self.mapView.removeAnnotations(mapView.annotations)
-        
-        removeMapViewOverlays()
+        for annotation in mapView.annotations {
+            if annotation.title == "New Parking Spot" {
+                mapView.removeAnnotation(annotation)
+            }
+        }
     }
     
     @IBAction func userDidLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -270,22 +256,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         annotation.coordinate = locationCoordinate
         annotation.title = "New Parking Spot"
         
+        
 //        self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.addAnnotation(annotation)
     }
     
-//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 //        self.showPolylineOverlay()
 //        showStopAndGoStackView()
-//    }
+    }
     
-    @IBAction func goButtonTapped(_ sender: Any) {
-        
-    }
-    @IBAction func stopButtonTapped(_ sender: Any) {
-        removeMapViewOverlays()
-        hideStopAndGoStackView()
-    }
+
     
 
     /*
@@ -304,16 +285,24 @@ extension MapViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
         // cache the pin
         selectedPin = placemark
-        // clear existing pins
-        mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
+        let searchResultAnnotation = SearchResultAnnotation(annotation: annotation, searchResult: true, coordinate: placemark.coordinate, title: placemark.name, subtitle: nil)
+        
+        for annotation in mapView.annotations {
+            let view = mapView.view(for: annotation)
+            if view?.tag == 1 {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+        
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
         if let city = placemark.locality,
             let state = placemark.administrativeArea {
-            annotation.subtitle = "(city) (state)"
+            annotation.subtitle = "\(city) \(state)"
         }
-        mapView.addAnnotation(annotation)
+        
+        mapView.addAnnotation(searchResultAnnotation)
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         mapView.setRegion(region, animated: true)

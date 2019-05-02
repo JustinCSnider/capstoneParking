@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F3D1C1822720A80006D21E3 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */; };
+		2F3D1C1822720A80006D21E3 /* LocationSearchTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D1C1722720A80006D21E3 /* LocationSearchTableView.swift */; };
+		2F766D5A22788F6200E2DF70 /* CustomAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F766D5922788F6200E2DF70 /* CustomAnnotations.swift */; };
 		2FDE2BAE2260DC830069B3E2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FDE2BAD2260DC830069B3E2 /* MapKit.framework */; };
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
@@ -31,7 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
+		2F3D1C1722720A80006D21E3 /* LocationSearchTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableView.swift; sourceTree = "<group>"; };
+		2F766D5922788F6200E2DF70 /* CustomAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotations.swift; sourceTree = "<group>"; };
 		2FDE2BAD2260DC830069B3E2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				CC3C5A2C22452CD100671D4E /* User.swift */,
+				2F766D5922788F6200E2DF70 /* CustomAnnotations.swift */,
 				CC3C5A2E22452E9200671D4E /* RegisteredSpot.swift */,
 				CC3C5A3022452F8100671D4E /* ReservedTableViewCell.swift */,
 				CC3C5A3222452F9B00671D4E /* RegisteredTableViewCell.swift */,
@@ -158,7 +161,7 @@
 				CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */,
 				CC3C5A2222452C3C00671D4E /* CreateNewAccountViewController.swift */,
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
-				2F3D1C1722720A80006D21E3 /* LocationSearchTable.swift */,
+				2F3D1C1722720A80006D21E3 /* LocationSearchTableView.swift */,
 				CC3C5A2822452C9F00671D4E /* ParkingTabTableViewController.swift */,
 				CC3C5A2A22452CB800671D4E /* DetailViewController.swift */,
 			);
@@ -319,12 +322,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F3D1C1822720A80006D21E3 /* LocationSearchTable.swift in Sources */,
+				2F3D1C1822720A80006D21E3 /* LocationSearchTableView.swift in Sources */,
 				CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */,
 				CC3C5A2D22452CD100671D4E /* User.swift in Sources */,
 				CC3C5A3322452F9B00671D4E /* RegisteredTableViewCell.swift in Sources */,
 				CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */,
 				CC3C5A3122452F8100671D4E /* ReservedTableViewCell.swift in Sources */,
+				2F766D5A22788F6200E2DF70 /* CustomAnnotations.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
 				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
 				CC3C5A2922452C9F00671D4E /* ParkingTabTableViewController.swift in Sources */,
@@ -479,6 +483,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = capstoneParking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -498,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = capstoneParking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

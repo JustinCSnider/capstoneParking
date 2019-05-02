@@ -124,47 +124,12 @@
                                     <constraint firstAttribute="trailing" secondItem="fi4-qt-hKz" secondAttribute="trailing" id="nIk-dz-a7o"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YlB-xU-HDY" userLabel="Stop and Go Stack View">
-                                <rect key="frame" x="219" y="551" width="136" height="96"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-j0-VFB">
-                                        <rect key="frame" x="0.0" y="28" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="dd7-o6-bSc"/>
-                                            <constraint firstAttribute="height" constant="40" id="pnA-JK-dCZ"/>
-                                        </constraints>
-                                        <state key="normal" image="arrow"/>
-                                        <connections>
-                                            <action selector="stopButtonTapped:" destination="D96-kT-huc" eventType="touchUpInside" id="ePR-Lk-5nR"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f27-pf-23o" userLabel="Go Button">
-                                        <rect key="frame" x="40" y="0.0" width="96" height="96"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="96" id="AmT-CY-kIT"/>
-                                            <constraint firstAttribute="height" constant="96" id="pYu-8K-ULI"/>
-                                        </constraints>
-                                        <state key="normal" image="go"/>
-                                        <connections>
-                                            <action selector="goButtonPressed:" destination="D96-kT-huc" eventType="touchUpInside" id="s9V-3V-pHR"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="hZU-j0-VFB" firstAttribute="leading" secondItem="YlB-xU-HDY" secondAttribute="leading" id="1MA-Bw-0gM"/>
-                                    <constraint firstItem="f27-pf-23o" firstAttribute="leading" secondItem="hZU-j0-VFB" secondAttribute="trailing" id="Fp7-Cg-M2m"/>
-                                    <constraint firstItem="hZU-j0-VFB" firstAttribute="centerY" secondItem="YlB-xU-HDY" secondAttribute="centerY" id="MOf-G7-6vc"/>
-                                    <constraint firstItem="f27-pf-23o" firstAttribute="centerY" secondItem="YlB-xU-HDY" secondAttribute="centerY" id="PiI-4g-vDy"/>
-                                </constraints>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="YlB-xU-HDY" secondAttribute="trailing" constant="20" id="0Na-7N-FFu"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="xsa-vV-DT7" secondAttribute="bottom" constant="8" id="NF2-pP-1p9"/>
                             <constraint firstItem="HLZ-i0-pk3" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" id="NyT-Ti-SCk"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="xsa-vV-DT7" secondAttribute="trailing" constant="8" id="O0G-gy-Db1"/>
-                            <constraint firstItem="9xR-YQ-gKb" firstAttribute="bottom" secondItem="YlB-xU-HDY" secondAttribute="bottom" constant="20" id="Ugu-MB-Snq"/>
                             <constraint firstItem="xsa-vV-DT7" firstAttribute="leading" secondItem="9xR-YQ-gKb" secondAttribute="leading" constant="8" id="auB-SI-LDC"/>
                             <constraint firstItem="9xR-YQ-gKb" firstAttribute="trailing" secondItem="HLZ-i0-pk3" secondAttribute="trailing" id="gmk-Sq-0OD"/>
                             <constraint firstItem="HLZ-i0-pk3" firstAttribute="top" secondItem="9xR-YQ-gKb" secondAttribute="top" id="hly-6z-hPr"/>
@@ -178,13 +143,10 @@
                         <outlet property="cancelButton" destination="sQO-Nd-jzZ" id="ZOx-4K-D1f"/>
                         <outlet property="cancelUIView" destination="mfn-4P-zAd" id="odv-l1-vpw"/>
                         <outlet property="customAlertControllerStackview" destination="xsa-vV-DT7" id="qcf-J7-PZ9"/>
-                        <outlet property="goButton" destination="f27-pf-23o" id="jgF-mz-mTn"/>
                         <outlet property="mapView" destination="HLZ-i0-pk3" id="ZGk-bN-wiU"/>
                         <outlet property="registerButton" destination="8RT-wp-vNU" id="m1G-cb-ACG"/>
                         <outlet property="registerSpotUIView" destination="Gfq-45-BOv" id="sJq-g4-olO"/>
                         <outlet property="registerUIView" destination="J9I-19-mGK" id="UYk-ad-kth"/>
-                        <outlet property="stopAndGoStackView" destination="YlB-xU-HDY" id="osF-Be-bZ3"/>
-                        <outlet property="stopDirectionsButton" destination="hZU-j0-VFB" id="GY6-Ly-193"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RdP-UT-1AD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -227,6 +189,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dQa-0g-wnl">
+                                            <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
                                     </subviews>
@@ -241,7 +204,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Di1-3r-tnJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4064.8000000000002" y="-302.6986506746627"/>
+            <point key="canvasLocation" x="4372" y="173"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="PEa-eA-YFw">
@@ -263,8 +226,4 @@
             <point key="canvasLocation" x="2397.5999999999999" y="173.16341829085459"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="arrow" width="50" height="50"/>
-        <image name="go" width="153.60000610351562" height="153.60000610351562"/>
-    </resources>
 </document>

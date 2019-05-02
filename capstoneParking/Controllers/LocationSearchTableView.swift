@@ -11,6 +11,7 @@ import MapKit
 
 class LocationSearchTable: UITableViewController {
     
+    static let sharedController = LocationSearchTable()
     var matchingItems: [MKMapItem] = []
     var mapView: MKMapView? = nil
     var handleMapSearchDelegate:HandleMapSearch? = nil
@@ -20,14 +21,6 @@ class LocationSearchTable: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
-
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,7 +84,6 @@ extension LocationSearchTable: UISearchResultsUpdating {
                 return }
             self.matchingItems = response.mapItems
             self.tableView.reloadData()
-        
         }
     }
 }
