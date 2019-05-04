@@ -140,7 +140,11 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         
         let newReservation = Reservation(time: time, reservedSpot: reservedSpot, reservationID: reservationID)
         
-        ParkingController.shared.addReseravtion(newReservation)
+        let group = DispatchGroup()
+        
+        group.enter()
+        UserController.shared.addReseravtion(newReservation) { group.leave() }
+        group.wait()
         
         FirebaseController.shared.updateCurrentUser()
     }

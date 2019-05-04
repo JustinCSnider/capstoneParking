@@ -137,7 +137,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
-        if let imageURLString = ParkingController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
+        if let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
            let numberOfSpaces = Int(spacesTextField.text ?? ""),
            let rate = Double(rateTextField.text ?? "") {
             let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
@@ -145,8 +145,14 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             
             let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
             
-            ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
+            let group = DispatchGroup()
+            
+            group.enter()
+            UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }
+            group.wait()
+            
             FirebaseController.shared.updateCurrentUser()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
