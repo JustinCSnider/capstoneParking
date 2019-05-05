@@ -18,29 +18,14 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     //MARK: - Properties
     //========================================
     
-    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
-    let daysOfMonth = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    
-    var daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    
-    var currentMonth = String()
-    
-    var numberOfEmptyBoxes = Int()
-    
-    var nextNumberOfEmptyBoxes = Int()
-    
-    var previousNumberOfEmptyBoxes = Int()
-    
-    var direction = 0
-    
-    var positionIndex = 0
-    
-    var leapYearCounter = 1
-    
-    var dayCounter = 0
-    
     var currentRegisteredSpot: RegisteredSpot?
+    var calendarController = CalendarController.shared
+    
+    //Calendar properties
+    var selectedDay = CalendarController.shared.day
+    var selectedWeekday = CalendarController.shared.weekday
+    var selectedMonth = ""
+    var selectedYear = CalendarController.shared.year
     
     //========================================
     //MARK: - IBOutlets
@@ -60,77 +45,19 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     //========================================
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        switch currentMonth {
-        case "December":
-            direction = 1
-            
-            month = 0
-            year += 1
-            
-            if leapYearCounter < 5 {
-                leapYearCounter += 1
-            }
-            
-            if leapYearCounter == 4 {
-                daysInMonths[1] = 29
-            }
-            
-            if leapYearCounter == 5 {
-                leapYearCounter = 1
-                daysInMonths[1] = 28
-            }
-            
-            getStartDateDayPosition()
-            
-            currentMonth = months[month]
-            monthLabel.text = "\(currentMonth) \(year)"
-            calendarView.reloadData()
-        default:
-            direction = 1
-            
-            getStartDateDayPosition()
-            
-            month += 1
-            
-            currentMonth = months[month]
-            monthLabel.text = "\(currentMonth) \(year)"
-            calendarView.reloadData()
-        }
+        calendarController.continueToNextMonth()
+        
+        calendarController.currentMonth = calendarController.months[calendarController.month]
+        monthLabel.text = "\(calendarController.currentMonth) \(calendarController.year)"
+        calendarView.reloadData()
     }
     
     @IBAction func backButtonTapped(_ sender: UIButton) {
-        switch currentMonth {
-        case "January":
-            direction = -1
-            
-            month = 11
-            year -= 1
-            
-            if leapYearCounter > 0{
-                leapYearCounter -= 1
-            }
-            if leapYearCounter == 0{
-                daysInMonths[1] = 29
-                leapYearCounter = 4
-            }else{
-                daysInMonths[1] = 28
-            }
-            
-            getStartDateDayPosition()
-            
-            currentMonth = months[month]
-            monthLabel.text = "\(currentMonth) \(year)"
-            calendarView.reloadData()
-        default:
-            direction = -1
-            month -= 1
-            
-            getStartDateDayPosition()
-            
-            currentMonth = months[month]
-            monthLabel.text = "\(currentMonth) \(year)"
-            calendarView.reloadData()
-        }
+        calendarController.continueToPreviousMonth()
+        
+        calendarController.currentMonth = calendarController.months[calendarController.month]
+        monthLabel.text = "\(calendarController.currentMonth) \(calendarController.year)"
+        calendarView.reloadData()
     }
     
     @IBAction func reserveButtonTapped(_ sender: UIButton) {
@@ -140,7 +67,11 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         
         let newReservation = Reservation(time: time, reservedSpot: reservedSpot, reservationID: reservationID)
         
-        ParkingController.shared.addReseravtion(newReservation)
+        let group = DispatchGroup()
+        
+        group.enter()
+        UserController.shared.addReseravtion(newReservation) { group.leave() }
+        group.wait()
         
         FirebaseController.shared.updateCurrentUser()
     }
@@ -151,13 +82,13 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     //========================================
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch direction {
+        switch calendarController.direction {
         case 0:
-            return daysInMonths[month] + numberOfEmptyBoxes
+            return calendarController.daysInMonths[calendarController.month] + calendarController.numberOfEmptyBoxes
         case 1...:
-            return daysInMonths[month] + nextNumberOfEmptyBoxes
+            return calendarController.daysInMonths[calendarController.month] + calendarController.nextNumberOfEmptyBoxes
         case -1:
-            return daysInMonths[month] + previousNumberOfEmptyBoxes
+            return calendarController.daysInMonths[calendarController.month] + calendarController.previousNumberOfEmptyBoxes
         default:
             fatalError()
         }
@@ -176,13 +107,13 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
             cell.isHidden = false
         }
         
-        switch direction {
+        switch calendarController.direction {
         case 0:
-            cell.dateLabel.text = "\(indexPath.row + 1 - numberOfEmptyBoxes)"
+            cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.numberOfEmptyBoxes)"
         case 1...:
-            cell.dateLabel.text = "\(indexPath.row + 1 - nextNumberOfEmptyBoxes)"
+            cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.nextNumberOfEmptyBoxes)"
         case -1:
-            cell.dateLabel.text = "\(indexPath.row + 1 - previousNumberOfEmptyBoxes)"
+            cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.previousNumberOfEmptyBoxes)"
         default:
             fatalError()
         }
@@ -191,14 +122,20 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
             cell.isHidden = true
         }
         
-        if currentMonth == selectedMonth && year == selectedYear && selectedDay == Int(cell.dateLabel.text!)! {
+        if calendarController.currentMonth == selectedMonth && calendarController.year == selectedYear && selectedDay == Int(cell.dateLabel.text!)! {
             cell.circleView.isHidden = false
             cell.drawCircle()
         }
         
         cell.drawCircle()
-        if let currentMonthIndex = months.firstIndex(of: currentMonth), let currentDateMonthIndex = months.firstIndex(of: months[calendar.component(.month, from: date) - 1]) {
-            if Int(cell.dateLabel.text!)! < day && currentMonthIndex == currentDateMonthIndex && year == calendar.component(.year, from: date) || currentMonthIndex < currentDateMonthIndex && year == calendar.component(.year, from: date) || year < calendar.component(.year, from: date) {
+        if let currentMonthIndex = calendarController.months.firstIndex(of: calendarController.currentMonth), let currentDateMonthIndex = calendarController.months.firstIndex(of: calendarController.months[calendarController.calendar.component(.month, from: calendarController.date) - 1]) {
+            if Int(cell.dateLabel.text!)! < calendarController.day &&
+                currentMonthIndex == currentDateMonthIndex &&
+                calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
+                currentMonthIndex < currentDateMonthIndex &&
+                calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
+                calendarController.year < calendarController.calendar.component(.year, from: calendarController.date) {
+                
                 cell.dateLabel.textColor = UIColor.lightGray
                 cell.isUserInteractionEnabled = false
             }
@@ -222,8 +159,8 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         sender.circleView.isHidden = false
         
         selectedDay = Int(sender.dateLabel.text!)!
-        selectedYear = year
-        selectedMonth = currentMonth
+        selectedYear = calendarController.year
+        selectedMonth = calendarController.currentMonth
     }
     
     //========================================
@@ -233,14 +170,15 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        currentMonth = months[month]
-        selectedMonth = currentMonth
+        calendarController.currentMonth = calendarController.months[calendarController.month]
+        selectedMonth = calendarController.currentMonth
         
-        monthLabel.text = "\(currentMonth) \(year)"
-        if weekday == 0 {
-            weekday = 7
+        monthLabel.text = "\(calendarController.currentMonth) \(calendarController.year)"
+        if calendarController.weekday == 0 {
+            calendarController.weekday = 7
         }
-        getStartDateDayPosition()
+        
+        calendarController.getStartDateDayPosition()
         
         if currentRegisteredSpot?.parkingInstructions == "" {
             textViewHeightConstraint.constant = 0
@@ -252,43 +190,6 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         }
         
         
-    }
-    
-    
-    //========================================
-    //MARK: - Helper methods
-    //========================================
-    
-    func getStartDateDayPosition() {
-        switch direction {
-        case 0:
-            numberOfEmptyBoxes = weekday
-            dayCounter = day
-            while dayCounter > 0 {
-                numberOfEmptyBoxes -= 1
-                dayCounter -= 1
-                if numberOfEmptyBoxes == 0 {
-                    numberOfEmptyBoxes = 7
-                }
-            }
-            if numberOfEmptyBoxes == 7 {
-                numberOfEmptyBoxes = 0
-            }
-            positionIndex = numberOfEmptyBoxes
-            
-        case 1...:
-            nextNumberOfEmptyBoxes = (positionIndex + daysInMonths[month]) % 7
-            positionIndex = nextNumberOfEmptyBoxes
-        case -1:
-            previousNumberOfEmptyBoxes = (7 - (daysInMonths[month] - positionIndex) % 7)
-            if previousNumberOfEmptyBoxes == 7 {
-                previousNumberOfEmptyBoxes = 0
-            }
-            positionIndex = previousNumberOfEmptyBoxes
-            
-        default:
-            fatalError()
-        }
     }
 
 }

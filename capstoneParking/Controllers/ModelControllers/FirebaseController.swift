@@ -21,8 +21,8 @@ class FirebaseController {
             "lastName" : lastName,
             "email" : email,
             "password" : password,
-            "reservations" : [],
-            "registeredSpots" : []
+            "reservations" : [String : [String : Any]](),
+            "registeredSpots" : [String : [String : Any]]()
             ])
     }
     
@@ -83,7 +83,7 @@ class FirebaseController {
     }
     
     func updateCurrentUser() {
-        guard let currentUser = ParkingController.shared.getCurrentUser() else { return }
+        guard let currentUser = UserController.shared.getCurrentUser() else { return }
         
         var registeredSpots: [String : [String : Any]] = [:]
         var reservations: [String : Any] = [:]
@@ -97,6 +97,15 @@ class FirebaseController {
                 "parkingInstructions" : i.parkingInstructions,
                 "availableHours" : i.availableHours
             ]
+            
+            Firestore.firestore().collection("RegisteredSpots").document(i.address).setData([
+                "address" : i.address,
+                "imageURLString" : i.imageURLString,
+                "numberOfSpaces" : i.numberOfSpaces,
+                "rate" : i.rate,
+                "parkingInstructions" : i.parkingInstructions,
+                "availableHours" : i.availableHours
+                ])
         }
         
         for i in currentUser.reservations {
@@ -135,8 +144,33 @@ class FirebaseController {
         }
     }
     
-    func addImageToStorage(image: UIImage) {
-        let storageRef = Storage.storage().reference().child("myImage.png")
+    func getRegisteredSpots(completion: @escaping ([RegisteredSpot]) -> Void) {
+        Firestore.firestore().collection("RegisteredSpots").getDocuments { (snapshot, error) in
+            guard let snapshot = snapshot else { return }
+            
+            var registeredSpots: [RegisteredSpot] = []
+            
+            for i in snapshot.documents {
+                let currentSpot = i.data()
+                
+                if let imageURL = currentSpot["imageURLString"] as? String,
+                    let address = currentSpot["address"] as? String,
+                    let availableHours = currentSpot["availableHours"] as? [String : [String]],
+                    let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                    let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                    let rate = currentSpot["rate"] as? Double {
+                    let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                    
+                    registeredSpots.append(registeredSpot)
+                }
+            }
+            
+            completion(registeredSpots)
+        }
+    }
+    
+    func addImageToStorage(_ image: UIImage) {
+        let storageRef = Storage.storage().reference().child(UUID().uuidString)
         
         guard let uploadData = image.pngData() else { return }
         
@@ -150,7 +184,7 @@ class FirebaseController {
                 if error != nil {
                     return
                 } else if let url = url {
-                    ParkingController.shared.setCurrentRegisteredSpotImageURL(url)
+                    UserController.shared.setCurrentRegisteredSpotImageURL(url)
                 }
             })
         }
