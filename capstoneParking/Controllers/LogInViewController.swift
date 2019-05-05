@@ -47,11 +47,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 let group = DispatchGroup()
                 
                 group.enter()
-                UserController.shared.setCurrentUserRegisteredSpotImages { group.leave() }
+                UserController.shared.setRegisteredSpotImages { group.leave() }
                 group.wait()
                 
                 group.enter()
-                UserController.shared.setCurrentUserReservedSpotImages { group.leave() }
+                UserController.shared.setReservedSpotImages { group.leave() }
                 group.wait()
                 
                 self.performSegue(withIdentifier: "loggedInSegue", sender: sender)

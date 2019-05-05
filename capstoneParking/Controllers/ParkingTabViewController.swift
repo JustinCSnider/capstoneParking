@@ -152,7 +152,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "reservedIdentifier", for: indexPath)
                 
-                let reservedSpotImages = UserController.shared.getCurrentUserReservedSpotImages()
+                let reservedSpotImages = UserController.shared.getReservedSpotImages()
                 
                 cell.imageView?.image = reservedSpotImages[indexPath.row]
                 
@@ -173,7 +173,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "registeredIdentifier", for: indexPath)
                 
-                let registeredSpotImages = UserController.shared.getCurrentUserRegisteredSpotImages()
+                let registeredSpotImages = UserController.shared.getRegisteredSpotImages()
                 
                 cell.imageView?.image = registeredSpotImages[indexPath.row]
                 

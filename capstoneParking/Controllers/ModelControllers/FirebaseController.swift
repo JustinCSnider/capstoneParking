@@ -169,7 +169,7 @@ class FirebaseController {
         }
     }
     
-    func addImageToStorage(image: UIImage) {
+    func addImageToStorage(_ image: UIImage) {
         let storageRef = Storage.storage().reference().child(UUID().uuidString)
         
         guard let uploadData = image.pngData() else { return }

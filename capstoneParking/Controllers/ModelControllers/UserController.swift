@@ -63,11 +63,11 @@ class UserController {
         completion()
     }
     
-    func getCurrentUserRegisteredSpotImages() -> [UIImage] {
+    func getRegisteredSpotImages() -> [UIImage] {
         return currentUserRegisteredSpotImages
     }
     
-    func setCurrentUserRegisteredSpotImages(completion: () -> Void) {
+    func setRegisteredSpotImages(completion: () -> Void) {
         guard let currentUser = currentUser else { return }
         for i in currentUser.registeredSpots {
             let group = DispatchGroup()
@@ -82,6 +82,10 @@ class UserController {
             }
         }
         completion()
+    }
+    
+    func addRegisteredSpotImage(_ image: UIImage) {
+        self.currentUserRegisteredSpotImages.append(image)
     }
     
     func getCurrentRegisteredSpotImageURL() -> URL? {
@@ -106,11 +110,11 @@ class UserController {
         completion()
     }
     
-    func getCurrentUserReservedSpotImages() -> [UIImage] {
+    func getReservedSpotImages() -> [UIImage] {
         return currentUserReservedSpotImages
     }
     
-    func setCurrentUserReservedSpotImages(completion: () -> Void) {
+    func setReservedSpotImages(completion: () -> Void) {
         guard let currentUser = currentUser else { return }
         for i in currentUser.reservations {
             let group = DispatchGroup()
@@ -127,5 +131,7 @@ class UserController {
         completion()
     }
     
-    
+    func addReservedSpotImage(_ image: UIImage) {
+        self.currentUserReservedSpotImages.append(image)
+    }
 }
