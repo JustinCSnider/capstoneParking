@@ -49,7 +49,7 @@ class FirebaseController {
                        let numberOfSpaces = currentReservation["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentReservation["parkingInstructions"] as? String,
                        let rate = currentReservation["rate"] as? Double {
-                        let reservation = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                        let reservation = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
                         
                         reservations.append(reservation)
                     }
@@ -64,7 +64,7 @@ class FirebaseController {
                        let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
                        let parkingInstructions = currentSpot["parkingInstructions"] as? String,
                        let rate = currentSpot["rate"] as? Double {
-                       let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+                        let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
                         
                         registeredSpots.append(registeredSpot)
                     }
@@ -97,6 +97,15 @@ class FirebaseController {
                 "parkingInstructions" : i.parkingInstructions,
                 "availableHours" : i.availableHours
             ]
+            
+            Firestore.firestore().collection("RegisteredSpots").document(i.address).setData([
+                "address" : i.address,
+                "imageURLString" : i.imageURLString,
+                "numberOfSpaces" : i.numberOfSpaces,
+                "rate" : i.rate,
+                "parkingInstructions" : i.parkingInstructions,
+                "availableHours" : i.availableHours
+                ])
         }
         
         for i in currentUser.reservations {
@@ -132,6 +141,31 @@ class FirebaseController {
             } else {
                 completion(false)
             }
+        }
+    }
+    
+    func getRegisteredSpots(completion: @escaping ([RegisteredSpot]) -> Void) {
+        Firestore.firestore().collection("RegisteredSpots").getDocuments { (snapshot, error) in
+            guard let snapshot = snapshot else { return }
+            
+            var registeredSpots: [RegisteredSpot] = []
+            
+            for i in snapshot.documents {
+                let currentSpot = i.data()
+                
+                if let imageURL = currentSpot["imageURLString"] as? String,
+                    let address = currentSpot["address"] as? String,
+                    let availableHours = currentSpot["availableHours"] as? [String : [String]],
+                    let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                    let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                    let rate = currentSpot["rate"] as? Double {
+                    
+                    let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
+                    
+                    registeredSpots.append(registeredSpot)
+                }
+            }
+            completion(registeredSpots)
         }
     }
     

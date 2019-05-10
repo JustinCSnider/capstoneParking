@@ -143,10 +143,11 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
             let parkingInstructions = parkingInstructionsTextView.text ?? ""
             
-            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours)
+            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
             
             ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
             FirebaseController.shared.updateCurrentUser()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     

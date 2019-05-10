@@ -26,7 +26,7 @@ class SearchResultAnnotation: NSObject, MKAnnotation {
     }
 }
 
-class parkingSpotAnnotation: NSObject, MKAnnotation {
+class ParkingSpotAnnotation: NSObject, MKAnnotation {
     
     let annotation: MKAnnotation
     var coordinate: CLLocationCoordinate2D

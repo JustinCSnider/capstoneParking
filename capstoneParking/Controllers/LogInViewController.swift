@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    //==================================================
+    // MARK: - Properties
+    //==================================================
+    
+    var registeredSpots: [RegisteredSpot] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -43,14 +50,41 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //If the password that was typed in the text field is equal to the fetched password log them in and if not show the error label
             if self.passwordTextField.text == currentUser.password {
                 ParkingController.shared.setCurrentUser(user: currentUser)
-                self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                
+                FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
+                    self.registeredSpots = registeredSpots
+                    var count = 0
+                    
+                    for i in 0...self.registeredSpots.count - 1 {
+                        let address = self.registeredSpots[i].address
+                        self.getCoordinatesFor(address: address) { (placemark, error) in
+                            self.registeredSpots[i].coordinates = placemark
+                            
+                            count += 1
+                            if count == registeredSpots.count {
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                                }
+                                
+                                //Stop loading process
+                                self.loadingActivityIndicator.stopAnimating()
+                                self.loadingView.isHidden = true
+                            }
+                        }
+                    }
+                    
+                })
+                
+                
+                
+                
             } else {
                 self.errorLabel.isHidden = false
+                
+                //Stop loading process
+                self.loadingActivityIndicator.stopAnimating()
+                self.loadingView.isHidden = true
             }
-            
-            //Stop loading process
-            self.loadingActivityIndicator.stopAnimating()
-            self.loadingView.isHidden = true
         }
     }
     
@@ -71,13 +105,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //========================================
     //MARK: - Life Cycle Methods
     //========================================
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.isSecureTextEntry = true
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        
+        emailTextField.text = "d@d.com"
+        passwordTextField.text = "d"
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,9 +122,44 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         //Set up border for a specific side on the bottom view
         signUpView.addBorder(side: .Top, thickness: 2, color: UIColor.lightGray)
     }
-
-
+    
+    //==================================================
+    // MARK: - Navigation
+    //==================================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? UITabBarController,
+            let tabDestination = destination.viewControllers,
+            let unwrappedTabDestination = tabDestination[0] as? UINavigationController,
+            let mapDestination = unwrappedTabDestination.viewControllers[0] as? MapViewController {
+            mapDestination.registeredSpots = self.registeredSpots
+        }
+    }
+    
+    
+    
+    
+    
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+        //        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
+    
 }
+
 
 
 extension UIView {
