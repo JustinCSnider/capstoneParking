@@ -11,9 +11,9 @@ import CoreLocation
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
     
-    //========================================
-    //MARK: - Properties
-    //========================================
+    //==================================================
+    // MARK: - Properties
+    //==================================================
     
     var registeredSpots: [RegisteredSpot] = []
     
@@ -87,8 +87,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 
                 
                 
+                
             } else {
                 self.errorLabel.isHidden = false
+                
+                //Stop loading process
+                self.loadingActivityIndicator.stopAnimating()
+                self.loadingView.isHidden = true
             }
         }
     }
@@ -110,7 +115,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //========================================
     //MARK: - Life Cycle Methods
     //========================================
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         passwordTextField.isSecureTextEntry = true
@@ -128,19 +133,22 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signUpView.addBorder(side: .Top, thickness: 2, color: UIColor.lightGray)
     }
     
-    func giveCoordinatesToRegisteredSpots(completion: @escaping () -> Void) {
-        let group = DispatchGroup()
-        for i in 0...self.registeredSpots.count - 1 {
-            let address = self.registeredSpots[i].address
-            group.enter()
-            self.getCoordinatesFor(address: address) { (placemark, error) in
-                self.registeredSpots[i].coordinates = placemark
-                group.leave()
-            }
-            group.wait()
+    //==================================================
+    // MARK: - Navigation
+    //==================================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? UITabBarController,
+            let tabDestination = destination.viewControllers,
+            let unwrappedTabDestination = tabDestination[0] as? UINavigationController,
+            let mapDestination = unwrappedTabDestination.viewControllers[0] as? MapViewController {
+            mapDestination.registeredSpots = self.registeredSpots
         }
-        completion()
     }
+    
+    
     
     
     
@@ -160,17 +168,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    //========================================
-    //MARK: - Navigation
-    //========================================
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        print(registeredSpots)
-    }
-
 }
+
 
 
 extension UIView {

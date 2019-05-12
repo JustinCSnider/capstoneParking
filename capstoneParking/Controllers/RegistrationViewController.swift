@@ -187,7 +187,6 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         
         if let selectedImage = selectedImageFromPicker {
             spotImageView.image = selectedImage
-            FirebaseController.shared.addImageToStorage(selectedImage)
         }
         
         

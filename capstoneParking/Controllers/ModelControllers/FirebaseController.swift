@@ -160,12 +160,12 @@ class FirebaseController {
                     let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
                     let parkingInstructions = currentSpot["parkingInstructions"] as? String,
                     let rate = currentSpot["rate"] as? Double {
+                    
                     let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
                     
                     registeredSpots.append(registeredSpot)
                 }
             }
-            
             completion(registeredSpots)
         }
     }
