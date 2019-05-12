@@ -51,7 +51,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         requestAuthorizations()
         setInitialMapProperties()
         dropRegisteredSpotPins()
-        print("current registeredSpots array is \(registeredSpots)")
         
         if let coor = mapView.userLocation.location?.coordinate{
             mapView.setCenter(coor, animated: true)

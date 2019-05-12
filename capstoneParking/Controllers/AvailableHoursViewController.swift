@@ -59,12 +59,12 @@ class AvailableHoursViewController: UIViewController {
         
         
         if currentTimeButton != sender {
+            //Setting up current time button
             currentTimeButton?.isSelected = false
-            
             currentTimeButton = sender
-            
             currentTimeButton?.isSelected = true
             
+            //Setting up From and To time pickers
             if sender == fromTimeButton, let time = dateFormatter.date(from: fromTimeLabel.text ?? "") {
                 timePicker.date = time
             } else if sender == toTimeButton, let time = dateFormatter.date(from: toTimeLabel.text ?? "") {
@@ -77,6 +77,7 @@ class AvailableHoursViewController: UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         
+        //Sets From and To labels based on time picker value
         if currentTimeButton == fromTimeButton {
             fromTimeLabel.text = dateFormatter.string(from: sender.date)
         } else if currentTimeButton == toTimeButton {

@@ -35,11 +35,13 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
     //========================================
     
     @IBAction func submitButtonTapped(_ sender: Any) {
+        //Grabbing neccessary pieces to create your own account
         guard let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
             let email = emailTextField.text,
             let password = passwordTextField.text else { return }
         
+        //Start showing load screen while it creates the account
         loadingView.isHidden = false
         loadingActivityIndicator.startAnimating()
         
@@ -67,7 +69,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                     
                     let currentUser = User(firstName: firstName, lastName: lastName, email: email, password: password, registeredSpots: [], reservations: [])
                     
-                    ParkingController.shared.setCurrentUser(user: currentUser)
+                    UserController.shared.setCurrentUser(user: currentUser)
                     
                     self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
                 }
@@ -165,6 +167,7 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
 }
 
 extension String {
+    //Validates email using a Regular Expression
     func isValidEmail() -> Bool {
         let emailRegEx = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}" +
             "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" +
@@ -178,6 +181,7 @@ extension String {
         return emailTest.evaluate(with: self)
     }
     
+    //Checks a string to see if it contains any numbers
     func containsNumbers() -> Bool {
         var containsNumbers = false
         var count = 0

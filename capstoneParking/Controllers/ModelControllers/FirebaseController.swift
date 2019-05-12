@@ -21,8 +21,8 @@ class FirebaseController {
             "lastName" : lastName,
             "email" : email,
             "password" : password,
-            "reservations" : [],
-            "registeredSpots" : []
+            "reservations" : [String : [String : Any]](),
+            "registeredSpots" : [String : [String : Any]]()
             ])
     }
     
@@ -83,7 +83,7 @@ class FirebaseController {
     }
     
     func updateCurrentUser() {
-        guard let currentUser = ParkingController.shared.getCurrentUser() else { return }
+        guard let currentUser = UserController.shared.getCurrentUser() else { return }
         
         var registeredSpots: [String : [String : Any]] = [:]
         var reservations: [String : Any] = [:]
@@ -184,7 +184,7 @@ class FirebaseController {
                 if error != nil {
                     return
                 } else if let url = url {
-                    ParkingController.shared.setCurrentRegisteredSpotImageURL(url)
+                    UserController.shared.setCurrentRegisteredSpotImageURL(url)
                 }
             })
         }

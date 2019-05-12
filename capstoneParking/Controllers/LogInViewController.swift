@@ -49,7 +49,17 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             }
             //If the password that was typed in the text field is equal to the fetched password log them in and if not show the error label
             if self.passwordTextField.text == currentUser.password {
-                ParkingController.shared.setCurrentUser(user: currentUser)
+                UserController.shared.setCurrentUser(user: currentUser)
+                
+                let group = DispatchGroup()
+                
+                group.enter()
+                UserController.shared.setRegisteredSpotImages { group.leave() }
+                group.wait()
+                
+                group.enter()
+                UserController.shared.setReservedSpotImages { group.leave() }
+                group.wait()
                 
                 FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
                     self.registeredSpots = registeredSpots

@@ -25,6 +25,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     //MARK: - IBOutlets
     //========================================
     
+    //Address Text fields
     @IBOutlet weak var streetAddressTextField: UITextField!
     @IBOutlet weak var stateTextField: UITextField!
     @IBOutlet weak var cityTextField: UITextField!
@@ -36,24 +37,26 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     
     @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
+    //Available hours buttons for simple selection
     @IBOutlet weak var fromTimeButton: UIButton!
     @IBOutlet weak var toTimeButton: UIButton!
+    @IBOutlet weak var availableDaysSegmentedControl: UISegmentedControl!
     
     @IBOutlet weak var spotImageView: UIImageView!
     
+    //Available hours labels
     @IBOutlet weak var availableHoursPromptLabel: UILabel!
     @IBOutlet weak var fromTimeLabel: UILabel!
     @IBOutlet weak var toTimeLabel: UILabel!
     @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var toLabel: UILabel!
+    
     @IBOutlet weak var parkingInstructionsTextView: CustomTextView!
     
+    //Picking time for available hours
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timePickerView: UIView!
     @IBOutlet weak var timePickerViewHeightConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var availableDaysSegmentedControl: UISegmentedControl!
-    
     
     //========================================
     //MARK: - IBActions
@@ -65,19 +68,21 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         
         
         if currentTimeButton != sender {
+            //Setting up current time button
             if currentTimeButton != nil {
                 currentTimeButton?.isSelected = false
             }
             currentTimeButton = sender
-            
             currentTimeButton?.isSelected = true
             
+            //Setting up From and To time pickers
             if sender == fromTimeButton, let time = dateFormatter.date(from: fromTimeLabel.text ?? "") {
                 timePicker.date = time
             } else if sender == toTimeButton, let time = dateFormatter.date(from: toTimeLabel.text ?? "") {
                 timePicker.date = time
             }
             
+            //Animate view size and time picker size
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 216
                 self.viewHeightConstraint.constant = 1200
@@ -85,10 +90,11 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
                 self.view.layoutIfNeeded()
             }
         } else {
+            //Setting up current time button
             currentTimeButton?.isSelected = false
-            
             currentTimeButton = nil
             
+            //Animate view size and time picker size
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 0
                 self.viewHeightConstraint.constant = 1000
@@ -102,6 +108,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         
+        //Sets From and To labels based on time picker value
         if currentTimeButton == fromTimeButton {
             fromTimeLabel.text = dateFormatter.string(from: sender.date)
         } else if currentTimeButton == toTimeButton {
@@ -113,17 +120,20 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         if sender.selectedSegmentIndex == 3 {
             performSegue(withIdentifier: "availableHoursSegue", sender: sender)
         } else {
-            availableHoursPromptLabel.textColor = UIColor.black
-            fromLabel.textColor = UIColor.black
-            toLabel.textColor = UIColor.black
-            fromTimeLabel.textColor = UIColor.black
-            toTimeLabel.textColor = UIColor.black
-            fromTimeButton.tintColor = UIColor.black
-            toTimeButton.tintColor = UIColor.black
-            
-            fromTimeButton.isEnabled = true
-            toTimeButton.isEnabled = true
+            updateAvailableHours(customAvailableHours: nil)
         }
+        
+        //Reset buttons and labels
+        availableHoursPromptLabel.textColor = UIColor.black
+        fromLabel.textColor = UIColor.black
+        toLabel.textColor = UIColor.black
+        fromTimeLabel.textColor = UIColor.black
+        toTimeLabel.textColor = UIColor.black
+        fromTimeButton.tintColor = UIColor.black
+        toTimeButton.tintColor = UIColor.black
+        
+        fromTimeButton.isEnabled = true
+        toTimeButton.isEnabled = true
     }
     
     @IBAction func selectSpotImageView(_ sender: UITapGestureRecognizer) {
@@ -137,7 +147,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
-        if let imageURLString = ParkingController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
+        if let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
            let numberOfSpaces = Int(spacesTextField.text ?? ""),
            let rate = Double(rateTextField.text ?? "") {
             let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
@@ -145,7 +155,16 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             
             let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
             
-            ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
+            let group = DispatchGroup()
+            
+            guard let image = spotImageView.image else { return }
+            
+            group.enter()
+            UserController.shared.addRegisteredSpotImage(image)
+            FirebaseController.shared.addImageToStorage(image: image)
+            UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }
+            group.wait()
+            
             FirebaseController.shared.updateCurrentUser()
             self.navigationController?.popViewController(animated: true)
         }
@@ -167,8 +186,6 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         
         if let selectedImage = selectedImageFromPicker {
             spotImageView.image = selectedImage
-            
-            FirebaseController.shared.addImageToStorage(image: selectedImage)
         }
         
         
