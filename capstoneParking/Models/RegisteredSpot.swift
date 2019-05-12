@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 struct RegisteredSpot {
     var imageURLString: String
@@ -15,4 +16,5 @@ struct RegisteredSpot {
     var rate: Double
     var parkingInstructions: String
     var availableHours: [String : [String]]
+    var coordinates: CLLocationCoordinate2D?
 }

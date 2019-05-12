@@ -366,6 +366,8 @@
 				CC11C7D0227EA45500A67C9E /* CalendarController.swift in Sources */,
 				CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */,
 				CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */,
+				CCAD5357227BFD0F00B7B89D /* AvailableHoursViewController.swift in Sources */,
+				CCAD5354227BFC7500B7B89D /* ReservationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
