@@ -31,12 +31,25 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     //MARK: - IBOutlets
     //========================================
     
+    @IBOutlet weak var reserveButton: CustomButton!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
+    
+    //Detail outlets
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var spacesLabel: UILabel!
+    @IBOutlet weak var rateLabel: UILabel!
+    @IBOutlet weak var spotImage: UIImageView!
+    
+    
+    //Calendar outlets
     @IBOutlet weak var calendarView: UICollectionView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var parkingTextView: CustomTextView!
     @IBOutlet weak var backButton: UIButton!
     
+    //Constraints
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
@@ -110,10 +123,13 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         switch calendarController.direction {
         case 0:
             cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.numberOfEmptyBoxes)"
+            calendarController.weekday = ((Int(cell.dateLabel.text!)! + calendarController.numberOfEmptyBoxes - 1) % 7)
         case 1...:
             cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.nextNumberOfEmptyBoxes)"
+            calendarController.weekday = ((Int(cell.dateLabel.text!)! + calendarController.nextNumberOfEmptyBoxes - 1) % 7)
         case -1:
             cell.dateLabel.text = "\(indexPath.row + 1 - calendarController.previousNumberOfEmptyBoxes)"
+            calendarController.weekday = ((Int(cell.dateLabel.text!)! + calendarController.previousNumberOfEmptyBoxes - 1) % 7)
         default:
             fatalError()
         }
@@ -128,13 +144,12 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         }
         
         cell.drawCircle()
-        if let currentMonthIndex = calendarController.months.firstIndex(of: calendarController.currentMonth), let currentDateMonthIndex = calendarController.months.firstIndex(of: calendarController.months[calendarController.calendar.component(.month, from: calendarController.date) - 1]) {
+        if let currentMonthIndex = calendarController.months.firstIndex(of: calendarController.currentMonth), let currentDateMonthIndex = calendarController.months.firstIndex(of: calendarController.months[calendarController.calendar.component(.month, from: calendarController.date) - 1]), let currentAvailability = currentRegisteredSpot?.availableHours[calendarController.daysOfMonth[calendarController.weekday]] {
             if Int(cell.dateLabel.text!)! < calendarController.day &&
-                currentMonthIndex == currentDateMonthIndex &&
-                calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
-                currentMonthIndex < currentDateMonthIndex &&
-                calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
-                calendarController.year < calendarController.calendar.component(.year, from: calendarController.date) {
+                currentMonthIndex == currentDateMonthIndex && calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
+                currentMonthIndex < currentDateMonthIndex && calendarController.year == calendarController.calendar.component(.year, from: calendarController.date) ||
+                calendarController.year < calendarController.calendar.component(.year, from: calendarController.date) ||
+                currentAvailability[0] == "Unavailable" {
                 
                 cell.dateLabel.textColor = UIColor.lightGray
                 cell.isUserInteractionEnabled = false
@@ -161,6 +176,10 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
         selectedDay = Int(sender.dateLabel.text!)!
         selectedYear = calendarController.year
         selectedMonth = calendarController.currentMonth
+        
+        selectedWeekday = ((Int(sender.dateLabel.text!)! + calendarController.numberOfEmptyBoxes - 1) % 7)
+        
+        setTimeLabel()
     }
     
     //========================================
@@ -170,17 +189,14 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarController.currentMonth = calendarController.months[calendarController.month]
-        selectedMonth = calendarController.currentMonth
+        scrollView.contentInset.top = -20
+        scrollView.contentInset.bottom = contentView.frame.height - reserveButton.frame.minY
         
-        monthLabel.text = "\(calendarController.currentMonth) \(calendarController.year)"
-        if calendarController.weekday == 0 {
-            calendarController.weekday = 7
-        }
+        guard let currentRegisteredSpot = currentRegisteredSpot else { fatalError() }
         
-        calendarController.getStartDateDayPosition()
         
-        if currentRegisteredSpot?.parkingInstructions == "" {
+        //Setting up detail info
+        if currentRegisteredSpot.parkingInstructions == "" {
             textViewHeightConstraint.constant = 0
             viewHeightConstraint.constant = 830
         } else {
@@ -189,7 +205,48 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
             viewHeightConstraint.constant = 980
         }
         
+        addressLabel.text = "\(currentRegisteredSpot.address)"
+        spacesLabel.text = "Spaces: \(currentRegisteredSpot.numberOfSpaces)"
+        rateLabel.text = "Rate: \(currentRegisteredSpot.rate)"
+        setTimeLabel()
         
+        if let imageURL = URL(string: currentRegisteredSpot.imageURLString) {
+            let group = DispatchGroup()
+            
+            group.enter()
+            UserController.shared.fetchImage(url: imageURL) { (image) in
+                if let image = image {
+                    DispatchQueue.main.async {
+                        self.spotImage.image = image
+                    }
+                }
+                group.leave()
+            }
+            group.wait()
+        }
+        
+        
+        //Setting up calendar
+        calendarController.currentMonth = calendarController.months[calendarController.month]
+        selectedMonth = calendarController.currentMonth
+        monthLabel.text = "\(calendarController.currentMonth) \(calendarController.year)"
+        if calendarController.weekday == 0 {
+            calendarController.weekday = 7
+        }
+        calendarController.getStartDateDayPosition()
     }
-
+    
+    //========================================
+    //MARK: - Helper Methods
+    //========================================
+    
+    func setTimeLabel() {
+        if let currentAvailability = currentRegisteredSpot?.availableHours[calendarController.daysOfMonth[selectedWeekday]] {
+            timeLabel.text = "\(currentAvailability[0]) - \(currentAvailability[1])"
+            reserveButton.isEnabled = true
+            reserveButton.titleLabel?.textColor = UIColor.white
+            reserveButton.tintColor = UIColor.blue
+        }
+    }
+    
 }

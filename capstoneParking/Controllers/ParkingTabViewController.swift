@@ -39,6 +39,8 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
         if currentUser.registeredSpots.count < 1 {
             defaultRegisteredCellHeight = parkingTableView.bounds.height - defaultReservedSectionHeight
         }
+        
+        parkingTableView.reloadData()
     }
 
     //========================================

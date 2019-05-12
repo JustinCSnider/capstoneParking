@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    //========================================
+    //MARK: - Properties
+    //========================================
+    
+    var registeredSpots: [RegisteredSpot] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -54,15 +61,35 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 UserController.shared.setReservedSpotImages { group.leave() }
                 group.wait()
                 
-                self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
+                    self.registeredSpots = registeredSpots
+                    var count = 0
+                    
+                    for i in 0...self.registeredSpots.count - 1 {
+                        let address = self.registeredSpots[i].address
+                        self.getCoordinatesFor(address: address) { (placemark, error) in
+                            self.registeredSpots[i].coordinates = placemark
+                            
+                            count += 1
+                            if count == registeredSpots.count {
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                                }
+                                
+                                //Stop loading process
+                                self.loadingActivityIndicator.stopAnimating()
+                                self.loadingView.isHidden = true
+                            }
+                        }
+                    }
+                    
+                })
+                
+                
                 
             } else {
                 self.errorLabel.isHidden = false
             }
-            
-            //Stop loading process
-            self.loadingActivityIndicator.stopAnimating()
-            self.loadingView.isHidden = true
         }
     }
     
@@ -90,6 +117,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        
+        emailTextField.text = "test@gmail.com"
+        passwordTextField.text = "test"
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,7 +127,48 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         //Set up border for a specific side on the bottom view
         signUpView.addBorder(side: .Top, thickness: 2, color: UIColor.lightGray)
     }
-
+    
+    func giveCoordinatesToRegisteredSpots(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        for i in 0...self.registeredSpots.count - 1 {
+            let address = self.registeredSpots[i].address
+            group.enter()
+            self.getCoordinatesFor(address: address) { (placemark, error) in
+                self.registeredSpots[i].coordinates = placemark
+                group.leave()
+            }
+            group.wait()
+        }
+        completion()
+    }
+    
+    
+    
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+        //        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
+    
+    //========================================
+    //MARK: - Navigation
+    //========================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        print(registeredSpots)
+    }
 
 }
 
