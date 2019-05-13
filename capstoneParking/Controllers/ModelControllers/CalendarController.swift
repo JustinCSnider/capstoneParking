@@ -14,10 +14,7 @@ class CalendarController {
     //MARK: - Properties
     //========================================
     
-    static var shared = CalendarController(day: Calendar.current.component(.day, from: Date()),
-                                           weekday: Calendar.current.component(.weekday, from: Date() - 1),
-                                           month: Calendar.current.component(.month, from: Date() - 1),
-                                           year: Calendar.current.component(.year, from: Date()))
+    static var shared = CalendarController()
     
     let date = Date()
     let calendar = Calendar.current
@@ -31,7 +28,7 @@ class CalendarController {
     var previousNumberOfEmptyBoxes = 0
     var direction = 0
     var positionIndex = 0
-    var leapYearCounter = 1
+    var leapYearCounter = 3
     var dayCounter = 0
     
     var day = 0
@@ -43,11 +40,11 @@ class CalendarController {
     //MARK: - Life Cycle Methods
     //========================================
     
-    init(day: Int, weekday: Int, month: Int, year: Int) {
-        self.day = day
-        self.weekday = weekday
-        self.month = month
-        self.year = year
+    init() {
+        self.day = Calendar.current.component(.day, from: date)
+        self.weekday = Calendar.current.component(.weekday, from: date) - 1
+        self.month = Calendar.current.component(.month, from: date) - 1
+        self.year = Calendar.current.component(.year, from: date)
     }
     
     //========================================
@@ -155,6 +152,19 @@ class CalendarController {
         default:
             fatalError()
         }
+    }
+    
+    func resetCalendarData() {
+        numberOfEmptyBoxes = 0
+        nextNumberOfEmptyBoxes = 0
+        previousNumberOfEmptyBoxes = 0
+        direction = 0
+        positionIndex = 0
+        dayCounter = 0
+        day = Calendar.current.component(.day, from: date)
+        weekday = Calendar.current.component(.weekday, from: date) - 1
+        month = Calendar.current.component(.month, from: date) - 1
+        year = Calendar.current.component(.year, from: date)
     }
     
 }

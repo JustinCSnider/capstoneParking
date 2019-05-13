@@ -63,6 +63,27 @@ class UserController {
         completion()
     }
     
+    func replaceRegisteredSpot(with registeredSpot: RegisteredSpot) {
+        if currentUser != nil {
+            for i in 0...currentUser!.registeredSpots.count - 1 {
+                if currentUser!.registeredSpots[i].address == registeredSpot.address {
+                    currentUser!.registeredSpots[i] = registeredSpot
+                }
+            }
+        }
+    }
+    
+    func removeRegisteredSpot(_ registeredSpot: RegisteredSpot) {
+        if currentUser != nil {
+            for i in 0...currentUser!.registeredSpots.count - 1 {
+                if currentUser!.registeredSpots[i].address == registeredSpot.address {
+                    currentUser!.registeredSpots.remove(at: i)
+                    return
+                }
+            }
+        }
+    }
+    
     func getRegisteredSpotImages() -> [UIImage] {
         return currentUserRegisteredSpotImages
     }

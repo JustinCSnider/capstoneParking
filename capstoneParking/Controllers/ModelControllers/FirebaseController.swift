@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestore
+import CoreLocation
 
 class FirebaseController {
     
@@ -82,8 +83,8 @@ class FirebaseController {
         }
     }
     
-    func updateCurrentUser() {
-        guard let currentUser = UserController.shared.getCurrentUser() else { return }
+    func updateUser(_ user: User?) {
+        guard let currentUser = user else { return }
         
         var registeredSpots: [String : [String : Any]] = [:]
         var reservations: [String : Any] = [:]
@@ -112,6 +113,7 @@ class FirebaseController {
             reservations[i.reservationID] = [
                 "time" : i.time,
                 "reservationID" : i.reservationID,
+                "userEmail" : currentUser.email,
                 "reservedSpot" : [
                     "address" : i.reservedSpot.address,
                     "imageURLString" : i.reservedSpot.imageURLString,
@@ -169,8 +171,39 @@ class FirebaseController {
         }
     }
     
-    func addImageToStorage(image: UIImage) {
-        let storageRef = Storage.storage().reference().child("myImage.png")
+    func getReservations(completion: @escaping ([Reservation]) -> Void) {
+        Firestore.firestore().collection("Reservations").getDocuments { (snapshot, error) in
+            guard let snapshot = snapshot else { return }
+            
+            var reservations: [Reservation] = []
+            
+            for i in snapshot.documents {
+                let currentReservation = i.data()
+                
+                if let currentSpot = currentReservation["registeredSpot"] as? [String : Any],
+                    let time = currentReservation["time"] as? String,
+                    let reservationID = currentReservation["reservationID"] as? String,
+                    let userEmail = currentReservation["userEmail"] as? String,
+                    let imageURL = currentSpot["imageURLString"] as? String,
+                    let address = currentSpot["address"] as? String,
+                    let availableHours = currentSpot["availableHours"] as? [String : [String]],
+                    let numberOfSpaces = currentSpot["numberOfSpaces"] as? Int,
+                    let parkingInstructions = currentSpot["parkingInstructions"] as? String,
+                    let rate = currentSpot["rate"] as? Double {
+                    
+                    let registeredSpot = RegisteredSpot(imageURLString: imageURL, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
+                    
+                    let reservation = Reservation(time: time, reservedSpot: registeredSpot, reservationID: reservationID, userEmail: userEmail)
+                    
+                    reservations.append(reservation)
+                }
+            }
+            completion(reservations)
+        }
+    }
+    
+    func addImageToStorage(_ image: UIImage) {
+        let storageRef = Storage.storage().reference().child(UUID().uuidString)
         
         guard let uploadData = image.pngData() else { return }
         

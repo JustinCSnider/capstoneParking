@@ -12,4 +12,5 @@ struct Reservation {
     var time: String
     var reservedSpot: RegisteredSpot
     var reservationID: String
+    var userEmail: String
 }

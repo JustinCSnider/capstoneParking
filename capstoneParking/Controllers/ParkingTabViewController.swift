@@ -17,6 +17,12 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
     var defaultReservedSectionHeight: CGFloat = 180
     var defaultRegisteredCellHeight: CGFloat?
     
+    var currentRegisteredSpot: RegisteredSpot?
+    var currentReservation: Reservation?
+    var currentRegisteredSpotImage: UIImage?
+    var currentReservationImage: UIImage?
+    var reservations: [Reservation]?
+    
     //========================================
     //MARK: - IBOutlets
     //========================================
@@ -39,6 +45,8 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
         if currentUser.registeredSpots.count < 1 {
             defaultRegisteredCellHeight = parkingTableView.bounds.height - defaultReservedSectionHeight
         }
+        
+        parkingTableView.reloadData()
     }
 
     //========================================
@@ -59,6 +67,22 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
             return "Reservations"
         default:
             return nil
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let currentUser = UserController.shared.getCurrentUser() else { return }
+        
+        if indexPath.section == 0 {
+            currentReservation = currentUser.reservations[indexPath.row]
+            currentReservationImage = UserController.shared.getReservedSpotImages()[indexPath.row]
+            
+            performSegue(withIdentifier: "reservedSegue", sender: nil)
+        } else if indexPath.section == 1 {
+            currentRegisteredSpot = currentUser.registeredSpots[indexPath.row]
+            currentRegisteredSpotImage = UserController.shared.getRegisteredSpotImages()[indexPath.row]
+            
+            performSegue(withIdentifier: "registeredSegue", sender: nil)
         }
     }
     
@@ -145,7 +169,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.backgroundColor = #colorLiteral(red: 0.6666069031, green: 0.6667048335, blue: 0.6665855646, alpha: 1)
                 cell.textLabel?.numberOfLines = 0
 
-                cell.textLabel?.text = "If you'd like to make a reservation, tap on any pin you find in the area you want to reserve."
+                cell.textLabel?.text = "If you'd like to make a reservation, tap on any pin you find in the area you want to reserve, and tap the pen and paper on the left."
                 cell.textLabel?.textAlignment = .center
                 
                 cell.isUserInteractionEnabled = false
@@ -192,7 +216,20 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
     //========================================
     
     @objc func registerSpotButtonTapped() {
-        performSegue(withIdentifier: "registeredSegue", sender: nil)
+        performSegue(withIdentifier: "registerSegue", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? RegisteredSpotDetailViewController {
+            destination.currentRegisteredSpot = currentRegisteredSpot
+            destination.currentRegisteredSpotImage = currentRegisteredSpotImage
+            destination.reservations = reservations
+        } else if let destination = segue.destination as? ReservedSpotDetailViewController {
+            destination.currentReservation = currentReservation
+            destination.currentReservationImage = currentReservationImage
+        }
     }
 
 }
