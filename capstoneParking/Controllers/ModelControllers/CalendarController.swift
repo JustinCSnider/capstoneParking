@@ -154,4 +154,17 @@ class CalendarController {
         }
     }
     
+    func resetCalendarData() {
+        numberOfEmptyBoxes = 0
+        nextNumberOfEmptyBoxes = 0
+        previousNumberOfEmptyBoxes = 0
+        direction = 0
+        positionIndex = 0
+        dayCounter = 0
+        day = Calendar.current.component(.day, from: date)
+        weekday = Calendar.current.component(.weekday, from: date) - 1
+        month = Calendar.current.component(.month, from: date) - 1
+        year = Calendar.current.component(.year, from: date)
+    }
+    
 }

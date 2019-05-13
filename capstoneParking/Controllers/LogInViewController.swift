@@ -16,6 +16,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //==================================================
     
     var registeredSpots: [RegisteredSpot] = []
+    var reservations: [Reservation] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -65,23 +66,28 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                     self.registeredSpots = registeredSpots
                     var count = 0
                     
-                    for i in 0...self.registeredSpots.count - 1 {
-                        let address = self.registeredSpots[i].address
-                        self.getCoordinatesFor(address: address) { (placemark, error) in
-                            self.registeredSpots[i].coordinates = placemark
-                            
-                            count += 1
-                            if count == registeredSpots.count {
-                                DispatchQueue.main.async {
-                                    self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
-                                }
+                    FirebaseController.shared.getReservations(completion: { (reservations) in
+                        
+                        self.reservations = reservations
+                        
+                        for i in 0...self.registeredSpots.count - 1 {
+                            let address = self.registeredSpots[i].address
+                            self.getCoordinatesFor(address: address) { (placemark, error) in
+                                self.registeredSpots[i].coordinates = placemark
                                 
-                                //Stop loading process
-                                self.loadingActivityIndicator.stopAnimating()
-                                self.loadingView.isHidden = true
+                                count += 1
+                                if count == registeredSpots.count {
+                                    DispatchQueue.main.async {
+                                        self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                                    }
+                                    
+                                    //Stop loading process
+                                    self.loadingActivityIndicator.stopAnimating()
+                                    self.loadingView.isHidden = true
+                                }
                             }
                         }
-                    }
+                    })
                     
                 })
                 
@@ -147,10 +153,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             mapDestination.registeredSpots = self.registeredSpots
         }
     }
-    
-    
-    
-    
     
     func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
         let geocoder = CLGeocoder()

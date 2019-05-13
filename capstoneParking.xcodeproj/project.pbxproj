@@ -12,12 +12,14 @@
 		2FDE2BAE2260DC830069B3E2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FDE2BAD2260DC830069B3E2 /* MapKit.framework */; };
 		4C5738A24C16064ADBAAD072 /* Pods_capstoneParking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */; };
 		CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC09ED692247E7B9008EDA0D /* FirebaseController.swift */; };
+		CC0A778E2289817000DC3D35 /* ReservedSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A778D2289817000DC3D35 /* ReservedSpotDetailViewController.swift */; };
 		CC0B7C34225C41EB0084FC71 /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0B7C33225C41EB0084FC71 /* Reservation.swift */; };
 		CC0C0E2F224F639A003426B6 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC0C0E2E224F639A003426B6 /* Map.storyboard */; };
 		CC0C0E31224F63C2003426B6 /* ParkingTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC0C0E30224F63C2003426B6 /* ParkingTab.storyboard */; };
 		CC0C3E052247BA8D00067330 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0C3E042247BA8D00067330 /* CustomButton.swift */; };
 		CC11C7D0227EA45500A67C9E /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC11C7CF227EA45500A67C9E /* CalendarController.swift */; };
 		CC122CEE227749220052786F /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC122CED227749220052786F /* DateCollectionViewCell.swift */; };
+		CC129BE722893F1300B14BC8 /* RegisteredSpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC129BE622893F1300B14BC8 /* RegisteredSpotDetailViewController.swift */; };
 		CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */; };
 		CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */; };
 		CC3C5A122243D31F00671D4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC3C5A102243D31F00671D4E /* Main.storyboard */; };
@@ -43,6 +45,7 @@
 		C4173EA5737C4638B1C06723 /* Pods-capstoneParking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-capstoneParking.debug.xcconfig"; path = "Target Support Files/Pods-capstoneParking/Pods-capstoneParking.debug.xcconfig"; sourceTree = "<group>"; };
 		C46045574CF1CFF359DF42C4 /* Pods_capstoneParking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_capstoneParking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC09ED692247E7B9008EDA0D /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		CC0A778D2289817000DC3D35 /* ReservedSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservedSpotDetailViewController.swift; sourceTree = "<group>"; };
 		CC0B7C33225C41EB0084FC71 /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
 		CC0BA260226E11E30018670C /* AvailableHoursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableHoursViewController.swift; sourceTree = "<group>"; };
 		CC0C0E2E224F639A003426B6 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 		CC0C3E042247BA8D00067330 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		CC11C7CF227EA45500A67C9E /* CalendarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
 		CC122CED227749220052786F /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC129BE622893F1300B14BC8 /* RegisteredSpotDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredSpotDetailViewController.swift; sourceTree = "<group>"; };
 		CC3C5A092243D31F00671D4E /* capstoneParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = capstoneParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC3C5A0C2243D31F00671D4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC3C5A0E2243D31F00671D4E /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
@@ -178,9 +182,11 @@
 				CC3C5A2422452C5F00671D4E /* MapViewController.swift */,
 				2F3D1C1722720A80006D21E3 /* LocationSearchTableView.swift */,
 				CC3C5A2822452C9F00671D4E /* ParkingTabViewController.swift */,
-				CC3C5A2A22452CB800671D4E /* RegistrationViewController.swift */,
 				CCAD535F227C906D00B7B89D /* ReservationViewController.swift */,
+				CC3C5A2A22452CB800671D4E /* RegistrationViewController.swift */,
 				CCAD535C227C903700B7B89D /* AvailableHoursViewController.swift */,
+				CC129BE622893F1300B14BC8 /* RegisteredSpotDetailViewController.swift */,
+				CC0A778D2289817000DC3D35 /* ReservedSpotDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -349,6 +355,7 @@
 			files = (
 				CCAD5362227C908D00B7B89D /* CustomTextView.swift in Sources */,
 				CCAD535E227C904C00B7B89D /* UserController.swift in Sources */,
+				CC0A778E2289817000DC3D35 /* ReservedSpotDetailViewController.swift in Sources */,
 				2F3D1C1822720A80006D21E3 /* LocationSearchTableView.swift in Sources */,
 				CC09ED6A2247E7B9008EDA0D /* FirebaseController.swift in Sources */,
 				CC3C5A2D22452CD100671D4E /* User.swift in Sources */,
@@ -356,6 +363,7 @@
 				CC3C5A0F2243D31F00671D4E /* LogInViewController.swift in Sources */,
 				2F766D5A22788F6200E2DF70 /* CustomAnnotations.swift in Sources */,
 				CCAD535D227C903700B7B89D /* AvailableHoursViewController.swift in Sources */,
+				CC129BE722893F1300B14BC8 /* RegisteredSpotDetailViewController.swift in Sources */,
 				CC3C5A0D2243D31F00671D4E /* AppDelegate.swift in Sources */,
 				CC3C5A2F22452E9200671D4E /* RegisteredSpot.swift in Sources */,
 				CC3C5A2922452C9F00671D4E /* ParkingTabViewController.swift in Sources */,
@@ -366,8 +374,6 @@
 				CC11C7D0227EA45500A67C9E /* CalendarController.swift in Sources */,
 				CC3C5A2322452C3C00671D4E /* CreateNewAccountViewController.swift in Sources */,
 				CC3C5A2522452C5F00671D4E /* MapViewController.swift in Sources */,
-				CCAD5357227BFD0F00B7B89D /* AvailableHoursViewController.swift in Sources */,
-				CCAD5354227BFC7500B7B89D /* ReservationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
