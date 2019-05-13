@@ -931,6 +931,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="removeReservationButtonTapped:" destination="rLL-YQ-RN3" eventType="touchUpInside" id="PN2-QE-bN8"/>
                                     <action selector="updateRegisteredSpot:" destination="Qk6-5M-V2B" eventType="touchUpInside" id="EZ1-uy-9pv"/>
                                 </connections>
                             </button>

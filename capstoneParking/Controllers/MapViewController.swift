@@ -186,17 +186,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func setRegisteredSpotPin(annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "spotPin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.image = UIImage(named: "car")
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+        pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.glyphImage = UIImage(named: "carGlyph")
+        pinView?.markerTintColor = #colorLiteral(red: 0.144528985, green: 0.6882172823, blue: 1, alpha: 1)
         pinView?.canShowCallout = true
         let square60 = CGSize(width: 60, height: 60)
         let point = CGPoint(x: 0, y: 0)
         
         let leftButton = UIButton(frame: CGRect(origin: point, size: square60))
         leftButton.imageEdgeInsets = UIEdgeInsets(top: -5, left: 5, bottom: 5, right: -5)
-        leftButton.setImage(UIImage(named: "Reservation"), for: .normal)
-        leftButton.setImage(UIImage(named: "Reservation Filled"), for: .selected)
+        leftButton.setImage(UIImage(named: "reserveButton"), for: .normal)
         leftButton.addTarget(self, action: #selector(reserveButtonTapped), for: .touchUpInside)
         
         pinView?.leftCalloutAccessoryView = leftButton
