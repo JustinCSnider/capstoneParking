@@ -150,6 +150,11 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
     
     
     @IBAction func registerButtonTapped(_ sender: UIButton) {
+        guard let image = spotImageView.image else { return }
+        
+        UserController.shared.addRegisteredSpotImage(image)
+        FirebaseController.shared.addImageToStorage(image)
+        
         if let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
            let numberOfSpaces = Int(spacesTextField.text ?? ""),
            let rate = Double(rateTextField.text ?? "") {
@@ -159,11 +164,6 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
             
             let group = DispatchGroup()
-            
-            guard let image = spotImageView.image else { return }
-            
-            UserController.shared.addRegisteredSpotImage(image)
-            FirebaseController.shared.addImageToStorage(image)
             
             group.enter()
             UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }

@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
+    
+    //========================================
+    //MARK: - Properties
+    //========================================
+    
+    var registeredSpots: [RegisteredSpot] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -56,8 +63,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                 self.passwordTextField.resignFirstResponder()
                 self.confirmPasswordTextField.resignFirstResponder()
                 
-                self.loadingActivityIndicator.stopAnimating()
-                self.loadingView.isHidden = true
                 if hasBeenUsed {
                     self.emailLabel.isHidden = false
                     self.emailErrorLabel.isHidden = false
@@ -71,8 +76,31 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                     
                     UserController.shared.setCurrentUser(user: currentUser)
                     
-                    self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
+                    FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
+                        self.registeredSpots = registeredSpots
+                        var count = 0
+                        
+                        for i in 0...self.registeredSpots.count - 1 {
+                            let address = self.registeredSpots[i].address
+                            self.getCoordinatesFor(address: address) { (placemark, error) in
+                                self.registeredSpots[i].coordinates = placemark
+                                
+                                count += 1
+                                if count == registeredSpots.count {
+                                    DispatchQueue.main.async {
+                                        self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
+                                    }
+                                    
+                                    //Stop loading process
+                                    self.loadingActivityIndicator.stopAnimating()
+                                    self.loadingView.isHidden = true
+                                }
+                            }
+                        }
+                        
+                    })
                 }
+                
             }
         } else {
             //Resets error labels before setting them back up again
@@ -151,6 +179,21 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
     }
     
     //========================================
+    //MARK: - Navigation
+    //========================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? UITabBarController,
+            let tabDestination = destination.viewControllers,
+            let unwrappedTabDestination = tabDestination[0] as? UINavigationController,
+            let mapDestination = unwrappedTabDestination.viewControllers[0] as? MapViewController {
+            mapDestination.registeredSpots = self.registeredSpots
+        }
+    }
+    
+    //========================================
     //MARK: - Helper Methods
     //========================================
     
@@ -162,6 +205,22 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
         confirmPasswordLabel.isHidden = true
         generalErrorLabel.isHidden = true
         emailErrorLabel.isHidden = true
+    }
+    
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+        //        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
     }
 
 }
