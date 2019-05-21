@@ -26,6 +26,7 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     var selectedWeekday = CalendarController.shared.weekday
     var selectedMonth = ""
     var selectedYear = CalendarController.shared.year
+    var count = 0
     
     //========================================
     //MARK: - IBOutlets
@@ -257,21 +258,27 @@ class ReservationViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        addressLabel.font = UIFont.boldSystemFont(ofSize: 26)
-        addressLabel.addBorder(side: .Bottom, thickness: 2, color: UIColor.lightGray, leftOffset: 159.5, rightOffset: 159.5, topOffset: 0, bottomOffset: -6)
-        addressLabel.adjustsFontSizeToFitWidth = true
-        
-        spacesTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        spacesTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 50, topOffset: 0, bottomOffset: -6)
-        
-        rateTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        rateTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 10, topOffset: 0, bottomOffset: -6)
-        
-        availabilityTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        availabilityTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 30, topOffset: 0, bottomOffset: -6)
-        
-        parkingInstructionsTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-        parkingInstructionsTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 55, topOffset: 0, bottomOffset: -6)
+        if count == 1 {
+            addressLabel.font = UIFont.boldSystemFont(ofSize: 26)
+            addressLabel.addBorder(side: .Bottom, thickness: 2, color: UIColor.lightGray, leftOffset: 159.5, rightOffset: 159.5, topOffset: 0, bottomOffset: -6)
+            addressLabel.adjustsFontSizeToFitWidth = true
+            
+            spacesTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+            spacesTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 50, topOffset: 0, bottomOffset: -6)
+            
+            rateTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+            rateTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 10, topOffset: 0, bottomOffset: -6)
+            
+            availabilityTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+            availabilityTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 30, topOffset: 0, bottomOffset: -6)
+            
+            if instructionsTitleLabelHeightConstraint.constant != 0 {
+                parkingInstructionsTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+                parkingInstructionsTitleLabel.addBorder(side: .Bottom, thickness: 3, color: UIColor.lightGray, leftOffset: 0, rightOffset: 55, topOffset: 0, bottomOffset: -6)
+            }
+            
+        }
+        count += 1
     }
     
     //========================================

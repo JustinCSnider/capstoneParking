@@ -26,6 +26,17 @@ class ReservedSpotDetailViewController: UIViewController {
     @IBOutlet weak var reservationImageView: UIImageView!
     
     //========================================
+    //MARK: - IBActions
+    //========================================
+    
+    @IBAction func removeReservationButtonTapped(_ sender: CustomButton) {
+        guard let currentReservation = currentReservation else { return }
+        UserController.shared.removeReserervedSpot(currentReservation)
+        
+        navigationController?.popViewController(animated: true)
+    }
+    
+    //========================================
     //MARK: - Life Cycle Methods
     //========================================
 

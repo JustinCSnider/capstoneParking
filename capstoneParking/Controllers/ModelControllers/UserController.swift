@@ -18,6 +18,7 @@ class UserController {
     
     private var currentUser: User?
     private var currentRegisteredSpotImageURL: URL?
+    var lastRegisteredSpot: RegisteredSpot?
     
     private var currentUserRegisteredSpotImages: [UIImage] = []
     private var currentUserReservedSpotImages: [UIImage] = []
@@ -150,6 +151,17 @@ class UserController {
             }
         }
         completion()
+    }
+    
+    func removeReserervedSpot(_ reservation: Reservation) {
+        if currentUser != nil {
+            for i in 0...currentUser!.reservations.count - 1 {
+                if currentUser!.reservations[i].reservationID == reservation.reservationID {
+                    currentUser!.reservations.remove(at: i)
+                    return
+                }
+            }
+        }
     }
     
     func addReservedSpotImage(_ image: UIImage) {
