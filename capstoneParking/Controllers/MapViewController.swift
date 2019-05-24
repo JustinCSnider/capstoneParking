@@ -28,6 +28,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var resultSearchController: UISearchController? = nil
     var selectedPin: MKPlacemark? = nil
     var registeredSpots: [RegisteredSpot]?
+    var currentRegisteredSpot: RegisteredSpot?
+    var reservations: [Reservation]?
     
     
     //Outlets
@@ -51,7 +53,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         requestAuthorizations()
         setInitialMapProperties()
         dropRegisteredSpotPins()
-        print("current registeredSpots array is \(registeredSpots)")
+        
+        if let parkingTabView = tabBarController?.viewControllers?[1] as? ParkingTabViewController {
+            parkingTabView.reservations = reservations
+        }
+        
+        let mapTabBarItem = UITabBarItem(title: nil, image: UIImage(named: "Map"), selectedImage: UIImage(named: "Map Filled"))
+        let parkingTabBarItem = UITabBarItem(title: nil, image: UIImage(named: "Parking"), selectedImage: UIImage(named: "Parking Filled"))
+        
+        mapTabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
+        parkingTabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
+        
+        tabBarController?.viewControllers?[1].tabBarItem = parkingTabBarItem
+        tabBarController?.selectedViewController?.tabBarItem = mapTabBarItem
         
         if let coor = mapView.userLocation.location?.coordinate{
             mapView.setCenter(coor, animated: true)
@@ -172,15 +186,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func setRegisteredSpotPin(annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "spotPin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.image = UIImage(named: "car")
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+        pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.glyphImage = UIImage(named: "carGlyph")
+        pinView?.markerTintColor = #colorLiteral(red: 0.144528985, green: 0.6882172823, blue: 1, alpha: 1)
         pinView?.canShowCallout = true
         let square60 = CGSize(width: 60, height: 60)
         let point = CGPoint(x: 0, y: 0)
+        
         let leftButton = UIButton(frame: CGRect(origin: point, size: square60))
-        let defaultPhoto = UIImage(named: "noPhotoSelected")
-        leftButton.setImage(defaultPhoto, for: .normal)
+        leftButton.imageEdgeInsets = UIEdgeInsets(top: -5, left: 5, bottom: 5, right: -5)
+        leftButton.setImage(UIImage(named: "reserveButton"), for: .normal)
+        leftButton.addTarget(self, action: #selector(reserveButtonTapped), for: .touchUpInside)
+        
+        pinView?.leftCalloutAccessoryView = leftButton
+        
         pinView?.tag = 2
         
         return pinView
@@ -285,22 +305,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        //        self.showPolylineOverlay()
-        //        showStopAndGoStackView()
+        registeredSpots?.forEach({ (registeredSpot) in
+            if registeredSpot.address == view.annotation?.title {
+                currentRegisteredSpot = registeredSpot
+            }
+        })
     }
-    
-    
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
     func dropRegisteredSpotPins() {
         if registeredSpots != nil {
@@ -308,7 +318,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 let registeredSpot = registeredSpots![i]
                 let annotation = MKPointAnnotation()
                 if let registeredSpotCoordinates = registeredSpot.coordinates {
-                    let parkingSpotAnnotation = ParkingSpotAnnotation(annotation: annotation, coordinate: registeredSpotCoordinates, title: registeredSpot.address, subtitle: "\(registeredSpot.rate)")
+                    let parkingSpotAnnotation = ParkingSpotAnnotation(annotation: annotation, coordinate: registeredSpotCoordinates, title: registeredSpot.address, subtitle: "$\(registeredSpot.rate) per day.")
                     
                     annotation.coordinate = registeredSpotCoordinates
                     annotation.title = registeredSpot.address
@@ -320,6 +330,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             }
             
         }
+    }
+    
+    //========================================
+    //MARK: - Navigation
+    //========================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? ReservationViewController {
+            destination.currentRegisteredSpot = currentRegisteredSpot
+        }
+    }
+    
+    @objc func reserveButtonTapped() {
+        performSegue(withIdentifier: "reservationSegue", sender: nil)
     }
     
 }

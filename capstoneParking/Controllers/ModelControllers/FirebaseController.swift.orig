@@ -171,6 +171,10 @@ class FirebaseController {
         }
     }
     
+<<<<<<< HEAD
+    func addImageToStorage(image: UIImage) {
+        let storageRef = Storage.storage().reference().child("myImage.png")
+=======
     func getReservations(completion: @escaping ([Reservation]) -> Void) {
         Firestore.firestore().collection("Reservations").getDocuments { (snapshot, error) in
             guard let snapshot = snapshot else { return }
@@ -204,6 +208,7 @@ class FirebaseController {
     
     func addImageToStorage(_ image: UIImage) {
         let storageRef = Storage.storage().reference().child(UUID().uuidString)
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
         
         guard let uploadData = image.pngData() else { return }
         

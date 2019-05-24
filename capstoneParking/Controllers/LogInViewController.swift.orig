@@ -16,7 +16,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //==================================================
     
     var registeredSpots: [RegisteredSpot] = []
+<<<<<<< HEAD
+=======
     var reservations: [Reservation] = []
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
     
     //========================================
     //MARK: - IBOutlets
@@ -50,6 +53,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             }
             //If the password that was typed in the text field is equal to the fetched password log them in and if not show the error label
             if self.passwordTextField.text == currentUser.password {
+<<<<<<< HEAD
+                ParkingController.shared.setCurrentUser(user: currentUser)
+=======
                 UserController.shared.setCurrentUser(user: currentUser)
                 
                 let group = DispatchGroup()
@@ -61,11 +67,31 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 group.enter()
                 UserController.shared.setReservedSpotImages { group.leave() }
                 group.wait()
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
                 
                 FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
                     self.registeredSpots = registeredSpots
                     var count = 0
                     
+<<<<<<< HEAD
+                    for i in 0...self.registeredSpots.count - 1 {
+                        let address = self.registeredSpots[i].address
+                        self.getCoordinatesFor(address: address) { (placemark, error) in
+                            self.registeredSpots[i].coordinates = placemark
+                            
+                            count += 1
+                            if count == registeredSpots.count {
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "loggedInSegue", sender: sender)
+                                }
+                                
+                                //Stop loading process
+                                self.loadingActivityIndicator.stopAnimating()
+                                self.loadingView.isHidden = true
+                            }
+                        }
+                    }
+=======
                     FirebaseController.shared.getReservations(completion: { (reservations) in
                         
                         self.reservations = reservations
@@ -88,6 +114,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                             }
                         }
                     })
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
                     
                 })
                 
@@ -129,8 +156,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
+<<<<<<< HEAD
+        emailTextField.text = "d@d.com"
+        passwordTextField.text = "d"
+=======
         emailTextField.text = "test@gmail.com"
         passwordTextField.text = "test"
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
     }
     
     override func viewDidLayoutSubviews() {
@@ -154,6 +186,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+<<<<<<< HEAD
+    
+    
+    
+    
+=======
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
     func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
         let geocoder = CLGeocoder()
         //        guard let registeredSpots = registeredSpots else { return }

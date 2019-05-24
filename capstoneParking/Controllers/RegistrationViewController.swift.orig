@@ -162,6 +162,11 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             let parkingInstructions = parkingInstructionsTextView.text ?? ""
             
             let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
+<<<<<<< HEAD
+            
+            ParkingController.shared.addRegisteredSpot(newRegisteredSpot)
+            FirebaseController.shared.updateCurrentUser()
+=======
             
             let group = DispatchGroup()
             
@@ -172,6 +177,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             guard let currentUser = UserController.shared.getCurrentUser() else { return }
             
             FirebaseController.shared.updateUser(currentUser)
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
             self.navigationController?.popViewController(animated: true)
         }
     }

@@ -1,66 +1,57 @@
 //
-//  DetailViewController.swift
+//  RegisteredSpotDetailViewController.swift
 //  capstoneParking
 //
-//  Created by Justin Snider on 3/22/19.
+//  Created by Justin Snider on 5/12/19.
 //  Copyright © 2019 Justin Snider. All rights reserved.
 //
 
 import UIKit
 
-protocol NavigationButtonDelegate {
-    func cancelButtonTapped(sender: UIBarButtonItem)
-}
-
-class RegistrationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
+class RegisteredSpotDetailViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NavigationButtonDelegate {
     
     //========================================
     //MARK: - Properties
     //========================================
     
+    var currentRegisteredSpot: RegisteredSpot?
+    var currentRegisteredSpotImage: UIImage?
+    
     var currentTimeButton: UIButton?
     private var availableHours: [String : [String]] = [:]
+    
+    var reservations: [Reservation]?
     
     //========================================
     //MARK: - IBOutlets
     //========================================
     
-    //Address Text fields
-    @IBOutlet weak var addressTitleLabel: UILabel!
-    @IBOutlet weak var streetAddressTextField: UITextField!
-    @IBOutlet weak var stateTextField: UITextField!
-    @IBOutlet weak var cityTextField: UITextField!
-    @IBOutlet weak var zipCodeTextField: UITextField!
-    
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var spacesTitleLabel: UILabel!
     @IBOutlet weak var spacesTextField: UITextField!
-    
     @IBOutlet weak var rateTitleLabel: UILabel!
     @IBOutlet weak var rateTextField: UITextField!
-    
-    @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var parkingInstructionsTitleLabel: UILabel!
+    @IBOutlet weak var parkingInstructionsTextView: CustomTextView!
+    @IBOutlet weak var availabilityTitleLabel: UILabel!
+    @IBOutlet weak var spotImageView: UIImageView!
     
     //Available hours buttons for simple selection
     @IBOutlet weak var fromTimeButton: UIButton!
     @IBOutlet weak var toTimeButton: UIButton!
     @IBOutlet weak var availableDaysSegmentedControl: UISegmentedControl!
     
-    @IBOutlet weak var spotImageView: UIImageView!
-    
-    //Available hours labels
-    @IBOutlet weak var availabilityTitleLabel: UILabel!
     @IBOutlet weak var fromTimeLabel: UILabel!
     @IBOutlet weak var toTimeLabel: UILabel!
     @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var toLabel: UILabel!
     
-    @IBOutlet weak var parkingInstructionsTitleLabel: UILabel!
-    @IBOutlet weak var parkingInstructionsTextView: CustomTextView!
-    
     //Picking time for available hours
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timePickerView: UIView!
     @IBOutlet weak var timePickerViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var viewHeightConstraint: NSLayoutConstraint!
     
     //========================================
     //MARK: - IBActions
@@ -89,7 +80,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             //Animate view size and time picker size
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 216
-                self.viewHeightConstraint.constant = 1500
+                self.viewHeightConstraint.constant = 1350
                 
                 self.view.layoutIfNeeded()
             }
@@ -101,7 +92,7 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             //Animate view size and time picker size
             UIView.animate(withDuration: 0.5) {
                 self.timePickerViewHeightConstraint.constant = 0
-                self.viewHeightConstraint.constant = 1300
+                self.viewHeightConstraint.constant = 1150
                 
                 self.view.layoutIfNeeded()
             }
@@ -148,32 +139,61 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         present(picker, animated: true, completion: nil)
     }
     
-    
-    @IBAction func registerButtonTapped(_ sender: UIButton) {
-        guard let image = spotImageView.image else { return }
+    @IBAction func updateRegisteredSpot(_ sender: Any) {
         
-        UserController.shared.addRegisteredSpotImage(image)
-        FirebaseController.shared.addImageToStorage(image)
-        
-        if let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
-           let numberOfSpaces = Int(spacesTextField.text ?? ""),
-           let rate = Double(rateTextField.text ?? "") {
-            let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
-            let parkingInstructions = parkingInstructionsTextView.text ?? ""
+        if let image = spotImageView.image, currentRegisteredSpotImage != spotImageView.image {
+            FirebaseController.shared.addImageToStorage(image)
             
-            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
+            guard let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString else { return }
             
-            let group = DispatchGroup()
-            
-            group.enter()
-            UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }
-            group.wait()
-            
-            guard let currentUser = UserController.shared.getCurrentUser() else { return }
-            
-            FirebaseController.shared.updateUser(currentUser)
-            self.navigationController?.popViewController(animated: true)
+            currentRegisteredSpot?.imageURLString = imageURLString
         }
+        
+        currentRegisteredSpot?.address = addressLabel.text ?? ""
+        currentRegisteredSpot?.availableHours = availableHours
+        currentRegisteredSpot?.rate = Double(rateTextField.text ?? "")!
+        currentRegisteredSpot?.numberOfSpaces = Int(spacesTextField.text ?? "")!
+        currentRegisteredSpot?.parkingInstructions = parkingInstructionsTextView.text
+        
+        UserController.shared.replaceRegisteredSpot(with: currentRegisteredSpot!)
+        
+        guard let currentUser = UserController.shared.getCurrentUser() else { return }
+        
+        FirebaseController.shared.updateUser(currentUser)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func deleteRegisteredSpot(_ sender: Any) {
+        if reservations != nil {
+            for i in 0...reservations!.count - 1 {
+                if reservations?[i].reservedSpot.address == currentRegisteredSpot?.address {
+                    FirebaseController.shared.fetchUser(for: reservations![i].userEmail) { (user) in
+                        if user != nil {
+                            var user = user
+                            for j in 0...user!.reservations.count - 1 {
+                                if self.reservations![i].reservationID == user!.reservations[j].reservationID {
+                                    user!.reservations.remove(at: j)
+                                }
+                            }
+                            FirebaseController.shared.updateUser(user)
+                        }
+                    }
+                }
+            }
+        }
+        UserController.shared.removeRegisteredSpot(currentRegisteredSpot!)
+        FirebaseController.shared.updateUser(UserController.shared.getCurrentUser())
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    //========================================
+    //MARK: - Text Field Delegate Methods
+    //========================================
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     //========================================
@@ -216,15 +236,32 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        guard let currentRegisteredSpot = currentRegisteredSpot else { fatalError() }
+        
+        spotImageView.image = currentRegisteredSpotImage
+        
+        addressLabel.text = "\(currentRegisteredSpot.address)"
+        addressLabel.adjustsFontSizeToFitWidth = true
+        
+        spacesTextField.delegate = self
+        spacesTextField.becomeFirstResponder()
+        spacesTextField.text = "\(currentRegisteredSpot.numberOfSpaces)"
+        
+        rateTextField.text = "\(currentRegisteredSpot.rate)"
+        
+        parkingInstructionsTextView.text = "\(currentRegisteredSpot.parkingInstructions)"
+        
         timePickerViewHeightConstraint.constant = 0
         
         timePickerView.clipsToBounds = true
         
         parkingInstructionsTextView.layer.borderColor = UIColor.lightGray.cgColor
         
-        viewHeightConstraint.constant = 1300
+        viewHeightConstraint.constant = 1150
         
         updateAvailableHours(customAvailableHours: nil)
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -234,15 +271,8 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         
         rateTextField.addBorder(side: .Bottom, thickness: 3, color: UIColor.gray, leftOffset: 0, rightOffset: 0, topOffset: 0, bottomOffset: -2)
         
-        streetAddressTextField.addBorder(side: .Bottom, thickness: 3, color: UIColor.gray, leftOffset: 0, rightOffset: 0, topOffset: 0, bottomOffset: -2)
-        
-        stateTextField.addBorder(side: .Bottom, thickness: 3, color: UIColor.gray, leftOffset: 0, rightOffset: 0, topOffset: 0, bottomOffset: -2)
-        
-        cityTextField.addBorder(side: .Bottom, thickness: 3, color: UIColor.gray, leftOffset: 0, rightOffset: 0, topOffset: 0, bottomOffset: -2)
-        
-        zipCodeTextField.addBorder(side: .Bottom, thickness: 3, color: UIColor.gray, leftOffset: 0, rightOffset: 0, topOffset: 0, bottomOffset: -2)
-        
-        addressTitleLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        addressLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        addressLabel.addBorder(side: .Bottom, thickness: 2, color: UIColor.lightGray, leftOffset: 159.5, rightOffset: 159.5, topOffset: 0, bottomOffset: -6)
         
         spacesTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         
@@ -251,7 +281,6 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         availabilityTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         
         parkingInstructionsTitleLabel.font = UIFont.boldSystemFont(ofSize: 24)
-    
     }
     
     //========================================

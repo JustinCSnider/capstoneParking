@@ -15,18 +15,26 @@ protocol HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark)
 }
 
+
+
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate {
     
     //==================================================
     // MARK: - Properties
     //==================================================
     
-    
     private var locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
     var resultSearchController: UISearchController? = nil
-    var selectedPin:MKPlacemark? = nil
-
+    var selectedPin: MKPlacemark? = nil
+    var registeredSpots: [RegisteredSpot]?
+<<<<<<< HEAD
+=======
+    var currentRegisteredSpot: RegisteredSpot?
+    var reservations: [Reservation]?
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
+    
+    
     //Outlets
     @IBOutlet var backgroundUIView: UIView!
     @IBOutlet weak var mapView: MKMapView!
@@ -47,7 +55,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         requestAuthorizations()
         setInitialMapProperties()
+        dropRegisteredSpotPins()
+<<<<<<< HEAD
+        print("current registeredSpots array is \(registeredSpots)")
+=======
         
+        if let parkingTabView = tabBarController?.viewControllers?[1] as? ParkingTabViewController {
+            parkingTabView.reservations = reservations
+        }
+        
+        let mapTabBarItem = UITabBarItem(title: nil, image: UIImage(named: "Map"), selectedImage: UIImage(named: "Map Filled"))
+        let parkingTabBarItem = UITabBarItem(title: nil, image: UIImage(named: "Parking"), selectedImage: UIImage(named: "Parking Filled"))
+        
+        mapTabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
+        parkingTabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
+        
+        tabBarController?.viewControllers?[1].tabBarItem = parkingTabBarItem
+        tabBarController?.selectedViewController?.tabBarItem = mapTabBarItem
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
         
         if let coor = mapView.userLocation.location?.coordinate{
             mapView.setCenter(coor, animated: true)
@@ -88,7 +113,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.backgroundUIView.backgroundColor = #colorLiteral(red: 0.6059342617, green: 0.6059342617, blue: 0.6059342617, alpha: 1)
         }
         self.mapView.isUserInteractionEnabled = false
-
+        
     }
     
     func hideCustomAlertController() {
@@ -103,7 +128,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     // MARK: - Functions - MapKit
     //==================================================
-
+    
     func requestAuthorizations() {
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -144,38 +169,45 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.setRegion(region, animated: true)
     }
     
-    
-    
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
-        if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
+        if annotation is MKUserLocation {            
             return nil
         }
-        // need to get search result and do if statement. if it comes from the search result then return the setSearchResultPin() func, else return another function that will have the registered spot pinView.
         
-        guard let annotation = annotation as? SearchResultAnnotation else { return nil }
         
-        if annotation.isSearchResult == true {
-            print("boolean found as true")
-            return setSearchResultPin(annotation: annotation)
-        } else {
-            print("bool detected as false")
-            return setSpotPin(annotation: annotation)
+        if let annotation = annotation as? SearchResultAnnotation {
+            
+            if annotation.isSearchResult == true {
+                print("boolean found as true")
+                return setSearchResultPin(annotation: annotation)
+            } else {
+                print("bool detected as false")
+                return setRegisteredSpotPin(annotation: annotation)
+            }
+        } else if let annotation = annotation as? ParkingSpotAnnotation {
+               return setRegisteredSpotPin(annotation: annotation)
         }
+        return nil
+        
     }
     
-    func setSpotPin(annotation: MKAnnotation) -> MKAnnotationView? {
+    func setRegisteredSpotPin(annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "spotPin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-        pinView?.image = UIImage(named: "car")
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+        pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView?.glyphImage = UIImage(named: "carGlyph")
+        pinView?.markerTintColor = #colorLiteral(red: 0.144528985, green: 0.6882172823, blue: 1, alpha: 1)
         pinView?.canShowCallout = true
         let square60 = CGSize(width: 60, height: 60)
         let point = CGPoint(x: 0, y: 0)
+        
         let leftButton = UIButton(frame: CGRect(origin: point, size: square60))
-        let defaultPhoto = UIImage(named: "noPhotoSelected")
-        leftButton.setImage(defaultPhoto, for: .normal)
+        leftButton.imageEdgeInsets = UIEdgeInsets(top: -5, left: 5, bottom: 5, right: -5)
+        leftButton.setImage(UIImage(named: "reserveButton"), for: .normal)
+        leftButton.addTarget(self, action: #selector(reserveButtonTapped), for: .touchUpInside)
+        
+        pinView?.leftCalloutAccessoryView = leftButton
+        
         pinView?.tag = 2
         
         return pinView
@@ -202,6 +234,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return pinView
     }
     
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+//        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
+    
+    
+    
     
     @objc func getDirections(){
         if let selectedPin = selectedPin {
@@ -227,14 +277,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //==================================================
     
     @IBAction func registerButtonTapped(_ sender: Any) {
-<<<<<<< HEAD
-        UIView.animate(withDuration: 0.3) {
-            self.customAlertControllerStackview.transform = CGAffineTransform(translationX: 0, y: 210)
-            self.mapView.alpha = 1.0
-            self.backgroundUIView.backgroundColor = nil
-            self.mapView.isUserInteractionEnabled = true
-            self.beginNavigation()
-=======
         hideCustomAlertController()
         
         for annotation in mapView.annotations {
@@ -242,7 +284,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 let newAnnotation = MKPointAnnotation()
                 
             }
->>>>>>> cf573a99ffeacf602ed897ebaef67452f6e109be
         }
     }
     
@@ -266,28 +307,94 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         annotation.title = "New Parking Spot"
         
         
-//        self.mapView.removeAnnotations(mapView.annotations)
+        //        self.mapView.removeAnnotations(mapView.annotations)
         self.mapView.addAnnotation(annotation)
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        self.showPolylineOverlay()
-//        showStopAndGoStackView()
+<<<<<<< HEAD
+        //        self.showPolylineOverlay()
+        //        showStopAndGoStackView()
     }
     
-
     
-
+    
+    
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+    func dropRegisteredSpotPins() {
+        if registeredSpots != nil {
+            for i in 0...registeredSpots!.count - 1 {
+                let registeredSpot = registeredSpots![i]
+                let annotation = MKPointAnnotation()
+                if let registeredSpotCoordinates = registeredSpot.coordinates {
+                    let parkingSpotAnnotation = ParkingSpotAnnotation(annotation: annotation, coordinate: registeredSpotCoordinates, title: registeredSpot.address, subtitle: "\(registeredSpot.rate)")
+                    
+                    annotation.coordinate = registeredSpotCoordinates
+                    annotation.title = registeredSpot.address
+                    mapView.addAnnotation(parkingSpotAnnotation)
+                } else {
+                    print("We don't have coordinates yet!")
+               }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+            }
+            
+        }
     }
-    */
+    
+=======
+        registeredSpots?.forEach({ (registeredSpot) in
+            if registeredSpot.address == view.annotation?.title {
+                currentRegisteredSpot = registeredSpot
+            }
+        })
+    }
+    
+    func dropRegisteredSpotPins() {
+        if registeredSpots != nil {
+            for i in 0...registeredSpots!.count - 1 {
+                let registeredSpot = registeredSpots![i]
+                let annotation = MKPointAnnotation()
+                if let registeredSpotCoordinates = registeredSpot.coordinates {
+                    let parkingSpotAnnotation = ParkingSpotAnnotation(annotation: annotation, coordinate: registeredSpotCoordinates, title: registeredSpot.address, subtitle: "$\(registeredSpot.rate) per day.")
+                    
+                    annotation.coordinate = registeredSpotCoordinates
+                    annotation.title = registeredSpot.address
+                    mapView.addAnnotation(parkingSpotAnnotation)
+                } else {
+                    print("We don't have coordinates yet!")
+               }
 
+            }
+            
+        }
+    }
+    
+    //========================================
+    //MARK: - Navigation
+    //========================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? ReservationViewController {
+            destination.currentRegisteredSpot = currentRegisteredSpot
+        }
+    }
+    
+    @objc func reserveButtonTapped() {
+        performSegue(withIdentifier: "reservationSegue", sender: nil)
+    }
+    
+>>>>>>> f2f4ce29fe447065dc45e591678df0310ce95485
 }
 
 extension MapViewController: HandleMapSearch {
@@ -318,7 +425,7 @@ extension MapViewController: HandleMapSearch {
     }
     
 }
-    
+
 
 extension UIView {
     func roundCorners(corners: UIRectCorner, radius: CGFloat) {

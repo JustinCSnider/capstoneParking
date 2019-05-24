@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import CoreLocation
 
 class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
+    
+    //========================================
+    //MARK: - Properties
+    //========================================
+    
+    var registeredSpots: [RegisteredSpot] = []
     
     //========================================
     //MARK: - IBOutlets
@@ -35,11 +42,13 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
     //========================================
     
     @IBAction func submitButtonTapped(_ sender: Any) {
+        //Grabbing neccessary pieces to create your own account
         guard let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
             let email = emailTextField.text,
             let password = passwordTextField.text else { return }
         
+        //Start showing load screen while it creates the account
         loadingView.isHidden = false
         loadingActivityIndicator.startAnimating()
         
@@ -54,8 +63,6 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                 self.passwordTextField.resignFirstResponder()
                 self.confirmPasswordTextField.resignFirstResponder()
                 
-                self.loadingActivityIndicator.stopAnimating()
-                self.loadingView.isHidden = true
                 if hasBeenUsed {
                     self.emailLabel.isHidden = false
                     self.emailErrorLabel.isHidden = false
@@ -67,10 +74,33 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
                     
                     let currentUser = User(firstName: firstName, lastName: lastName, email: email, password: password, registeredSpots: [], reservations: [])
                     
-                    ParkingController.shared.setCurrentUser(user: currentUser)
+                    UserController.shared.setCurrentUser(user: currentUser)
                     
-                    self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
+                    FirebaseController.shared.getRegisteredSpots(completion: { (registeredSpots) in
+                        self.registeredSpots = registeredSpots
+                        var count = 0
+                        
+                        for i in 0...self.registeredSpots.count - 1 {
+                            let address = self.registeredSpots[i].address
+                            self.getCoordinatesFor(address: address) { (placemark, error) in
+                                self.registeredSpots[i].coordinates = placemark
+                                
+                                count += 1
+                                if count == registeredSpots.count {
+                                    DispatchQueue.main.async {
+                                        self.performSegue(withIdentifier: "createdAccountSegue", sender: sender)
+                                    }
+                                    
+                                    //Stop loading process
+                                    self.loadingActivityIndicator.stopAnimating()
+                                    self.loadingView.isHidden = true
+                                }
+                            }
+                        }
+                        
+                    })
                 }
+                
             }
         } else {
             //Resets error labels before setting them back up again
@@ -149,6 +179,21 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
     }
     
     //========================================
+    //MARK: - Navigation
+    //========================================
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let destination = segue.destination as? UITabBarController,
+            let tabDestination = destination.viewControllers,
+            let unwrappedTabDestination = tabDestination[0] as? UINavigationController,
+            let mapDestination = unwrappedTabDestination.viewControllers[0] as? MapViewController {
+            mapDestination.registeredSpots = self.registeredSpots
+        }
+    }
+    
+    //========================================
     //MARK: - Helper Methods
     //========================================
     
@@ -161,10 +206,27 @@ class CreateNewAccountViewController: UIViewController, UITextFieldDelegate {
         generalErrorLabel.isHidden = true
         emailErrorLabel.isHidden = true
     }
+    
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+        //        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
+        }
+    }
 
 }
 
 extension String {
+    //Validates email using a Regular Expression
     func isValidEmail() -> Bool {
         let emailRegEx = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}" +
             "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" +
@@ -178,6 +240,7 @@ extension String {
         return emailTest.evaluate(with: self)
     }
     
+    //Checks a string to see if it contains any numbers
     func containsNumbers() -> Bool {
         var containsNumbers = false
         var count = 0
