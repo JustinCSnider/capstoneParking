@@ -18,6 +18,7 @@ class UserController {
     
     private var currentUser: User?
     private var currentRegisteredSpotImageURL: URL?
+    var lastRegisteredSpot: RegisteredSpot?
     
     private var currentUserRegisteredSpotImages: [UIImage] = []
     private var currentUserReservedSpotImages: [UIImage] = []

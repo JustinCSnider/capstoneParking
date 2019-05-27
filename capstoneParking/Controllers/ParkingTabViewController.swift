@@ -169,7 +169,7 @@ class ParkingTabViewController: UIViewController, UITableViewDelegate, UITableVi
                 cell.backgroundColor = #colorLiteral(red: 0.6666069031, green: 0.6667048335, blue: 0.6665855646, alpha: 1)
                 cell.textLabel?.numberOfLines = 0
 
-                cell.textLabel?.text = "If you'd like to make a reservation, tap on any pin you find in the area you want to reserve."
+                cell.textLabel?.text = "If you'd like to make a reservation, tap on any pin you find in the area you want to reserve, and tap the pen and paper on the left."
                 cell.textLabel?.textAlignment = .center
                 
                 cell.isUserInteractionEnabled = false

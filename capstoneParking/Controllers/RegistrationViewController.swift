@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 protocol NavigationButtonDelegate {
     func cancelButtonTapped(sender: UIBarButtonItem)
@@ -156,23 +157,30 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
         FirebaseController.shared.addImageToStorage(image)
         
         if let imageURLString = UserController.shared.getCurrentRegisteredSpotImageURL()?.absoluteString,
-           let numberOfSpaces = Int(spacesTextField.text ?? ""),
-           let rate = Double(rateTextField.text ?? "") {
+            let numberOfSpaces = Int(spacesTextField.text ?? ""),
+            let rate = Double(rateTextField.text ?? "") {
             let address = "\(streetAddressTextField.text ?? ""), \(cityTextField.text ?? ""), \(stateTextField.text ?? "") \(zipCodeTextField.text ?? "")"
             let parkingInstructions = parkingInstructionsTextView.text ?? ""
             
-            let newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
+            var newRegisteredSpot = RegisteredSpot(imageURLString: imageURLString, address: address, numberOfSpaces: numberOfSpaces, rate: rate, parkingInstructions: parkingInstructions, availableHours: availableHours, coordinates: nil)
             
             let group = DispatchGroup()
             
-            group.enter()
-            UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }
-            group.wait()
+            getCoordinatesFor(address: newRegisteredSpot.address) { (placemarks, error) in
+                newRegisteredSpot.coordinates = placemarks
+                
+                group.enter()
+                UserController.shared.addRegisteredSpot(newRegisteredSpot) { group.leave() }
+                group.wait()
+                
+                UserController.shared.lastRegisteredSpot = newRegisteredSpot
+                
+                guard let currentUser = UserController.shared.getCurrentUser() else { return }
+                
+                FirebaseController.shared.updateUser(currentUser)
+                self.navigationController?.popViewController(animated: true)
+            }
             
-            guard let currentUser = UserController.shared.getCurrentUser() else { return }
-            
-            FirebaseController.shared.updateUser(currentUser)
-            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -320,6 +328,22 @@ class RegistrationViewController: UIViewController, UIImagePickerControllerDeleg
             availableHours = customAvailableHours
         default:
             break
+        }
+    }
+    
+    func getCoordinatesFor(address: String, completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void) {
+        let geocoder = CLGeocoder()
+        //        guard let registeredSpots = registeredSpots else { return }
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if error == nil {
+                if let placemark = placemarks?.first {
+                    let location = placemark.location!
+                    
+                    completionHandler(location.coordinate, nil)
+                    return
+                }
+            }
+            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
         }
     }
     

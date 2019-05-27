@@ -93,6 +93,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         registerUIView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 10.0)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let lastRegisteredSpot = UserController.shared.lastRegisteredSpot else { return }
+        registeredSpots?.append(lastRegisteredSpot)
+        dropRegisteredSpotPins()
+    }
+    
     //==================================================
     // MARK: - Functions - View and Layout
     //==================================================

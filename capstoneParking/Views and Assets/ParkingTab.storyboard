@@ -630,7 +630,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="registerButtonTapped:" destination="TKe-qw-akR" eventType="touchUpInside" id="r9o-Cq-2PT"/>
+                                                    <action selector="registerButtonTapped:" destination="TKe-qw-akR" eventType="touchUpInside" id="rxx-ex-XQe"/>
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Spaces" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X7B-yq-6Dw">
@@ -1309,6 +1309,6 @@
         <image name="No photo selected" width="640" height="640"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Q1f-js-bmP"/>
+        <segue reference="OE2-qf-MV4"/>
     </inferredMetricsTieBreakers>
 </document>
